@@ -1,1012 +1,880 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NISHAT HOMEO PHARMACY — Invoice Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Nishat Homeo Pharmacy</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  :root {
-    --primary: #0B6E4F;
-    --primary-dark: #073D2E;
-    --primary-light: #E8F5EE;
-    --accent: #C8963E;
-    --accent-light: #FDF3E0;
-    --bg: #F4F1EC;
-    --bg-warm: #FAF8F5;
-    --card: #FFFFFF;
-    --text: #1A1A1A;
-    --text-muted: #6B7280;
-    --border: #E5E1DB;
-    --danger: #C0392B;
-    --danger-light: #FDECEB;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-    --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
-    --radius: 12px;
-    --radius-sm: 8px;
-    --radius-lg: 16px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    top: -200px; right: -200px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(11,110,79,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  body::after {
-    content: '';
-    position: fixed;
-    bottom: -150px; left: -150px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(200,150,62,0.07) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --g1:#064e3b;--g2:#065f46;--g3:#047857;--g4:#d1fae5;--g5:#ecfdf5;
+  --navy:#0f172a;--slate:#334155;--gray:#64748b;--lgray:#94a3b8;
+  --border:#e2e8f0;--bg:#f0fdf4;--white:#fff;
+  --red:#ef4444;--amber:#d97706;--amberlt:#fffbeb;
+  --primary:#0B6E4F;--primary-dark:#073D2E;--primary-light:#E8F5EE;
+  --accent:#C8963E;--accent-light:#FDF3E0;
+  --sh:0 1px 8px rgba(6,95,70,.1);--sh2:0 4px 20px rgba(6,95,70,.14);
+  --r:14px;
+}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;padding-bottom:0}
 
-  /* টপ বার */
-  .top-bar {
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 4px 20px rgba(7,61,46,0.3);
-  }
-  .top-bar .brand {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .top-bar .brand-icon {
-    width: 38px; height: 38px;
-    background: rgba(255,255,255,0.13);
-    border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; color: var(--accent);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .top-bar .brand-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px; font-weight: 800; color: #fff;
-  }
-  .top-bar .brand-text span {
-    font-size: 10px; color: rgba(255,255,255,0.55);
-    letter-spacing: 1px; text-transform: uppercase;
-  }
-  .top-bar-actions { display: flex; gap: 6px; }
-  .top-bar-actions button {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #fff; padding: 8px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 12px; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; gap: 5px;
-    transition: all 0.25s ease;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .top-bar-actions button:hover {
-    background: rgba(255,255,255,0.22);
-    transform: translateY(-1px);
-  }
-  .top-bar-actions .btn-accent {
-    background: var(--accent); border-color: var(--accent);
-  }
-  .top-bar-actions .btn-accent:hover { background: #B8862F; }
+/* ─── APP HEADER ─── */
+.app-header{
+  background:linear-gradient(135deg,#022c22 0%,#064e3b 45%,#065f46 100%);
+  padding:14px 16px 12px;display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(2,44,34,.4);
+}
+.header-logo{
+  width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0;
+  background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;
+  font-size:22px;border:1.5px solid rgba(255,255,255,.2);
+}
+.header-logo img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+.header-title{flex:1;min-width:0}
+.header-title h1{
+  font-family:'Libre Baskerville',serif;font-size:1.05rem;color:#fff;letter-spacing:.3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.header-title p{font-size:.68rem;color:rgba(255,255,255,.6);margin-top:1px}
 
-  /* মেইন লেআউট */
-  .app-container {
-    display: flex; min-height: calc(100vh - 66px);
-    position: relative; z-index: 1;
-  }
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:#fff;border-top:1px solid var(--border);display:flex;
+  box-shadow:0 -4px 16px rgba(6,95,70,.1);
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.nav-btn{
+  flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;border:none;background:none;color:var(--lgray);
+  font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:500;transition:color .2s;position:relative;
+}
+.nav-btn.active{color:var(--g2)}
+.nav-badge{
+  position:absolute;top:5px;right:calc(50% - 18px);background:var(--amber);color:#fff;
+  font-size:.55rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-dot{width:4px;height:4px;background:var(--g2);border-radius:50%;opacity:0;transition:opacity .2s}
+.nav-btn.active .nav-dot{opacity:1}
 
-  /* বাম ফর্ম প্যানেল */
-  .form-panel {
-    width: 440px; min-width: 440px;
-    background: var(--bg-warm);
-    border-right: 1px solid var(--border);
-    overflow-y: auto; padding: 20px;
-    display: flex; flex-direction: column; gap: 16px;
-  }
-  .section-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.3s ease;
-  }
-  .section-card:hover { box-shadow: var(--shadow-md); }
-  .section-header {
-    padding: 12px 16px;
-    display: flex; align-items: center; gap: 9px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, var(--primary-light), #fff);
-  }
-  .section-header .icon-wrap {
-    width: 30px; height: 30px;
-    background: var(--primary); border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 13px; flex-shrink: 0;
-  }
-  .section-header h2 {
-    font-size: 13px; font-weight: 700;
-    color: var(--primary-dark); letter-spacing: 0.3px;
-  }
-  .section-body { padding: 14px 16px; }
-  .form-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
-  .form-grid .full-width { grid-column: 1 / -1; }
-  .form-group { display: flex; flex-direction: column; gap: 4px; }
-  .form-group label {
-    font-size: 10.5px; font-weight: 600;
-    color: var(--text-muted); text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .form-group input, .form-group select {
-    padding: 8px 11px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 13px; font-family: 'DM Sans', sans-serif;
-    color: var(--text); background: #fff;
-    transition: all 0.2s ease; outline: none;
-  }
-  .form-group input:focus, .form-group select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(11,110,79,0.1);
-  }
-  .form-group input::placeholder { color: #C4C4C4; }
-  .form-group select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    padding-right: 28px;
-  }
+/* ─── MAIN ─── */
+.main{flex:1;padding:14px 12px 80px}
+.page{display:none}.page.active{display:block}
 
-  /* প্রোডাক্ট রো */
-  .product-rows { display: flex; flex-direction: column; gap: 6px; }
-  .product-row {
-    background: var(--bg-warm);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    display: grid;
-    grid-template-columns: 30px 1fr 64px 72px 72px 28px;
-    gap: 5px; align-items: center;
-    transition: all 0.2s ease;
-    animation: slideIn 0.3s ease;
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .product-row:hover {
-    border-color: var(--primary);
-    background: var(--primary-light);
-  }
-  .product-row .sl-num {
-    font-size: 11px; font-weight: 700;
-    color: var(--primary); text-align: center;
-  }
-  .product-row input {
-    padding: 6px 7px;
-    border: 1.5px solid var(--border);
-    border-radius: 5px;
-    font-size: 11.5px; font-family: 'DM Sans', sans-serif;
-    color: var(--text); background: #fff; outline: none;
-    transition: all 0.2s ease;
-  }
-  .product-row input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(11,110,79,0.1);
-  }
-  .product-row .remove-row {
-    width: 26px; height: 26px; border: none;
-    background: var(--danger-light); color: var(--danger);
-    border-radius: 5px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; transition: all 0.2s ease;
-  }
-  .product-row .remove-row:hover {
-    background: var(--danger); color: #fff; transform: scale(1.1);
-  }
-  .add-product-btn {
-    width: 100%; padding: 9px;
-    border: 2px dashed var(--border);
-    background: transparent; color: var(--primary);
-    font-size: 12px; font-weight: 600;
-    border-radius: var(--radius-sm); cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-    transition: all 0.25s ease;
-    font-family: 'DM Sans', sans-serif; margin-top: 6px;
-  }
-  .add-product-btn:hover {
-    border-color: var(--primary);
-    background: var(--primary-light);
-  }
+/* ─── CARDS ─── */
+.card{
+  background:var(--white);border-radius:var(--r);box-shadow:var(--sh);
+  margin-bottom:12px;overflow:hidden;border:1px solid rgba(6,95,70,.07);
+}
+.card-head{
+  padding:11px 14px 9px;border-bottom:1px solid var(--g4);
+  display:flex;align-items:center;gap:8px;
+}
+.card-head-icon{
+  width:30px;height:30px;border-radius:7px;background:var(--g5);
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+}
+.card-head-title{font-weight:700;font-size:.85rem;color:var(--g1);font-family:'Libre Baskerville',serif}
+.card-body{padding:12px 14px}
 
-  /* ডিসকাউন্ট */
-  .discount-row {
-    display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end;
-  }
-  .discount-type-toggle {
-    display: flex; background: var(--bg);
-    border-radius: 5px; overflow: hidden;
-    border: 1.5px solid var(--border);
-  }
-  .discount-type-toggle button {
-    padding: 6px 12px; border: none; background: transparent;
-    font-size: 11px; font-weight: 600; cursor: pointer;
-    color: var(--text-muted); font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s ease;
-  }
-  .discount-type-toggle button.active {
-    background: var(--primary); color: #fff;
-  }
+/* ─── FORM ─── */
+.fg{margin-bottom:11px}
+.fg label{display:block;font-size:.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;
+  font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:#fcfcfd;
+  transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(4,120,87,.1);background:#fff}
+.fg textarea{resize:vertical;min-height:64px;line-height:1.6}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-  /* ডান প্রিভিউ প্যানেল */
-  .preview-panel {
-    flex: 1; overflow-y: auto; padding: 20px;
-    display: flex; flex-direction: column; align-items: center;
-    background: linear-gradient(180deg, #E8E4DE, var(--bg));
-  }
+/* ─── PRODUCTS ─── */
+.prod-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prod-table{min-width:520px;width:100%}
+.prod-th{
+  display:grid;grid-template-columns:36px minmax(160px,1fr) 80px 90px 80px 36px;gap:6px;
+  padding:8px 14px;background:var(--g4);font-size:.68rem;font-weight:700;
+  color:var(--g1);text-transform:uppercase;letter-spacing:.4px;position:sticky;top:0;
+}
+.prod-row{
+  display:grid;grid-template-columns:36px minmax(160px,1fr) 80px 90px 80px 36px;gap:6px;
+  padding:7px 14px;align-items:center;border-bottom:1px solid var(--g5);
+}
+.prod-sl{
+  width:26px;height:26px;border-radius:50%;background:var(--g4);color:var(--g2);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;
+}
+.prod-row input{
+  width:100%;padding:8px 9px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--navy);background:#fcfcfd;outline:none;
+}
+.prod-row input:focus{border-color:var(--g3);background:#fff}
+.prod-row .sub-val{
+  padding:8px 9px;border-radius:8px;background:var(--g5);color:var(--g2);
+  font-weight:700;font-size:.82rem;text-align:right;white-space:nowrap;
+}
+.btn-del{
+  width:30px;height:30px;border-radius:7px;background:#fff0f0;border:1px solid #fecaca;
+  color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.btn-del:hover{background:#fee2e2}
+.btn-add-row{
+  width:100%;margin:0;padding:11px;border:1.5px dashed var(--g3);border-radius:9px;
+  background:var(--g5);color:var(--g2);font-family:'DM Sans',sans-serif;font-size:.88rem;
+  font-weight:600;cursor:pointer;transition:background .2s;
+}
+.btn-add-row:hover{background:var(--g4)}
+.prod-add-wrap{padding:10px 14px 12px}
 
-  /* ============ ইনভয়েস পেপার ============ */
-  .invoice-paper {
-    width: 100%; max-width: 400px;
-    background: #fff; border-radius: 2px;
-    box-shadow: var(--shadow-xl);
-    overflow: hidden; position: relative;
-  }
-  .invoice-paper::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--accent));
-  }
-  .inv-header {
-    padding: 22px 18px 14px; text-align: center;
-    border-bottom: 2px solid var(--primary-dark);
-  }
-  .inv-pharmacy-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 19px; font-weight: 900;
-    color: var(--primary-dark); letter-spacing: 0.8px;
-    margin-bottom: 3px;
-  }
-  .inv-pharmacy-addr {
-    font-size: 10px; color: var(--text-muted); line-height: 1.5;
-  }
-  .inv-pharmacy-contact {
-    font-size: 9.5px; color: var(--text-muted); margin-top: 2px;
-  }
-  .inv-meta {
-    display: flex; justify-content: space-between;
-    padding: 8px 18px;
-    background: var(--primary-light);
-    border-bottom: 1px solid rgba(11,110,79,0.15);
-    font-size: 10.5px;
-  }
-  .inv-meta span { font-weight: 600; color: var(--primary-dark); }
-  .inv-meta .val { font-weight: 500; color: var(--text); }
-  .inv-patient {
-    padding: 8px 18px;
-    border-bottom: 1.5px solid var(--border);
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 3px 14px; font-size: 10.5px;
-  }
-  .inv-patient .pat-label { font-weight: 600; color: var(--text-muted); }
-  .inv-patient .pat-val { color: var(--text); font-weight: 500; }
-  .inv-patient .reward-badge {
-    grid-column: 1 / -1;
-    display: inline-flex; align-items: center; gap: 4px;
-    background: var(--accent-light); color: var(--accent);
-    font-size: 9.5px; font-weight: 700;
-    padding: 2px 9px; border-radius: 20px;
-    width: fit-content; margin-top: 2px;
-  }
+/* ─── SUMMARY ─── */
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--g5);font-size:.88rem}
+.sum-row:last-child{border:none}
+.sum-label{color:var(--gray);font-weight:500}
+.sum-val{font-weight:600;color:var(--navy)}
+.sum-row.grand{padding-top:10px;margin-top:4px;border-top:2px solid var(--g3)}
+.sum-row.grand .sum-label{font-weight:700;font-size:.95rem;color:var(--g1)}
+.sum-row.grand .sum-val{font-size:1.1rem;color:var(--g1)}
+.disc-inp{
+  width:80px;padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;text-align:right;outline:none;background:#fcfcfd;
+}
+.disc-inp:focus{border-color:var(--g3)}
+.cash-box{background:var(--amberlt);border-radius:10px;padding:12px 14px;margin-top:10px}
+.cash-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.88rem}
+.cash-row:last-child{margin:0}
+.cash-label{color:var(--amber);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.3px}
+.cash-val{font-weight:700;color:#92400e}
+.cash-inp{
+  width:110px;padding:7px 10px;border:1.5px solid #fcd34d;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:.9rem;text-align:right;outline:none;background:#fff;
+}
+.cash-inp:focus{border-color:var(--amber)}
 
-  /* প্রোডাক্ট টেবিল */
-  .inv-table {
-    width: 100%; border-collapse: collapse; font-size: 10.5px;
-  }
-  .inv-table thead th {
-    background: var(--primary-dark); color: #fff;
-    font-weight: 600; padding: 6px 9px; text-align: left;
-    font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px;
-  }
-  .inv-table thead th:last-child,
-  .inv-table thead th:nth-child(3),
-  .inv-table thead th:nth-child(4) { text-align: right; }
-  .inv-table tbody td {
-    padding: 6px 9px;
-    border-bottom: 1px solid #f0ede8;
-    vertical-align: top;
-  }
-  .inv-table tbody td:last-child,
-  .inv-table tbody td:nth-child(3),
-  .inv-table tbody td:nth-child(4) {
-    text-align: right; font-variant-numeric: tabular-nums;
-  }
-  .inv-table tbody tr:nth-child(even) { background: #FAFAF7; }
-  .inv-table .product-name-cell { font-weight: 500; color: var(--text); }
+/* ─── BUTTONS ─── */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:13px;border-radius:11px;font-family:'DM Sans',sans-serif;
+  font-size:.92rem;font-weight:600;cursor:pointer;border:none;transition:transform .15s;letter-spacing:.2px;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#065f46,#047857);color:#fff;box-shadow:0 4px 14px rgba(6,95,70,.3)}
+.btn-wa{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 4px 14px rgba(22,163,74,.25)}
+.btn-outline{background:#fff;color:var(--g2);border:2px solid var(--g3)}
+.btn-danger{background:#fff;color:var(--red);border:2px solid #fecaca}
+.row2{display:flex;gap:9px;margin-bottom:9px}
+.row2 .btn{flex:1}
 
-  /* সামারি */
-  .inv-summary-section { padding: 0 18px; }
-  .inv-summary-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    border: 1.5px solid var(--border);
-    border-radius: 5px; overflow: hidden;
-    font-size: 10.5px; margin-top: 8px;
-  }
-  .inv-summary-grid .cell {
-    padding: 5px 9px; border-bottom: 1px solid #f0ede8;
-  }
-  .inv-summary-grid .cell:nth-child(odd) {
-    background: #FAFAF7; font-weight: 600; color: var(--text-muted);
-  }
-  .inv-summary-grid .cell:nth-child(even) {
-    text-align: right; font-weight: 500; color: var(--text);
-    font-variant-numeric: tabular-nums;
-  }
-  .inv-total-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 9px 18px;
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    color: #fff; font-size: 13px; font-weight: 700; margin-top: 8px;
-  }
-  .inv-total-bar .amount {
-    font-size: 19px; font-family: 'Playfair Display', serif;
-  }
-  .inv-footer {
-    padding: 12px 18px; text-align: center;
-    border-top: 1.5px solid var(--border); background: #FAFAF7;
-  }
-  .inv-footer .pharmacy-repeat {
-    font-family: 'Playfair Display', serif;
-    font-size: 12px; font-weight: 700;
-    color: var(--primary-dark); margin-bottom: 3px;
-  }
-  .inv-footer .contact-line {
-    font-size: 9.5px; color: var(--text-muted); margin-bottom: 1px;
-  }
-  .inv-footer .thank-you {
-    font-size: 10px; color: var(--primary);
-    font-weight: 600; margin-top: 5px; font-style: italic;
-  }
-  .watermark {
-    position: absolute; bottom: 70px; right: 8px;
-    font-size: 55px; opacity: 0.03;
-    color: var(--primary-dark); pointer-events: none;
-    font-weight: 900;
-  }
+/* ─── HISTORY ─── */
+.hist-card{
+  background:var(--white);border-radius:14px;box-shadow:var(--sh2);margin-bottom:12px;
+  overflow:hidden;border:1px solid rgba(6,95,70,.07);
+}
+.hist-card-head{
+  background:linear-gradient(135deg,#064e3b,#065f46);padding:12px 14px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+}
+.hist-inv-no{font-family:'Libre Baskerville',serif;font-size:1rem;font-weight:700;color:#fff}
+.hist-date{font-size:.73rem;color:rgba(255,255,255,.65);margin-top:2px}
+.hist-total-badge{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);
+  color:#fff;padding:5px 11px;border-radius:20px;font-size:.88rem;font-weight:700;white-space:nowrap;
+}
+.hist-card-body{padding:12px 14px}
+.hist-patient{font-weight:700;font-size:.93rem;color:var(--navy);margin-bottom:4px}
+.hist-meta{font-size:.76rem;color:var(--gray);display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.hist-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.hist-tag{background:var(--g5);color:var(--g2);font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid var(--g4)}
+.hist-card-foot{padding:9px 14px;border-top:1px solid var(--g5);display:flex;gap:7px}
+.hist-fbtn{
+  flex:1;padding:9px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.78rem;
+  font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:5px;transition:background .2s;
+}
+.hf-pdf{background:var(--g5);color:var(--g2)}.hf-pdf:hover{background:var(--g4)}
+.hf-edit{background:#eff6ff;color:#1d4ed8}.hf-edit:hover{background:#dbeafe}
+.hf-del{background:#fff5f5;color:var(--red)}.hf-del:hover{background:#fee2e2}
+.empty-state{text-align:center;padding:48px 20px;color:var(--gray)}
+.empty-icon{font-size:3rem;margin-bottom:10px;opacity:.45}
 
-  /* মোডাল */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(6px);
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease; padding: 20px;
-  }
-  .modal-overlay.active { opacity: 1; pointer-events: all; }
-  .modal-box {
-    background: var(--card); border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-xl); max-width: 380px; width: 100%;
-    overflow: hidden;
-    transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s ease;
-  }
-  .modal-overlay.active .modal-box {
-    transform: translateY(0) scale(1);
-  }
-  .modal-top-bar {
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-  }
-  .modal-content { padding: 26px 22px 18px; text-align: center; }
-  .modal-icon {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 14px; font-size: 22px;
-  }
-  .modal-icon.success { background: var(--primary-light); color: var(--primary); }
-  .modal-icon.warning { background: var(--accent-light); color: var(--accent); }
-  .modal-icon.danger { background: var(--danger-light); color: var(--danger); }
-  .modal-content h3 {
-    font-size: 17px; font-weight: 700; margin-bottom: 7px; color: var(--text);
-  }
-  .modal-content p {
-    font-size: 13px; color: var(--text-muted); line-height: 1.6;
-  }
-  .modal-actions {
-    display: flex; gap: 8px; padding: 0 22px 22px; justify-content: center;
-  }
-  .modal-actions button {
-    padding: 9px 22px; border-radius: var(--radius-sm);
-    font-size: 12.5px; font-weight: 600; cursor: pointer;
-    transition: all 0.2s ease; border: none;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .btn-modal-primary { background: var(--primary); color: #fff; }
-  .btn-modal-primary:hover { background: var(--primary-dark); }
-  .btn-modal-secondary {
-    background: var(--bg); color: var(--text);
-    border: 1.5px solid var(--border) !important;
-  }
-  .btn-modal-secondary:hover { background: #E8E4DE; }
-  .btn-modal-danger { background: var(--danger); color: #fff; }
-  .btn-modal-danger:hover { background: #A93226; }
+/* ─── SEARCH ─── */
+.search-box{
+  display:flex;gap:10px;background:#fff;border-radius:12px;padding:11px 13px;
+  box-shadow:var(--sh);border:1px solid rgba(6,95,70,.08);margin-bottom:12px;align-items:center;
+}
+.search-box input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--navy);background:none;min-width:0}
+.search-count{font-size:.76rem;color:var(--gray);margin-bottom:8px;padding:0 2px}
 
-  /* টোস্ট */
-  .toast-container {
-    position: fixed; top: 78px; right: 16px;
-    z-index: 2000; display: flex; flex-direction: column; gap: 6px;
-  }
-  .toast {
-    padding: 10px 18px; border-radius: var(--radius-sm);
-    font-size: 12.5px; font-weight: 500;
-    box-shadow: var(--shadow-lg);
-    display: flex; align-items: center; gap: 7px;
-    animation: toastIn 0.4s ease, toastOut 0.4s ease 2.6s forwards;
-    max-width: 320px;
-  }
-  .toast.success { background: var(--primary-dark); color: #fff; }
-  .toast.error { background: var(--danger); color: #fff; }
-  .toast.info { background: var(--accent); color: #fff; }
-  @keyframes toastIn {
-    from { opacity: 0; transform: translateX(40px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes toastOut {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateX(40px); }
-  }
+/* ─── SETTINGS ─── */
+.logo-preview{
+  width:72px;height:72px;border-radius:14px;background:var(--g5);border:2px dashed var(--g3);
+  display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;
+  overflow:hidden;margin-bottom:14px;position:relative;
+}
+.logo-preview img{width:100%;height:100%;object-fit:cover}
+.logo-hint{position:absolute;bottom:0;left:0;right:0;background:rgba(6,95,70,.7);color:#fff;font-size:.6rem;text-align:center;padding:3px}
+#logo-upload{display:none}
 
-  /* ============ প্রিন্ট — শুধু ইনভয়েস ============ */
-  @media print {
-    body { background: #fff !important; margin: 0; padding: 0; }
-    body::before, body::after { display: none !important; }
-    .top-bar, .form-panel, .toast-container, .modal-overlay, .no-print { display: none !important; }
-    .preview-panel {
-      padding: 0 !important; background: #fff !important;
-      min-height: auto !important;
-    }
-    .app-container { display: block !important; }
-    .invoice-paper {
-      box-shadow: none !important;
-      max-width: 100% !important;
-      border-radius: 0 !important;
-      margin: 0 !important;
-    }
-    .invoice-paper::before { display: none !important; }
-    @page { margin: 5mm; }
-  }
+/* ─── TOAST ─── */
+.toast{
+  position:fixed;bottom:76px;left:50%;transform:translateX(-50%);
+  background:#0f172a;color:#fff;padding:10px 22px;border-radius:50px;
+  font-size:.82rem;z-index:9999;opacity:0;pointer-events:none;
+  transition:opacity .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.25);max-width:92vw;text-align:center;
+}
+.toast.show{opacity:1}
 
-  /* মোবাইল রেসপন্সিভ */
-  @media (max-width: 960px) {
-    .app-container { flex-direction: column; }
-    .form-panel {
-      width: 100%; min-width: 100%;
-      border-right: none; border-bottom: 1px solid var(--border);
-      max-height: none; overflow: visible;
-    }
-    .top-bar-actions button span.btn-text { display: none; }
-    .top-bar-actions button { padding: 8px 10px; }
-  }
-  @media (max-width: 600px) {
-    .form-panel { padding: 12px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .product-row {
-      grid-template-columns: 26px 1fr 26px;
-      gap: 4px; padding: 7px 8px;
-    }
-    .product-row input.qty-input,
-    .product-row input.price-input,
-    .product-row input.subtotal-input { display: none; }
-    .product-row .remove-row { grid-column: 3; }
-    .mobile-fields {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 4px; grid-column: 1 / -1;
-    }
-    .mobile-fields input { display: block !important; }
-    .discount-row { grid-template-columns: 1fr; }
-  }
+/* ─── DIALOG ─── */
+.dlg-overlay{
+  display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;
+}
+.dlg-overlay.open{display:flex}
+.dlg-box{
+  background:#fff;border-radius:20px;width:100%;max-width:340px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;animation:dlgIn .25s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes dlgIn{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.dlg-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px}
+.dlg-icon.warn{background:#fff7ed}.dlg-icon.danger{background:#fff1f2}
+.dlg-head{padding:28px 24px 16px;text-align:center}
+.dlg-title{font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:8px}
+.dlg-msg{font-size:.85rem;color:#64748b;line-height:1.5}
+.dlg-foot{display:flex;gap:0;border-top:1px solid #f1f5f9}
+.dlg-btn{
+  flex:1;padding:15px;border:none;font-family:'DM Sans',sans-serif;font-size:.9rem;
+  font-weight:600;cursor:pointer;transition:background .2s;background:#fff;
+}
+.dlg-btn:first-child{border-right:1px solid #f1f5f9;color:#64748b;border-radius:0 0 0 20px}
+.dlg-btn:first-child:hover{background:#f8fafc}
+.dlg-btn.confirm-ok{color:#065f46;border-radius:0 0 20px 0}.dlg-btn.confirm-ok:hover{background:#ecfdf5}
+.dlg-btn.confirm-danger{color:#dc2626;border-radius:0 0 20px 0}.dlg-btn.confirm-danger:hover{background:#fff5f5}
 
-  .form-panel::-webkit-scrollbar,
-  .preview-panel::-webkit-scrollbar { width: 4px; }
-  .form-panel::-webkit-scrollbar-thumb,
-  .preview-panel::-webkit-scrollbar-thumb {
-    background: var(--border); border-radius: 10px;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
+input[readonly]{background:#f0fdf4!important;color:var(--g1);font-weight:700}
+
+/* ══════════════════════════════════════════════ */
+/* ═══ INVOICE PAPER DESIGN (HIDDEN PREVIEW) ═══ */
+/* ══════════════════════════════════════════════ */
+#invoice-render-area {
+  position: absolute; left: -9999px; top: 0; width: 420px; background: #fff; z-index: -1;
+}
+.invoice-paper {
+  width: 100%; background: #fff; font-family: 'DM Sans', sans-serif; color: #1A1A1A; position: relative; padding-bottom: 10px;
+}
+.invoice-paper::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--accent));
+}
+.inv-header { padding: 24px 20px 16px; text-align: center; border-bottom: 2px solid var(--primary-dark); }
+.inv-pharmacy-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--primary-dark); letter-spacing: 1px; margin-bottom: 4px; }
+.inv-pharmacy-addr { font-size: 10.5px; color: #6B7280; line-height: 1.5; }
+.inv-pharmacy-contact { font-size: 10px; color: #6B7280; margin-top: 3px; }
+.inv-meta { display: flex; justify-content: space-between; padding: 10px 20px; background: var(--primary-light); border-bottom: 1px solid rgba(11,110,79,0.15); font-size: 11px; }
+.inv-meta span { font-weight: 600; color: var(--primary-dark); }
+.inv-meta .val { font-weight: 500; color: #1A1A1A; }
+.inv-patient { padding: 10px 20px; border-bottom: 1.5px solid #E5E1DB; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 16px; font-size: 11px; }
+.inv-patient .pat-label { font-weight: 600; color: #6B7280; }
+.inv-patient .pat-val { color: #1A1A1A; font-weight: 500; }
+.inv-patient .full-width { grid-column: 1 / -1; }
+.inv-patient .reward-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--accent-light); color: var(--accent); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; width: fit-content; margin-top: 2px; }
+.inv-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.inv-table thead th { background: var(--primary-dark); color: #fff; font-weight: 600; padding: 7px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }
+.inv-table tbody td { padding: 7px 10px; border-bottom: 1px solid #f0ede8; vertical-align: top; }
+.inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; font-variant-numeric: tabular-nums; }
+.inv-table tbody tr:nth-child(even) { background: #FAFAF7; }
+.inv-table .product-name-cell { font-weight: 500; color: #1A1A1A; }
+.inv-summary-section { padding: 0 20px; }
+.inv-summary-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid #E5E1DB; border-radius: 6px; overflow: hidden; font-size: 11px; margin-top: 10px; }
+.inv-summary-grid .cell { padding: 6px 10px; border-bottom: 1px solid #f0ede8; }
+.inv-summary-grid .cell:nth-child(odd) { background: #FAFAF7; font-weight: 600; color: #6B7280; }
+.inv-summary-grid .cell:nth-child(even) { text-align: right; font-weight: 500; color: #1A1A1A; font-variant-numeric: tabular-nums; }
+.inv-total-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff; font-size: 14px; font-weight: 700; margin-top: 10px; }
+.inv-total-bar .amount { font-size: 20px; font-family: 'Playfair Display', serif; }
+.inv-footer { padding: 14px 20px; text-align: center; border-top: 1.5px solid #E5E1DB; background: #FAFAF7; margin-top: 10px; }
+.inv-footer .pharmacy-repeat { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+.inv-footer .contact-line { font-size: 10px; color: #6B7280; margin-bottom: 2px; }
+.inv-footer .thank-you { font-size: 10.5px; color: var(--primary); font-weight: 600; margin-top: 6px; font-style: italic; }
+.inv-qr { position: absolute; bottom: 16px; right: 16px; opacity: 0.8; }
+
+@media print {
+  body * { visibility: hidden; }
+  #invoice-render-area, #invoice-render-area * { visibility: visible; }
+  #invoice-render-area { position: absolute; left: 0; top: 0; width: 100%; z-index: 9999; }
+}
 </style>
 </head>
 <body>
 
-<div class="toast-container" id="toastContainer"></div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-box">
-    <div class="modal-top-bar"></div>
-    <div class="modal-content" id="modalContent"></div>
-    <div class="modal-actions" id="modalActions"></div>
+<div class="app-header">
+  <div class="header-logo" id="hdr-logo">🌿</div>
+  <div class="header-title">
+    <h1 id="hdr-name">Nishat Homeo Pharmacy</h1>
+    <p>Invoice Management System</p>
   </div>
 </div>
 
-<!-- টপ বার -->
-<header class="top-bar no-print">
-  <div class="brand">
-    <div class="brand-icon"><i class="fas fa-prescription-bottle-medical"></i></div>
-    <div class="brand-text">
-      <h1>NISHAT HOMEO PHARMACY</h1>
-      <span>Invoice Generator</span>
+<div class="main">
+
+<!-- ══ NEW INVOICE ══ -->
+<div class="page active" id="page-new">
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">🧑‍⚕️</div><div class="card-head-title">Patient Information</div></div>
+    <div class="card-body">
+      <div class="fg"><label>Patient Name</label><input id="c-name" placeholder="Patient Name"/></div>
+      <div class="fg"><label>Address</label><input id="c-addr" placeholder="Patient Address"/></div>
+      <div class="g2">
+        <div class="fg"><label>Mobile Number</label><input id="c-mobile" type="tel" placeholder="+8801234567890"/></div>
+        <div class="fg"><label>Reward Point</label><input id="c-reward" type="number" placeholder="0" value="0" min="0"/></div>
+      </div>
+      <div class="fg"><label>E-mail Address</label><input id="c-email" type="email" placeholder="E-mail Address"/></div>
     </div>
   </div>
-  <div class="top-bar-actions">
-    <button onclick="resetAll()" title="রিসেট"><i class="fas fa-rotate-right"></i> <span class="btn-text">রিসেট</span></button>
-    <button onclick="downloadImage()" title="ছবি ডাউনলোড"><i class="fas fa-image"></i> <span class="btn-text">ছবি</span></button>
-    <button onclick="printInvoice()" class="btn-accent" title="প্রিন্ট"><i class="fas fa-print"></i> <span class="btn-text">প্রিন্ট</span></button>
+
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">📋</div><div class="card-head-title">Invoice Details</div></div>
+    <div class="card-body">
+      <div class="g2">
+        <div class="fg"><label>Invoice No.</label><input id="inv-no" readonly/></div>
+        <div class="fg"><label>Date</label><input id="inv-date" readonly/></div>
+      </div>
+      <div class="fg"><label>Time</label><input id="inv-time" type="time"/></div>
+    </div>
   </div>
-</header>
 
-<div class="app-container">
-
-  <!-- বাম: ফর্ম প্যানেল -->
-  <aside class="form-panel no-print">
-
-    <div class="section-card">
-      <div class="section-header">
-        <div class="icon-wrap"><i class="fas fa-file-invoice"></i></div>
-        <h2>ইনভয়েস তথ্য</h2>
-      </div>
-      <div class="section-body">
-        <div class="form-grid">
-          <div class="form-group">
-            <label>ইনভয়েস নম্বর</label>
-            <input type="text" id="invoiceNo" value="0682" oninput="updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>তারিখ ও সময়</label>
-            <input type="datetime-local" id="invoiceDate" oninput="updatePreview()">
-          </div>
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">💊</div><div class="card-head-title">Products / Medicines</div></div>
+    <div class="prod-wrap">
+      <div class="prod-table">
+        <div class="prod-th">
+          <span>SL</span><span>Product Name</span><span style="text-align:center">Qty</span>
+          <span style="text-align:right">Unit Price</span><span style="text-align:right">Subtotal</span><span></span>
         </div>
+        <div id="prod-list"></div>
       </div>
     </div>
+    <div class="prod-add-wrap"><button class="btn-add-row" onclick="addProd()">+ Add Product / Medicine</button></div>
+  </div>
 
-    <div class="section-card">
-      <div class="section-header">
-        <div class="icon-wrap"><i class="fas fa-user"></i></div>
-        <h2>রোগীর তথ্য</h2>
-      </div>
-      <div class="section-body">
-        <div class="form-grid">
-          <div class="form-group full-width">
-            <label>রোগীর নাম</label>
-            <input type="text" id="patientName" value="Ab. Rahman" oninput="updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>মোবাইল নম্বর</label>
-            <input type="text" id="patientMobile" value="+8801234567890" oninput="updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>রিওয়ার্ড পয়েন্ট</label>
-            <input type="text" id="rewardPoint" value="01" oninput="updatePreview()">
-          </div>
-          <div class="form-group full-width">
-            <label>ইমেইল</label>
-            <input type="email" id="patientEmail" value="abrahman378@gmail.co" oninput="updatePreview()">
-          </div>
-        </div>
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">🩺</div><div class="card-head-title">Doctor Fee</div></div>
+    <div class="card-body">
+      <div class="g2">
+        <div class="fg"><label>Doctor Fee (Tk)</label><input id="doctor-fee" type="number" min="0" step="0.01" value="0" placeholder="0.00" oninput="calcSummary()"/></div>
+        <div class="fg"><label>Discount (Tk)</label><input id="s-disc" type="number" value="0" min="0" step="0.01" oninput="calcSummary()"/></div>
       </div>
     </div>
+  </div>
 
-    <div class="section-card">
-      <div class="section-header">
-        <div class="icon-wrap"><i class="fas fa-pills"></i></div>
-        <h2>প্রোডাক্ট তালিকা</h2>
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">🧾</div><div class="card-head-title">Invoice Summary</div></div>
+    <div class="card-body">
+      <div class="sum-row"><span class="sum-label">Total Items</span><span class="sum-val" id="s-items">0</span></div>
+      <div class="sum-row"><span class="sum-label">Total Quantity</span><span class="sum-val" id="s-qty">0.00</span></div>
+      <div class="sum-row"><span class="sum-label">Products Subtotal</span><span class="sum-val" id="s-sub">Tk 0.00</span></div>
+      <div class="sum-row"><span class="sum-label">Doctor Fee</span><span class="sum-val" id="s-docfee">Tk 0.00</span></div>
+      <div class="sum-row grand"><span class="sum-label">TOTAL</span><span class="sum-val" id="s-total">Tk 0.00</span></div>
+      <div class="cash-box">
+        <div class="cash-row">
+          <span class="cash-label">Cash Received</span>
+          <input class="cash-inp" id="s-cash" type="number" value="0" min="0" step="0.01" oninput="calcChange()"/>
+        </div>
+        <div class="cash-row"><span class="cash-label">Total Paid</span><span class="cash-val" id="s-paid">Tk 0.00</span></div>
+        <div class="cash-row"><span class="cash-label">Change / Return</span><span class="cash-val" id="s-change">Tk 0.00</span></div>
       </div>
-      <div class="section-body">
-        <div class="product-rows" id="productRows"></div>
-        <button class="add-product-btn" onclick="addProductRow()">
-          <i class="fas fa-plus"></i> প্রোডাক্ট যোগ করুন
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <button class="btn btn-primary" style="margin-bottom:9px" onclick="generateImage()">
+        <i class="fas fa-image"></i> Download Invoice Image
+      </button>
+      <div class="row2">
+        <button class="btn btn-outline" onclick="printInvoice()">
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button class="btn btn-wa" onclick="shareWhatsApp()">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+      </div>
+      <div class="row2" style="margin-top:9px">
+        <button class="btn btn-outline" onclick="saveAndReset()" style="border-color:var(--g2);color:var(--g1)">
+          <i class="fas fa-save"></i> Save
+        </button>
+        <button class="btn btn-danger" onclick="resetForm(false)">
+          <i class="fas fa-rotate-right"></i> Clear
         </button>
       </div>
     </div>
-
-    <div class="section-card">
-      <div class="section-header">
-        <div class="icon-wrap" style="background:var(--accent)"><i class="fas fa-wallet"></i></div>
-        <h2 style="color:var(--accent)">পেমেন্ট ও ডিসকাউন্ট</h2>
-      </div>
-      <div class="section-body">
-        <div class="form-grid">
-          <div class="form-group">
-            <label>পেমেন্ট মেথড</label>
-            <select id="paymentMethod" onchange="updatePreview()">
-              <option value="Cash">Cash</option>
-              <option value="Bkash">Bkash</option>
-              <option value="Card">Card</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>পরিশোধিত (Tk)</label>
-            <input type="number" id="totalPaid" value="130" oninput="updatePreview()">
-          </div>
-          <div class="form-group full-width">
-            <label>ডিসকাউন্ট</label>
-            <div class="discount-row">
-              <div class="form-group">
-                <input type="number" id="discountValue" value="10.25" step="0.01" oninput="updatePreview()">
-              </div>
-              <div class="discount-type-toggle">
-                <button class="active" id="discTk" onclick="setDiscountType('tk')">Tk</button>
-                <button id="discPct" onclick="setDiscountType('pct')">%</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- ডান: শুধু ইনভয়েস প্রিভিউ -->
-  <main class="preview-panel">
-    <div class="invoice-paper" id="invoicePaper">
-      <div class="watermark">NHP</div>
-      <div class="inv-header">
-        <div class="inv-pharmacy-name">NISHAT HOMEO PHARMACY</div>
-        <div class="inv-pharmacy-addr">C&B Chowrasta School Road, Lohagara, Narail, Bangladesh.</div>
-        <div class="inv-pharmacy-contact">Mobile: 01754969909, E-mail: nishathomeoph@gmail.com</div>
-      </div>
-      <div class="inv-meta">
-        <div>Invoice No. <span id="invNoDisplay">0682</span></div>
-        <div class="val" id="invDateDisplay">16-04-2026 10:38 PM</div>
-      </div>
-      <div class="inv-patient" id="invPatient">
-        <span class="pat-label">Patient Name</span>
-        <span class="pat-val" id="invPatName">Ab. Rahman</span>
-        <span class="pat-label">Mobile No.</span>
-        <span class="pat-val" id="invPatMobile">+8801234567890</span>
-        <span class="pat-label">E-mail</span>
-        <span class="pat-val" id="invPatEmail">abrahman378@gmail.co</span>
-        <div class="reward-badge" id="invRewardBadge">
-          <i class="fas fa-star"></i> Reward Point: <span id="invReward">01</span>
-        </div>
-      </div>
-      <table class="inv-table">
-        <thead>
-          <tr>
-            <th>SL.</th>
-            <th>Products</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody id="invTableBody"></tbody>
-      </table>
-      <div class="inv-summary-section">
-        <div class="inv-summary-grid" id="invSummaryGrid"></div>
-      </div>
-      <div class="inv-total-bar">
-        <span>Total</span>
-        <span class="amount">Tk <span id="invTotal">130.00</span></span>
-      </div>
-      <div class="inv-footer">
-        <div class="pharmacy-repeat">NISHAT HOMEO PHARMACY</div>
-        <div class="contact-line">For any queries, please contact us:</div>
-        <div class="contact-line">☎︎ 01754969909 &nbsp; ✉︎ nishathomeoph@gmail.com</div>
-        <div class="thank-you">Thank you for your trust and support.</div>
-      </div>
-    </div>
-  </main>
+  </div>
 </div>
 
+<!-- ══ HISTORY ══ -->
+<div class="page" id="page-hist">
+  <div id="hist-list"></div>
+</div>
+
+<!-- ══ PATIENTS ══ -->
+<div class="page" id="page-search">
+  <div class="search-box">
+    <i class="fas fa-search" style="color:var(--gray)"></i>
+    <input id="search-inp" placeholder="Search by name, invoice, mobile, address..." oninput="doSearch()"/>
+  </div>
+  <div class="search-count" id="srch-count"></div>
+  <div id="srch-results"></div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div class="page" id="page-settings">
+  <div class="card">
+    <div class="card-head"><div class="card-head-icon">⚙️</div><div class="card-head-title">Pharmacy Settings</div></div>
+    <div class="card-body">
+      <label style="font-size:.7rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:block">Shop Logo</label>
+      <div class="logo-preview" id="logo-preview" onclick="document.getElementById('logo-upload').click()">
+        <span id="logo-icon">🌿</span>
+        <img id="logo-img" style="display:none;width:100%;height:100%;object-fit:cover"/>
+        <div class="logo-hint">Tap to change</div>
+      </div>
+      <input type="file" id="logo-upload" accept="image/*" onchange="handleLogo(event)"/>
+      <div class="fg"><label>Pharmacy Name</label><input id="s-shopname" value="NISHAT HOMEO PHARMACY"/></div>
+      <div class="fg"><label>Address Line 1</label><input id="s-addr1" value="C&B Chowrasta School Road, Lohagara, Narail,"/></div>
+      <div class="fg"><label>Address Line 2</label><input id="s-addr2" value="Bangladesh."/></div>
+      <div class="g2">
+        <div class="fg"><label>Mobile</label><input id="s-mobile" value="01754969909"/></div>
+        <div class="fg"><label>Email</label><input id="s-email" value="nishathomeoph@gmail.com"/></div>
+      </div>
+      <div class="fg"><label>Thank You Message</label><textarea id="s-thanks">Thank you for your trust and support.</textarea></div>
+      <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-check"></i> Save Settings</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- INVOICE RENDER AREA (HIDDEN) -->
+<div id="invoice-render-area">
+  <div class="invoice-paper" id="invoice-paper">
+    <div class="inv-header">
+      <div class="inv-pharmacy-name" id="inv-shop-name">NISHAT HOMEO PHARMACY</div>
+      <div class="inv-pharmacy-addr" id="inv-addr1">C&B Chowrasta School Road, Lohagara, Narail,</div>
+      <div class="inv-pharmacy-addr" id="inv-addr2">Bangladesh.</div>
+      <div class="inv-pharmacy-contact">Mobile: <span id="inv-mobile">01754969909</span>, E-mail: <span id="inv-email">nishathomeoph@gmail.com</span></div>
+    </div>
+    <div class="inv-meta">
+      <div>Invoice No. <span id="inv-disp-no">0001</span></div>
+      <div class="val" id="inv-disp-date">01-01-2024 12:00 PM</div>
+    </div>
+    <div class="inv-patient">
+      <span class="pat-label">Patient Name</span><span class="pat-val" id="inv-disp-pname">-</span>
+      <span class="pat-label">Mobile No.</span><span class="pat-val" id="inv-disp-pmobile">-</span>
+      <span class="pat-label">E-mail</span><span class="pat-val" id="inv-disp-pemail">-</span>
+      <span class="pat-label">Address</span><span class="pat-val" id="inv-disp-paddr">-</span>
+      <div class="reward-badge"><i class="fas fa-star"></i> Reward Point: <span id="inv-disp-reward">0</span></div>
+    </div>
+    <table class="inv-table">
+      <thead><tr><th>SL.</th><th>Products</th><th>Quantity</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+      <tbody id="inv-disp-prods"></tbody>
+    </table>
+    <div class="inv-summary-section">
+      <div class="inv-summary-grid" id="inv-disp-summary"></div>
+    </div>
+    <div class="inv-total-bar">
+      <span>Total</span><span class="amount">Tk <span id="inv-disp-total">0.00</span></span>
+    </div>
+    <div class="inv-footer">
+      <div class="pharmacy-repeat" id="inv-foot-name">NISHAT HOMEO PHARMACY</div>
+      <div class="contact-line">For any queries, please contact us:</div>
+      <div class="contact-line"><i class="fas fa-phone" style="font-size:9px"></i> <span id="inv-foot-mobile">01754969909</span> &nbsp; <i class="fas fa-envelope" style="font-size:9px"></i> <span id="inv-foot-email">nishathomeoph@gmail.com</span></div>
+      <div class="thank-you" id="inv-foot-thanks">Thank you for your trust and support.</div>
+    </div>
+    <div class="inv-qr" id="inv-qr-code"></div>
+  </div>
+</div>
+
+<!-- DIALOG -->
+<div class="dlg-overlay" id="dlg-overlay">
+  <div class="dlg-box">
+    <div class="dlg-head">
+      <div class="dlg-icon" id="dlg-icon">⚠️</div>
+      <div class="dlg-title" id="dlg-title">Are you sure?</div>
+      <div class="dlg-msg" id="dlg-msg">This action cannot be undone.</div>
+    </div>
+    <div class="dlg-foot">
+      <button class="dlg-btn" onclick="closeDlg()">Cancel</button>
+      <button class="dlg-btn confirm-ok" id="dlg-ok-btn" onclick="confirmDlg()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="new" onclick="navTo('new',this)">
+    <i class="fas fa-file-invoice"></i> New <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-page="hist" onclick="navTo('hist',this)">
+    <i class="fas fa-clock-rotate-left"></i> History 
+    <span class="nav-badge" id="hist-badge" style="display:none">0</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-page="search" onclick="navTo('search',this)">
+    <i class="fas fa-user-group"></i> Patients <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" data-page="settings" onclick="navTo('settings',this)">
+    <i class="fas fa-gear"></i> Settings <div class="nav-dot"></div>
+  </button>
+</nav>
+
+<div class="toast" id="toast-el"></div>
+
 <script>
-  // === স্টেট ===
-  let products = [
-    { name: 'Acid Nit-1m BD', qty: '75.00 d/f', price: 0.67 },
-    { name: 'BIO B CALCAREA FLOUR 6X', qty: '15.00 ml', price: 6.00 }
-  ];
-  let discountType = 'tk';
+var prods = [];
+var histData = [];
+var cfg = {};
+var logoURL = null;
 
-  // === ইনিশিয়ালাইজ ===
-  function init() {
-    const now = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    document.getElementById('invoiceDate').value =
-      `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    renderProductRows();
-    updatePreview();
+try{ histData = JSON.parse(localStorage.getItem('nhp_hist')||'[]'); }catch(e){}
+try{ cfg = JSON.parse(localStorage.getItem('nhp_cfg')||'{}'); }catch(e){}
+try{ logoURL = localStorage.getItem('nhp_logo')||null; }catch(e){}
+
+var DEF = {
+  shopname:'NISHAT HOMEO PHARMACY', addr1:'C&B Chowrasta School Road, Lohagara, Narail,',
+  addr2:'Bangladesh.', mobile:'01754969909', email:'nishathomeoph@gmail.com',
+  thanks:'Thank you for your trust and support.'
+};
+Object.keys(DEF).forEach(function(k){ if(!cfg[k]) cfg[k]=DEF[k]; });
+
+function initApp(){
+  applySettingsUI(); applyLogo(); setInvoiceNo(); setNow();
+  addProd(); addProd(); renderHist(); updateBadge();
+}
+
+function setInvoiceNo(){
+  var last = parseInt(localStorage.getItem('nhp_lastno')||'0');
+  document.getElementById('inv-no').value = String(last+1).padStart(4,'0');
+}
+
+function setNow(){
+  var n=new Date();
+  document.getElementById('inv-date').value = String(n.getDate()).padStart(2,'0')+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+n.getFullYear();
+  document.getElementById('inv-time').value = String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+}
+
+function applySettingsUI(){
+  Object.keys(DEF).forEach(function(k){ var el=document.getElementById('s-'+k); if(el) el.value=cfg[k]||DEF[k]; });
+  document.getElementById('hdr-name').textContent = cfg.shopname||DEF.shopname;
+}
+
+function saveSettings(){
+  Object.keys(DEF).forEach(function(k){ var el=document.getElementById('s-'+k); if(el) cfg[k]=el.value; });
+  localStorage.setItem('nhp_cfg',JSON.stringify(cfg));
+  document.getElementById('hdr-name').textContent = cfg.shopname||DEF.shopname;
+  applyLogo(); toast('Settings saved successfully!');
+}
+
+function handleLogo(e){
+  var f=e.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(ev){ logoURL=ev.target.result; try{ localStorage.setItem('nhp_logo',logoURL); }catch(e){} applyLogo(); toast('Logo updated!'); };
+  r.readAsDataURL(f);
+}
+
+function applyLogo(){
+  var hdr=document.getElementById('hdr-logo');
+  var pImg=document.getElementById('logo-img'); var pIco=document.getElementById('logo-icon');
+  if(logoURL){
+    hdr.innerHTML='<img src="'+logoURL+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px"/>';
+    pImg.src=logoURL; pImg.style.display='block'; pIco.style.display='none';
+  } else {
+    hdr.innerHTML='🌿'; pImg.style.display='none'; pIco.style.display='block';
   }
+}
 
-  // === কোয়ান্টিটি থেকে সংখ্যা ===
-  function extractQtyNumber(qtyStr) {
-    const num = parseFloat(qtyStr);
-    return isNaN(num) ? 0 : num;
-  }
+function navTo(page, el){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('page-'+page).classList.add('active');
+  if(el) el.classList.add('active');
+  if(page==='hist') renderHist();
+  if(page==='search'){ document.getElementById('search-inp').value=''; doSearch(); }
+  window.scrollTo(0,0);
+}
 
-  // === প্রোডাক্ট রো রেন্ডার ===
-  function renderProductRows() {
-    const container = document.getElementById('productRows');
-    container.innerHTML = '';
-    products.forEach((p, i) => {
-      const subtotal = (parseFloat(p.price) || 0) * extractQtyNumber(p.qty);
-      const row = document.createElement('div');
-      row.className = 'product-row';
-      row.innerHTML = `
-        <span class="sl-num">${String(i+1).padStart(2,'0')}</span>
-        <input type="text" class="prod-name" placeholder="প্রোডাক্ট নাম" value="${escapeHtml(p.name)}" oninput="updateProduct(${i},'name',this.value)">
-        <input type="text" class="qty-input" placeholder="পরিমাণ" value="${escapeHtml(p.qty)}" oninput="updateProduct(${i},'qty',this.value)">
-        <input type="number" step="0.01" class="price-input" placeholder="মূল্য" value="${p.price}" oninput="updateProduct(${i},'price',this.value)">
-        <input type="text" class="subtotal-input" value="${subtotal.toFixed(2)}" readonly style="background:#f5f5f3;color:var(--primary-dark);font-weight:600">
-        <button class="remove-row" onclick="removeProduct(${i})" title="মুছুন"><i class="fas fa-xmark"></i></button>
-      `;
-      container.appendChild(row);
-    });
-  }
+// PRODUCTS
+function addProd(n,q,p){ prods.push({id:Date.now()*1000+Math.floor(Math.random()*1000),n:n||'',q:q||'',p:p||''}); renderProds(); }
 
-  // === HTML এস্কেপ ===
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
+function removeProd(id){
+  if(prods.length<=1){ toast('At least one row required'); return; }
+  showConfirm('Remove Product?', 'Are you sure you want to delete this item?', function(){
+    prods=prods.filter(function(r){ return r.id!==id; }); renderProds();
+  }, true);
+}
 
-  // === প্রোডাক্ট আপডেট ===
-  function updateProduct(index, field, value) {
-    products[index][field] = value;
-    if (field === 'qty' || field === 'price') {
-      const rows = document.querySelectorAll('.product-row');
-      if (rows[index]) {
-        const subtotal = (parseFloat(products[index].price) || 0) * extractQtyNumber(products[index].qty);
-        rows[index].querySelector('.subtotal-input').value = subtotal.toFixed(2);
-      }
-    }
-    updatePreview();
-  }
+function renderProds(){
+  var el=document.getElementById('prod-list'); el.innerHTML='';
+  prods.forEach(function(pr,i){
+    var sub=((parseFloat(pr.q)||0)*(parseFloat(pr.p)||0));
+    var row=document.createElement('div'); row.className='prod-row';
+    row.innerHTML='<div class="prod-sl">'+String(i+1).padStart(2,'0')+'</div>'
+      +'<input value="'+esc(pr.n)+'" placeholder="Product name" oninput="prods['+i+'].n=this.value"/>'
+      +'<input type="number" value="'+esc(pr.q)+'" placeholder="0" min="0" step="0.01" style="text-align:center" oninput="prods['+i+'].q=this.value;upSub('+i+')"/>'
+      +'<input type="number" value="'+esc(pr.p)+'" placeholder="0.00" min="0" step="0.01" style="text-align:right" oninput="prods['+i+'].p=this.value;upSub('+i+')"/>'
+      +'<div class="sub-val" id="rs'+i+'">'+sub.toFixed(2)+'</div>'
+      +'<button class="btn-del" onclick="removeProd('+pr.id+')"><i class="fas fa-xmark"></i></button>';
+    el.appendChild(row);
+  });
+  calcSummary();
+}
 
-  // === নতুন প্রোডাক্ট ===
-  function addProductRow() {
-    products.push({ name: '', qty: '', price: 0 });
-    renderProductRows();
-    updatePreview();
-    showToast('নতুন প্রোডাক্ট যোগ হয়েছে', 'success');
-  }
+function upSub(i){ var el=document.getElementById('rs'+i); if(el) el.textContent=((parseFloat(prods[i].q)||0)*(parseFloat(prods[i].p)||0)).toFixed(2); calcSummary(); }
+function esc(v){ return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
-  // === প্রোডাক্ট মুছুন ===
-  function removeProduct(index) {
-    if (products.length <= 1) {
-      showModal('warning', 'সতর্কতা', 'কমপক্ষে একটি প্রোডাক্ট থাকতে হবে।', [
-        { text: 'বুঝেছি', type: 'primary' }
-      ]);
-      return;
-    }
-    showModal('danger', 'মুছে ফেলুন', `"${products[index].name || 'এই প্রোডাক্ট'}" মুছে ফেলতে চান?`, [
-      { text: 'বাতিল', type: 'secondary' },
-      { text: 'হ্যাঁ, মুছুন', type: 'danger', action: () => {
-        products.splice(index, 1);
-        renderProductRows();
-        updatePreview();
-        showToast('প্রোডাক্ট মুছে ফেলা হয়েছে', 'error');
-      }}
-    ]);
-  }
+function calcSummary(){
+  var items=prods.filter(function(r){return r.n&&r.n.trim();}).length;
+  var qty=prods.reduce(function(s,r){return s+(parseFloat(r.q)||0);},0);
+  var sub=prods.reduce(function(s,r){return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0);},0);
+  var docFee=parseFloat(document.getElementById('doctor-fee').value)||0;
+  var disc=parseFloat(document.getElementById('s-disc').value)||0;
+  var total=Math.max(0,sub+docFee-disc);
+  document.getElementById('s-items').textContent=items;
+  document.getElementById('s-qty').textContent=qty.toFixed(2);
+  document.getElementById('s-sub').textContent='Tk '+sub.toFixed(2);
+  document.getElementById('s-docfee').textContent='Tk '+docFee.toFixed(2);
+  document.getElementById('s-total').textContent='Tk '+total.toFixed(2);
+  calcChange();
+}
 
-  // === ডিসকাউন্ট টাইপ ===
-  function setDiscountType(type) {
-    discountType = type;
-    document.getElementById('discTk').classList.toggle('active', type === 'tk');
-    document.getElementById('discPct').classList.toggle('active', type === 'pct');
-    updatePreview();
-  }
+function calcChange(){
+  var sub=prods.reduce(function(s,r){return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0);},0);
+  var docFee=parseFloat(document.getElementById('doctor-fee').value)||0;
+  var disc=parseFloat(document.getElementById('s-disc').value)||0;
+  var total=Math.max(0,sub+docFee-disc);
+  var cash=parseFloat(document.getElementById('s-cash').value)||0;
+  document.getElementById('s-paid').textContent='Tk '+Math.min(cash,total).toFixed(2);
+  document.getElementById('s-change').textContent='Tk '+Math.max(0,cash-total).toFixed(2);
+}
 
-  // === লাইভ প্রিভিউ আপডেট ===
-  function updatePreview() {
-    // ইনভয়েস নম্বর
-    document.getElementById('invNoDisplay').textContent = document.getElementById('invoiceNo').value || '---';
+function getData(){
+  var sub=prods.reduce(function(s,r){return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0);},0);
+  var docFee=parseFloat(document.getElementById('doctor-fee').value)||0;
+  var disc=parseFloat(document.getElementById('s-disc').value)||0;
+  var total=Math.max(0,sub+docFee-disc);
+  var cash=parseFloat(document.getElementById('s-cash').value)||0;
+  return {
+    invNo:document.getElementById('inv-no').value, date:document.getElementById('inv-date').value,
+    time:document.getElementById('inv-time').value, cName:document.getElementById('c-name').value||'Patient',
+    cAddr:document.getElementById('c-addr').value, cMobile:document.getElementById('c-mobile').value,
+    cEmail:document.getElementById('c-email').value, cReward:document.getElementById('c-reward').value||'0',
+    prods:prods.filter(function(r){return r.n&&r.n.trim();}), doctorFee:docFee,
+    subtotal:sub, discount:disc, total:total, cash:cash,
+    paid:Math.min(cash,total), change:Math.max(0,cash-total),
+    totalQty:prods.reduce(function(s,r){return s+(parseFloat(r.q)||0);},0),
+    totalItems:prods.filter(function(r){return r.n&&r.n.trim();}).length,
+    savedAt:new Date().toISOString()
+  };
+}
 
-    // তারিখ ফরম্যাট
-    const dateInput = document.getElementById('invoiceDate').value;
-    if (dateInput) {
-      const d = new Date(dateInput);
-      const pad = n => String(n).padStart(2, '0');
-      const months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-      const h = d.getHours();
-      const formatted = `${pad(d.getDate())}-${months[d.getMonth()]}-${d.getFullYear()} ${pad(h)}:${pad(d.getMinutes())} ${h>=12?'PM':'AM'}`;
-      document.getElementById('invDateDisplay').textContent = formatted;
-    }
+// INVOICE PREVIEW & DOWNLOAD
+function populateInvoice(d){
+  document.getElementById('inv-shop-name').textContent = cfg.shopname||DEF.shopname;
+  document.getElementById('inv-addr1').textContent = cfg.addr1||DEF.addr1;
+  document.getElementById('inv-addr2').textContent = cfg.addr2||DEF.addr2;
+  document.getElementById('inv-mobile').textContent = cfg.mobile||DEF.mobile;
+  document.getElementById('inv-email').textContent = cfg.email||DEF.email;
+  document.getElementById('inv-disp-no').textContent = d.invNo;
+  
+  var timeStr = d.time || '00:00';
+  var parts = timeStr.split(':');
+  var hrs = parseInt(parts[0]);
+  var mins = parts[1];
+  var ampm = hrs >= 12 ? 'PM' : 'AM';
+  hrs = hrs % 12; if(hrs === 0) hrs = 12;
+  document.getElementById('inv-disp-date').textContent = d.date + ' ' + hrs + ':' + mins + ' ' + ampm;
+  
+  document.getElementById('inv-disp-pname').textContent = d.cName || '-';
+  document.getElementById('inv-disp-pmobile').textContent = d.cMobile || '-';
+  document.getElementById('inv-disp-pemail').textContent = d.cEmail || '-';
+  document.getElementById('inv-disp-paddr').textContent = d.cAddr || '-';
+  document.getElementById('inv-disp-reward').textContent = d.cReward || '0';
 
-    // রোগী
-    document.getElementById('invPatName').textContent = document.getElementById('patientName').value || '---';
-    document.getElementById('invPatMobile').textContent = document.getElementById('patientMobile').value || '---';
-    document.getElementById('invPatEmail').textContent = document.getElementById('patientEmail').value || '---';
-    const reward = document.getElementById('rewardPoint').value || '0';
-    document.getElementById('invReward').textContent = reward;
-    document.getElementById('invRewardBadge').style.display = reward ? 'inline-flex' : 'none';
-
-    // প্রোডাক্ট টেবিল
-    const tbody = document.getElementById('invTableBody');
-    tbody.innerHTML = '';
-    let subtotalSum = 0;
-    let totalQty = 0;
-
-    products.forEach((p, i) => {
-      const qtyNum = extractQtyNumber(p.qty);
-      const price = parseFloat(p.price) || 0;
-      const sub = price * qtyNum;
-      subtotalSum += sub;
-      totalQty += qtyNum;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${String(i+1).padStart(2,'0')}</td>
-        <td class="product-name-cell">${escapeHtml(p.name) || '---'}</td>
-        <td>${escapeHtml(p.qty) || '---'}</td>
-        <td>${price.toFixed(2)}</td>
-        <td>${sub.toFixed(2)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    // ডিসকাউন্ট
-    const discVal = parseFloat(document.getElementById('discountValue').value) || 0;
-    let discount = discountType === 'tk' ? discVal : subtotalSum * (discVal / 100);
-    discount = Math.max(0, discount);
-    const total = Math.max(0, subtotalSum - discount);
-    const totalPaid = parseFloat(document.getElementById('totalPaid').value) || 0;
-    const paymentMethod = document.getElementById('paymentMethod').value;
-    const dateStr = document.getElementById('invDateDisplay').textContent;
-
-    // সামারি
-    document.getElementById('invSummaryGrid').innerHTML = `
-      <div class="cell">${paymentMethod}</div>
-      <div class="cell">Tk ${totalPaid.toFixed(2)}</div>
-      <div class="cell">Date</div>
-      <div class="cell">${dateStr.split(' ')[0] || '---'}</div>
-      <div class="cell">Total quantity</div>
-      <div class="cell">${totalQty.toFixed(2)}</div>
-      <div class="cell">Total items</div>
-      <div class="cell">${products.length}</div>
-      <div class="cell">Total Paid</div>
-      <div class="cell">Tk ${totalPaid.toFixed(2)}</div>
-      <div class="cell">Subtotal</div>
-      <div class="cell">Tk ${subtotalSum.toFixed(2)}</div>
-      <div class="cell">Discount</div>
-      <div class="cell" style="color:var(--danger);font-weight:600">(-) Tk ${discount.toFixed(2)}</div>
-    `;
-
-    document.getElementById('invTotal').textContent = total.toFixed(2);
-  }
-
-  // === প্রিন্ট — শুধু ইনভয়েস ===
-  function printInvoice() {
-    window.print();
-  }
-
-  // === ছবি ডাউনলোড ===
-  function downloadImage() {
-    const invoiceEl = document.getElementById('invoicePaper');
-    showToast('ছবি তৈরি হচ্ছে...', 'info');
-
-    html2canvas(invoiceEl, {
-      scale: 3,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-      logging: false
-    }).then(canvas => {
-      const link = document.createElement('a');
-      const invNo = document.getElementById('invoiceNo').value || 'invoice';
-      link.download = `invoice-${invNo}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      showToast('ইনভয়েস ছবি ডাউনলোড হয়েছে', 'success');
-    }).catch(() => {
-      showToast('ছবি তৈরিতে সমস্যা হয়েছে', 'error');
-    });
-  }
-
-  // === রিসেট ===
-  function resetAll() {
-    showModal('warning', 'রিসেট কনফার্মেশন', 'সকল তথ্য মুছে ডিফল্ট অবস্থায় ফিরে যাবেন?', [
-      { text: 'বাতিল', type: 'secondary' },
-      { text: 'হ্যাঁ, রিসেট করুন', type: 'danger', action: () => {
-        document.getElementById('invoiceNo').value = '0682';
-        const now = new Date();
-        const pad = n => String(n).padStart(2, '0');
-        document.getElementById('invoiceDate').value =
-          `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-        document.getElementById('patientName').value = 'Ab. Rahman';
-        document.getElementById('patientMobile').value = '+8801234567890';
-        document.getElementById('patientEmail').value = 'abrahman378@gmail.co';
-        document.getElementById('rewardPoint').value = '01';
-        document.getElementById('discountValue').value = '10.25';
-        document.getElementById('totalPaid').value = '130';
-        document.getElementById('paymentMethod').value = 'Cash';
-        discountType = 'tk';
-        document.getElementById('discTk').classList.add('active');
-        document.getElementById('discPct').classList.remove('active');
-        products = [
-          { name: 'Acid Nit-1m BD', qty: '75.00 d/f', price: 0.67 },
-          { name: 'BIO B CALCAREA FLOUR 6X', qty: '15.00 ml', price: 6.00 }
-        ];
-        renderProductRows();
-        updatePreview();
-        showToast('সফলভাবে রিসেট হয়েছে', 'success');
-      }}
-    ]);
-  }
-
-  // === মোডাল ===
-  function showModal(type, title, message, buttons) {
-    const overlay = document.getElementById('modalOverlay');
-    const content = document.getElementById('modalContent');
-    const actions = document.getElementById('modalActions');
-    const icons = { success: 'fa-check', warning: 'fa-triangle-exclamation', danger: 'fa-trash-can' };
-
-    content.innerHTML = `
-      <div class="modal-icon ${type}"><i class="fas ${icons[type] || 'fa-info'}"></i></div>
-      <h3>${title}</h3>
-      <p>${message}</p>
-    `;
-
-    actions.innerHTML = '';
-    buttons.forEach(btn => {
-      const b = document.createElement('button');
-      b.className = `btn-modal-${btn.type}`;
-      b.textContent = btn.text;
-      b.onclick = () => { closeModal(); if (btn.action) btn.action(); };
-      actions.appendChild(b);
-    });
-
-    overlay.classList.add('active');
-    overlay.onclick = (e) => { if (e.target === overlay) closeModal(); };
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-  }
-
-  // === টোস্ট ===
-  function showToast(message, type = 'success') {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-circle-info' };
-    toast.innerHTML = `<i class="fas ${icons[type] || 'fa-circle-info'}"></i> ${message}`;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3200);
-  }
-
-  // === কীবোর্ড শর্টকাট ===
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'p') { e.preventDefault(); printInvoice(); }
-    if (e.key === 'Escape') closeModal();
+  var tbody = document.getElementById('inv-disp-prods'); tbody.innerHTML = '';
+  d.prods.forEach(function(pr, i){
+    var qty = parseFloat(pr.q)||0; var price = parseFloat(pr.p)||0; var sub = qty*price;
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+String(i+1).padStart(2,'0')+'</td><td class="product-name-cell">'+esc(pr.n)+'</td><td>'+qty.toFixed(2)+'</td><td>'+price.toFixed(2)+'</td><td>'+sub.toFixed(2)+'</td>';
+    tbody.appendChild(tr);
   });
 
-  // === শুরু ===
-  init();
+  var sumHtml = '<div class="cell">Cash</div><div class="cell">Tk '+d.cash.toFixed(2)+'</div>';
+  sumHtml += '<div class="cell">Date</div><div class="cell">'+d.date+'</div>';
+  sumHtml += '<div class="cell">Total quantity</div><div class="cell">'+d.totalQty.toFixed(2)+'</div>';
+  sumHtml += '<div class="cell">Total items</div><div class="cell">'+d.totalItems+'</div>';
+  sumHtml += '<div class="cell">Total Paid</div><div class="cell">Tk '+d.paid.toFixed(2)+'</div>';
+  sumHtml += '<div class="cell">Subtotal</div><div class="cell">Tk '+d.subtotal.toFixed(2)+'</div>';
+  if(d.doctorFee > 0) sumHtml += '<div class="cell">Doctor Fee</div><div class="cell">Tk '+d.doctorFee.toFixed(2)+'</div>';
+  sumHtml += '<div class="cell">Discount</div><div class="cell" style="color:#C0392B;font-weight:600">(-) Tk '+d.discount.toFixed(2)+'</div>';
+  document.getElementById('inv-disp-summary').innerHTML = sumHtml;
+  document.getElementById('inv-disp-total').textContent = d.total.toFixed(2);
+
+  document.getElementById('inv-foot-name').textContent = cfg.shopname||DEF.shopname;
+  document.getElementById('inv-foot-mobile').textContent = cfg.mobile||DEF.mobile;
+  document.getElementById('inv-foot-email').textContent = cfg.email||DEF.email;
+  document.getElementById('inv-foot-thanks').textContent = cfg.thanks||DEF.thanks;
+
+  // QR Code
+  var qrEl = document.getElementById('inv-qr-code'); qrEl.innerHTML = '';
+  try {
+    new QRCode(qrEl, { text: 'Invoice: '+d.invNo+'\nPatient: '+d.cName+'\nTotal: Tk '+d.total.toFixed(2), width: 60, height: 60, colorDark: "#073D2E", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+  } catch(e){}
+}
+
+function generateImage(){
+  var d = getData(); populateInvoice(d);
+  toast('Generating image...');
+  setTimeout(function(){
+    var element = document.getElementById('invoice-paper');
+    html2canvas(element, { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) {
+      var link = document.createElement('a');
+      link.download = 'Invoice-'+d.invNo+'.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      toast('Image downloaded!');
+    });
+  }, 500);
+}
+
+function printInvoice(){
+  var d = getData(); populateInvoice(d);
+  setTimeout(function(){ window.print(); }, 500);
+}
+
+function shareWhatsApp(){
+  var d=getData();
+  var lines=d.prods.map(function(pr,i){ return (i+1)+'. *'+pr.n+'*  Qty:'+pr.q+'  = Tk'+((parseFloat(pr.q)||0)*(parseFloat(pr.p)||0)).toFixed(2); }).join('\n');
+  var msg='*'+(cfg.shopname||DEF.shopname)+'*\n'+(cfg.addr1||DEF.addr1)+'\nMobile: '+(cfg.mobile||DEF.mobile)
+    +'\n───────────────\n*Invoice No: '+d.invNo+'*\nDate: '+d.date+'  '+d.time
+    +'\n───────────────\nPatient: *'+d.cName+'*\n'+(d.cMobile?'Mobile: '+d.cMobile+'\n':'')+(d.cAddr?'Address: '+d.cAddr+'\n':'')
+    +'Reward Point: '+d.cReward+'\n───────────────\n*Products:*\n'+(lines||'—')
+    +'\n───────────────\nSubtotal: Tk '+d.subtotal.toFixed(2)+'\n'
+    +(d.doctorFee>0?'Doctor Fee: Tk '+d.doctorFee.toFixed(2)+'\n':'')
+    +'Discount: -Tk '+d.discount.toFixed(2)+'\n*TOTAL: Tk '+d.total.toFixed(2)+'*\n'
+    +(cfg.thanks||DEF.thanks);
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// SAVE / RESET
+function saveAndReset(){
+  var d=getData(); localStorage.setItem('nhp_lastno',parseInt(d.invNo)||1);
+  histData.unshift(d); if(histData.length>300) histData=histData.slice(0,300);
+  localStorage.setItem('nhp_hist',JSON.stringify(histData)); updateBadge();
+  toast('Invoice #'+d.invNo+' saved!'); setTimeout(function(){ resetForm(true); },700);
+}
+
+function resetForm(auto){
+  if(!auto){ showConfirm('Clear Form?','All unsaved data will be lost.', function(){ doReset(); }); return; }
+  doReset();
+}
+function doReset(){
+  ['c-name','c-addr','c-mobile','c-email'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('c-reward').value='0'; document.getElementById('s-disc').value='0';
+  document.getElementById('s-cash').value='0'; document.getElementById('doctor-fee').value='0';
+  setInvoiceNo(); setNow(); prods=[]; addProd(); addProd(); window.scrollTo(0,0); toast('Form cleared!');
+}
+
+// HISTORY
+function updateBadge(){
+  var b=document.getElementById('hist-badge');
+  if(histData.length){ b.textContent=histData.length>99?'99+':histData.length; b.style.display='flex'; }
+  else { b.style.display='none'; }
+}
+
+function renderHist(){ renderInvoiceList(document.getElementById('hist-list'), histData, true); }
+
+function renderInvoiceList(container, list, showEdit){
+  if(!list.length){ container.innerHTML='<div class="empty-state"><div class="empty-icon">📂</div>No invoices found.</div>'; return; }
+  container.innerHTML='';
+  list.forEach(function(inv,i){
+    var globalIdx = showEdit ? i : histData.indexOf(inv);
+    var card=document.createElement('div'); card.className='hist-card';
+    var tags=(inv.prods||[]).slice(0,3).map(function(pr){return '<span class="hist-tag">'+esc2(pr.n)+'</span>';}).join('');
+    var pLen=(inv.prods||[]).length; if(pLen>3) tags+='<span class="hist-tag">+' +(pLen-3)+' more</span>';
+    var editBtn=showEdit
+      ? '<button class="hist-fbtn hf-edit" onclick="editInvoice('+globalIdx+')"><i class="fas fa-pen"></i> Edit</button><button class="hist-fbtn hf-del" onclick="deleteInvoice('+globalIdx+')"><i class="fas fa-trash"></i> Del</button>'
+      : '<button class="hist-fbtn hf-edit" onclick="editInvoice('+globalIdx+')"><i class="fas fa-pen"></i> Edit</button>';
+    card.innerHTML='<div class="hist-card-head"><div><div class="hist-inv-no">Invoice #'+inv.invNo+'</div><div class="hist-date">'+inv.date+'  '+inv.time+'</div></div><div class="hist-total-badge">Tk '+Number(inv.total||0).toFixed(2)+'</div></div><div class="hist-card-body"><div class="hist-patient">'+esc2(inv.cName)+'</div><div class="hist-meta">'+(inv.cMobile?'<span>📞 '+esc2(inv.cMobile)+'</span>':'')+(inv.cAddr?'<span>📍 '+esc2(inv.cAddr)+'</span>':'')+(Number(inv.totalItems||pLen)?'<span>💊 '+(inv.totalItems||pLen)+' items</span>':'')+'</div>'+(tags?'<div class="hist-tags">'+tags+'</div>':'')+'</div><div class="hist-card-foot"><button class="hist-fbtn hf-pdf" onclick="downloadHistInv('+globalIdx+')"><i class="fas fa-image"></i> Image</button>'+editBtn+'</div>';
+    container.appendChild(card);
+  });
+}
+
+function downloadHistInv(i){
+  var d = histData[i]; populateInvoice(d);
+  toast('Generating image...');
+  setTimeout(function(){
+    html2canvas(document.getElementById('invoice-paper'), { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) {
+      var link = document.createElement('a'); link.download = 'Invoice-'+d.invNo+'.png'; link.href = canvas.toDataURL('image/png'); link.click(); toast('Image downloaded!');
+    });
+  }, 500);
+}
+
+function esc2(v){ return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function deleteInvoice(i){
+  var inv=histData[i];
+  showConfirm('Delete Invoice #'+inv.invNo+'?', 'This action cannot be undone.', function(){
+    histData.splice(i,1); localStorage.setItem('nhp_hist',JSON.stringify(histData)); updateBadge(); renderHist(); toast('Invoice deleted');
+  }, true);
+}
+
+function editInvoice(i){
+  var inv=histData[i]; if(!inv){toast('Invoice not found');return;}
+  document.getElementById('inv-no').value=inv.invNo||''; document.getElementById('inv-date').value=inv.date||'';
+  document.getElementById('inv-time').value=inv.time||''; document.getElementById('c-name').value=inv.cName||'';
+  document.getElementById('c-addr').value=inv.cAddr||''; document.getElementById('c-mobile').value=inv.cMobile||'';
+  document.getElementById('c-email').value=inv.cEmail||''; document.getElementById('c-reward').value=inv.cReward||'0';
+  document.getElementById('s-disc').value=inv.discount||'0'; document.getElementById('s-cash').value=inv.cash||'0';
+  document.getElementById('doctor-fee').value=inv.doctorFee||'0';
+  prods=(inv.prods||[]).map(function(pr){ return {id:Date.now()+Math.random(),n:pr.n||'',q:pr.q||'',p:pr.p||''}; });
+  if(!prods.length){ addProd(); } else { renderProds(); }
+  navTo('new', document.querySelector('[data-page=new]')); window.scrollTo(0,0); toast('Invoice #'+inv.invNo+' loaded');
+}
+
+// PATIENTS SEARCH
+function doSearch(){
+  var q=(document.getElementById('search-inp').value||'').trim().toLowerCase();
+  var res=document.getElementById('srch-results'); var cnt=document.getElementById('srch-count');
+  if(!q){ res.innerHTML='<div class="empty-state"><div class="empty-icon">🔍</div>Search by patient name, invoice no.,<br/>mobile, or address.</div>'; cnt.textContent=''; return; }
+  var found=histData.filter(function(inv){
+    return (inv.cName||'').toLowerCase().includes(q)||(inv.invNo||'').toLowerCase().includes(q)||(inv.cMobile||'').toLowerCase().includes(q)||(inv.cAddr||'').toLowerCase().includes(q)||(inv.cEmail||'').toLowerCase().includes(q);
+  });
+  cnt.textContent=found.length+' result'+(found.length!==1?'s':'')+' found';
+  if(!found.length){ res.innerHTML='<div class="empty-state"><div class="empty-icon">🔍</div>No patients found.</div>'; return; }
+  renderInvoiceList(res, found, false);
+}
+
+// TOAST
+function toast(msg){ var t=document.getElementById('toast-el'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); },3000); }
+
+// DIALOG
+var _dlgCallback = null;
+function showConfirm(title, msg, onOk, isDanger){
+  _dlgCallback = onOk; document.getElementById('dlg-title').textContent = title; document.getElementById('dlg-msg').textContent = msg;
+  var icon = document.getElementById('dlg-icon'); var okBtn = document.getElementById('dlg-ok-btn');
+  if(isDanger){ icon.textContent = '🗑️'; icon.className='dlg-icon danger'; okBtn.className='dlg-btn confirm-danger'; okBtn.textContent='Delete'; }
+  else { icon.textContent = '⚠️'; icon.className='dlg-icon warn'; okBtn.className='dlg-btn confirm-ok'; okBtn.textContent='Confirm'; }
+  document.getElementById('dlg-overlay').classList.add('open');
+}
+function closeDlg(){ document.getElementById('dlg-overlay').classList.remove('open'); _dlgCallback=null; }
+function confirmDlg(){ closeDlg(); if(_dlgCallback) _dlgCallback(); }
+document.addEventListener('click', function(e){ if(e.target===document.getElementById('dlg-overlay')) closeDlg(); });
+
+initApp();
 </script>
 </body>
 </html>
