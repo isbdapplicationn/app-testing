@@ -4,10 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Nishat Homeo Pharmacy</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -17,8 +16,6 @@
   --border:#e2e8f0;--bg:#f0fdf4;--white:#fff;
   --red:#dc2626;--amber:#d97706;--amberlt:#fffbeb;
   --sh:0 1px 8px rgba(6,95,70,.1);--sh2:0 4px 24px rgba(6,95,70,.15);
-  --primary:#0B6E4F;--primary-dark:#073D2E;--primary-light:#E8F5EE;
-  --accent:#C8963E;--accent-light:#FDF3E0;
 }
 html,body{height:100%;overflow-x:hidden}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh}
@@ -161,42 +158,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 .tst.on{opacity:1}
 .est{text-align:center;padding:46px 20px;color:var(--gray)}
 .esic{font-size:2.8rem;margin-bottom:10px;opacity:.4}
-
-/* ═══ INVOICE PAPER DESIGN (HIDDEN) ═══ */
-#invoice-render-area { position: absolute; left: -9999px; top: 0; width: 420px; background: #fff; z-index: -1; }
-.invoice-paper { width: 100%; background: #fff; font-family: 'DM Sans', sans-serif; color: #1A1A1A; position: relative; padding-bottom: 10px; }
-.invoice-paper::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--primary-dark), var(--primary), var(--accent)); }
-.inv-header { padding: 24px 20px 16px; text-align: center; border-bottom: 2px solid var(--primary-dark); }
-.inv-pharmacy-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--primary-dark); letter-spacing: 1px; margin-bottom: 4px; }
-.inv-pharmacy-addr { font-size: 10.5px; color: #6B7280; line-height: 1.5; }
-.inv-pharmacy-contact { font-size: 10px; color: #6B7280; margin-top: 3px; }
-.inv-meta { display: flex; justify-content: space-between; padding: 10px 20px; background: var(--primary-light); border-bottom: 1px solid rgba(11,110,79,0.15); font-size: 11px; }
-.inv-meta span { font-weight: 600; color: var(--primary-dark); }
-.inv-meta .val { font-weight: 500; color: #1A1A1A; }
-.inv-patient { padding: 10px 20px; border-bottom: 1.5px solid #E5E1DB; display: grid; grid-template-columns: 1fr 1fr; gap: 3px 16px; font-size: 11px; }
-.inv-patient .pat-label { font-weight: 600; color: #6B7280; }
-.inv-patient .pat-val { color: #1A1A1A; font-weight: 500; }
-.inv-patient .full-width { grid-column: 1 / -1; }
-.inv-patient .reward-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--accent-light); color: var(--accent); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; width: fit-content; margin-top: 2px; }
-.inv-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-.inv-table thead th { background: var(--primary-dark); color: #fff; font-weight: 600; padding: 7px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-.inv-table thead th:last-child, .inv-table thead th:nth-child(3), .inv-table thead th:nth-child(4) { text-align: right; }
-.inv-table tbody td { padding: 7px 10px; border-bottom: 1px solid #f0ede8; vertical-align: top; }
-.inv-table tbody td:last-child, .inv-table tbody td:nth-child(3), .inv-table tbody td:nth-child(4) { text-align: right; font-variant-numeric: tabular-nums; }
-.inv-table tbody tr:nth-child(even) { background: #FAFAF7; }
-.inv-table .product-name-cell { font-weight: 500; color: #1A1A1A; }
-.inv-summary-section { padding: 0 20px; }
-.inv-summary-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid #E5E1DB; border-radius: 6px; overflow: hidden; font-size: 11px; margin-top: 10px; }
-.inv-summary-grid .cell { padding: 6px 10px; border-bottom: 1px solid #f0ede8; }
-.inv-summary-grid .cell:nth-child(odd) { background: #FAFAF7; font-weight: 600; color: #6B7280; }
-.inv-summary-grid .cell:nth-child(even) { text-align: right; font-weight: 500; color: #1A1A1A; font-variant-numeric: tabular-nums; }
-.inv-total-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: #fff; font-size: 14px; font-weight: 700; margin-top: 10px; }
-.inv-total-bar .amount { font-size: 20px; font-family: 'Playfair Display', serif; }
-.inv-footer { padding: 14px 20px; text-align: center; border-top: 1.5px solid #E5E1DB; background: #FAFAF7; margin-top: 10px; }
-.inv-footer .pharmacy-repeat { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
-.inv-footer .contact-line { font-size: 10px; color: #6B7280; margin-bottom: 2px; }
-.inv-footer .thank-you { font-size: 10.5px; color: var(--primary); font-weight: 600; margin-top: 6px; font-style: italic; }
-.inv-qr { position: absolute; bottom: 16px; right: 16px; opacity: 0.8; }
+#qrh{position:absolute;left:-9999px;top:-9999px}
 
 /* ── LOGIN SCREEN ── */
 .lscr{position:fixed;inset:0;z-index:10000;background:linear-gradient(160deg,#022c22 0%,#064e3b 50%,#065f46 100%);display:flex;align-items:center;justify-content:center;padding:24px}
@@ -213,24 +175,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 .gbtn:active{transform:scale(.98)}
 .gico{width:22px;height:22px;flex-shrink:0}
 .lnote{font-size:.72rem;color:#94a3b8;text-align:center;line-height:1.5}
-.cfg-link{display:block;margin-top:14px;border-top:1px solid #f1f5f9;padding-top:14px;text-align:center}
-.cfg-link button{background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;padding:8px 12px;border-radius:6px;transition:color .2s}
-.cfg-link button:hover{color:#065f46}
-
 /* ── USER BAR ── */
 .ubar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:9px;padding:5px 9px;cursor:pointer;border:1px solid rgba(255,255,255,.15)}
 .uavt{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
 .uname{font-size:.72rem;color:rgba(255,255,255,.9);font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .uarr{font-size:.65rem;color:rgba(255,255,255,.6)}
-
 /* ── SYNC INDICATOR ── */
 .syncbar{display:none;position:fixed;top:58px;left:0;right:0;z-index:300;background:#065f46;color:rgba(209,250,229,.9);font-size:.75rem;padding:6px 14px;text-align:center;font-weight:500}
 .syncbar.on{display:block}
-
 /* ── SETUP GUIDE ── */
-.setup-ov{display:none;position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.setup-ov{display:none;position:fixed;inset:0;z-index:10500;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
 .setup-ov.on{display:flex}
-.setup-box{background:#fff;border-radius:20px;width:100%;max-width:480px;padding:24px;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.setup-box{background:#fff;border-radius:20px;width:100%;max-width:480px;padding:24px;margin:auto}
 .setup-box h2{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:#064e3b;margin-bottom:4px}
 .setup-box p{font-size:.82rem;color:#64748b;margin-bottom:16px;line-height:1.5}
 .step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
@@ -243,10 +199,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 .cfg-inp:focus{border-color:#047857;box-shadow:0 0 0 3px rgba(4,120,87,.1)}
 </style>
 
-  <!-- Firebase v9 compat -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -254,7 +206,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 <div class="ahdr">
   <div class="hlogo" id="HL">🌿</div>
   <div class="htxt"><h1 id="HN">Nishat Homeo Pharmacy</h1><p>Invoice Management System</p></div>
-  <div id="UBAR" style="display:none"><div class="ubar" onclick="showUserMenu()"><img class="uavt" id="UAVT" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"/><span class="uname" id="UNMS"></span><span class="uarr">▾</span></div></div>
+  <div id="UBAR" style="display:none"><div class="ubar" onclick="showUserMenu()"><img class="uavt" id="UAVT" src=""/><span class="uname" id="UNMS"></span><span class="uarr">▾</span></div></div>
 </div>
 
 <div class="main">
@@ -298,7 +250,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
     <div class="chd"><div class="cic">🧾</div><div class="ctl">Invoice Summary</div></div>
     <div class="cbd">
       <div class="srow"><span class="slb">Total Items</span><span class="svl" id="si">0</span></div>
-      <div class="srow"><span class="slb">Total Quantity</span><span class="svl" id="sq">0</span></div>
+      <div class="srow"><span class="slb">Total Quantity</span><span class="svl" id="sq">0.00</span></div>
       <div class="srow"><span class="slb">Products Subtotal</span><span class="svl" id="ss">Tk 0.00</span></div>
       <div class="srow"><span class="slb">Doctor Fee</span><span class="svl" id="sd">Tk 0.00</span></div>
       <div class="srow"><span class="slb">Discount (–)</span><span style="display:flex;align-items:center;gap:5px;font-size:.84rem">Tk<input class="dinp" id="disc" type="number" value="0" min="0" step="0.01" oninput="calc()"/></span></div>
@@ -306,6 +258,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
       <div class="cashbox">
         <div class="crow"><span class="clb">Cash / Payment Received</span><input class="cinp" id="cash" type="number" value="0" min="0" step="0.01" oninput="calc()"/></div>
         <div class="crow"><span class="clb">Total Paid</span><span class="cvl" id="sp">Tk 0.00</span></div>
+        <div class="crow"><span class="clb">Balance / Change Return</span><span class="cvl" id="sc">Tk 0.00</span></div>
       </div>
     </div>
   </div>
@@ -363,41 +316,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 
 </div><!-- /main -->
 
-<!-- HIDDEN INVOICE FOR PDF/IMAGE -->
-<div id="invoice-render-area">
-  <div class="invoice-paper" id="invoice-paper">
-    <div class="inv-header">
-      <div class="inv-pharmacy-name" id="inv-shop-name">NISHAT HOMEO PHARMACY</div>
-      <div class="inv-pharmacy-addr" id="inv-addr-full">C&B Chowrasta School Road, Lohagara, Narail, Bangladesh.</div>
-      <div class="inv-pharmacy-contact">Mobile: <span id="inv-mobile">01754969909</span>, E-mail: <span id="inv-email">nishathomeoph@gmail.com</span></div>
-    </div>
-    <div class="inv-meta">
-      <div>Invoice No. <span id="inv-disp-no">0001</span></div>
-      <div class="val" id="inv-disp-date">01-01-2024 12:00 PM</div>
-    </div>
-    <div class="inv-patient">
-      <span class="pat-label">Patient Name</span><span class="pat-val" id="inv-disp-pname">-</span>
-      <span class="pat-label">Mobile No.</span><span class="pat-val" id="inv-disp-pmobile">-</span>
-      <span class="pat-label">E-mail</span><span class="pat-val" id="inv-disp-pemail">-</span>
-      <span class="pat-label">Address</span><span class="pat-val" id="inv-disp-paddr">-</span>
-      <div class="reward-badge"><i class="fas fa-star"></i> Reward Point: <span id="inv-disp-reward">0</span></div>
-    </div>
-    <table class="inv-table">
-      <thead><tr><th>SL.</th><th>Products</th><th>Quantity</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
-      <tbody id="inv-disp-prods"></tbody>
-    </table>
-    <div class="inv-summary-section"><div class="inv-summary-grid" id="inv-disp-summary"></div></div>
-    <div class="inv-total-bar"><span>Total</span><span class="amount">Tk <span id="inv-disp-total">0.00</span></span></div>
-    <div class="inv-footer">
-      <div class="pharmacy-repeat" id="inv-foot-name">NISHAT HOMEO PHARMACY</div>
-      <div class="contact-line">For any queries, please contact us:</div>
-      <div class="contact-line"><i class="fas fa-phone" style="font-size:9px"></i> <span id="inv-foot-mobile">01754969909</span> &nbsp; <i class="fas fa-envelope" style="font-size:9px"></i> <span id="inv-foot-email">nishathomeoph@gmail.com</span></div>
-      <div class="thank-you" id="inv-foot-thanks">Thank you for your trust and support.</div>
-    </div>
-    <div class="inv-qr" id="inv-qr-code"></div>
-  </div>
-</div>
-
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="nb on" id="nbn" onclick="goPage('new',this)">
@@ -429,25 +347,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
   </div>
 </div>
 
+
 <!-- LOGIN SCREEN -->
 <div class="lscr" id="LSCR">
   <div class="lbox">
     <div class="ltop">
       <div class="lico">🌿</div>
-      <div class="lshop">Nishat Homeo Pharmacy</div>
+      <div class="lshop" id="LNMS">Nishat Homeo Pharmacy</div>
       <div class="lsub">Invoice Management System</div>
     </div>
     <div class="lbod">
-      <h2>Welcome Back!</h2>
-      <p>Sign in with your Google account to access your invoices from any device — securely stored in the cloud.</p>
+      <h2>স্বাগতম! 👋</h2>
+      <p>আপনার Gmail দিয়ে sign in করুন — যেকোনো device থেকে সব invoice দেখুন।</p>
       <button class="gbtn" id="GBTN" onclick="signInGoogle()">
         <svg class="gico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Continue with Google
       </button>
-      <p class="lnote">Your data is securely synced with Google Firebase.<br/>Works on all your devices.</p>
-      <div class="cfg-link">
-        <button type="button" id="SETUP_BTN">⚙️ Configure Firebase (First-time setup)</button>
-      </div>
+      <p class="lnote">আপনার সকল তথ্য Google Firebase-এ নিরাপদে সংরক্ষিত থাকবে।<br/>যেকোনো ডিভাইস থেকে access করুন।</p>
+
     </div>
   </div>
 </div>
@@ -462,8 +379,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
     <p>One-time setup (5 minutes). Create a free Firebase project to enable cloud sync.</p>
     <div class="step"><div class="stepn">1</div><div class="stepc"><strong>Create Firebase Project</strong><span>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:#065f46">console.firebase.google.com</a> → Add project → Name it "Nishat Homeo"</span></div></div>
     <div class="step"><div class="stepn">2</div><div class="stepc"><strong>Enable Google Sign-In</strong><span>Authentication → Sign-in method → Google → Enable → Save</span></div></div>
-    <div class="step"><div class="stepn">3</div><div class="stepc"><strong>Create Firestore Database</strong><span>Firestore Database → Create database → Production mode → Region: asia-south1 → Done</span></div></div>
-    <div class="step"><div class="stepn">4</div><div class="stepc"><strong>Add Security Rules</strong><span>Firestore → Rules → Replace with:</span><code>rules_version = '2';
+    <div class="step"><div class="stepn">3</div><div class="stepc"><strong>Create Firestore Database</strong><span>Firestore Database → Create database → Start in production mode → Choose region (asia-south1) → Done</span></div></div>
+    <div class="step"><div class="stepn">4</div><div class="stepc"><strong>Add Firestore Security Rules</strong><span>Firestore → Rules → Replace with:</span><code>rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId}/{document=**} {
@@ -471,8 +388,9 @@ service cloud.firestore {
     }
   }
 }</code></div></div>
-    <div class="step"><div class="stepn">5</div><div class="stepc"><strong>Get Firebase Config</strong><span>Project Settings → Your apps → Add app (Web) → Register → Copy config values below</span></div></div>
-    <div class="step"><div class="stepn">6</div><div class="stepc"><strong>Add Authorized Domain</strong><span>Authentication → Settings → Authorized domains → Add your GitHub Pages URL</span></div></div>
+    <div class="step"><div class="stepn">5</div><div class="stepc"><strong>Get Firebase Config</strong><span>Project Settings → Your apps → Add app (Web) → Register → Copy the config values below</span></div></div>
+    <div class="step"><div class="stepn">6</div><div class="stepc"><strong>Add Authorized Domain</strong><span>Authentication → Settings → Authorized domains → Add your GitHub Pages URL (e.g. yourname.github.io)</span></div></div>
+    
     <p style="margin-top:4px;margin-bottom:12px;font-weight:600;color:#0f172a;font-size:.85rem">Paste your Firebase config values:</p>
     <input class="cfg-inp" id="fb-aid" placeholder="apiKey (AIzaSy...)"/>
     <input class="cfg-inp" id="fb-aid2" placeholder="authDomain (your-project.firebaseapp.com)"/>
@@ -481,14 +399,17 @@ service cloud.firestore {
     <input class="cfg-inp" id="fb-msi" placeholder="messagingSenderId (123456789)"/>
     <input class="cfg-inp" id="fb-aid3" placeholder="appId (1:123:web:abc...)"/>
     <button class="btn btn-g" style="margin-top:4px" onclick="saveFBConfig()">✅ Save Firebase Config</button>
-    <button class="btn btn-ol" style="margin-top:8px" id="CLOSE_SETUP">Close</button>
-    <p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">Config is saved locally. You only need to do this once per device. The app works offline with local storage even without Firebase.</p>
+    <button class="btn btn-ol" style="margin-top:8px" onclick="closeSetup()">✖ বন্ধ করুন</button>
+    <p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">Config is saved locally in your browser. You only need to do this once per device. The app works offline with local storage even without Firebase.</p>
   </div>
 </div>
 
 <div class="tst" id="TST"></div>
+<div id="qrh"></div>
+<canvas id="CVC" style="display:none"></canvas>
 
 <script>
+
 // ==============================================
 // FIREBASE CONFIG & AUTH
 // ==============================================
@@ -497,136 +418,218 @@ var fbAuth = null;
 var fbDB = null;
 var currentUser = null;
 
+// ── Hardcoded Firebase Config ──
+var FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyAOKPuSR9ItuQgsTGCOflXWPc_ZQJ8I8Fs",
+  authDomain:        "nishat-homeo-pharmacy.firebaseapp.com",
+  projectId:         "nishat-homeo-pharmacy",
+  storageBucket:     "nishat-homeo-pharmacy.firebasestorage.app",
+  messagingSenderId: "767625400872",
+  appId:             "1:767625400872:web:4a811f0f08f9abaceb5b1d",
+  measurementId:     "G-8H6GRCVRH2"
+};
+
 function getFBConfig() {
-  try { return JSON.parse(localStorage.getItem('nhp_fb') || 'null'); } catch(e) { return null; }
+  // Always return the hardcoded config
+  return FIREBASE_CONFIG;
 }
 
 function initFirebase() {
-  var fbcfg = getFBConfig();
-  if (!fbcfg || !fbcfg.apiKey) {
-    showLoginScreen();
-    return;
-  }
   try {
     if (!firebase.apps.length) {
-      firebase.initializeApp(fbcfg);
+      firebase.initializeApp(FIREBASE_CONFIG);
     }
     fbAuth = firebase.auth();
-    fbDB = firebase.firestore();
+    fbDB   = firebase.firestore();
     fbReady = true;
+
     fbAuth.onAuthStateChanged(function(user) {
-      if (user) { currentUser = user; onSignedIn(user); }
-      else { currentUser = null; showLoginScreen(); }
+      if (user) {
+        currentUser = user;
+        onSignedIn(user);
+      } else {
+        currentUser = null;
+        showLoginScreen(true);
+      }
     });
   } catch(e) {
     console.error('Firebase init error:', e);
-    toast('Firebase error. Using local mode.');
+    toast('Firebase error: ' + e.message);
     hideLoginScreen();
     runApp();
   }
 }
 
+function _gbtnReset() {
+  var btn = document.getElementById('GBTN');
+  if (!btn) return;
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.innerHTML = '<svg class="gico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google';
+}
+
 function signInGoogle() {
-  if (!fbReady) { toast('⚠️ Please configure Firebase first'); showSetup(); return; }
+  if (!fbReady) { toast('⚠️ অ্যাপ লোড হচ্ছে, একটু অপেক্ষা করুন...'); return; }
+  var btn = document.getElementById('GBTN');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; btn.textContent = '⏳ সাইন ইন হচ্ছে...'; }
   var provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
-  fbAuth.signInWithPopup(provider).catch(function(e) {
-    if (e.code === 'auth/popup-blocked') { fbAuth.signInWithRedirect(provider); }
-    else { toast('Sign-in failed: ' + e.message); }
-  });
+  fbAuth.signInWithPopup(provider)
+    .catch(function(e) {
+      console.error('SignIn error:', e.code, e.message);
+      _gbtnReset();
+      if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+        toast('Popup blocked হয়েছে — redirect চেষ্টা হচ্ছে...');
+        setTimeout(function(){ fbAuth.signInWithRedirect(provider); }, 500);
+      } else if (e.code === 'auth/unauthorized-domain') {
+        toast('⚠️ Domain authorized নয় — Firebase console-এ add করুন');
+      } else if (e.code === 'auth/network-request-failed') {
+        toast('⚠️ Internet সংযোগ নেই');
+      } else {
+        toast('Sign-in ব্যর্থ: ' + (e.code || e.message));
+      }
+    });
 }
 
 function signOut() {
-  if (fbAuth) { fbAuth.signOut().then(function() { currentUser = null; hist = []; showLoginScreen(); toast('Signed out'); }); }
+  if (fbAuth) {
+    fbAuth.signOut().then(function() {
+      currentUser = null;
+      hist = [];
+      showLoginScreen(true);
+      toast('Signed out');
+    });
+  }
 }
 
 function onSignedIn(user) {
   hideLoginScreen();
+  // Show user bar
   document.getElementById('UBAR').style.display = 'block';
   var av = document.getElementById('UAVT');
   var nm = document.getElementById('UNMS');
   if (user.photoURL) av.src = user.photoURL;
   nm.textContent = user.displayName ? user.displayName.split(' ')[0] : user.email;
+  // Load from Firestore
   loadFromCloud();
 }
 
 function showUserMenu() {
-  var u = currentUser; if (!u) return;
+  var u = currentUser;
+  if (!u) return;
   DL.show('👤', u.displayName || u.email, u.email + '\n\nSigned in with Google.\nAll invoices are synced to cloud.', false, function(){});
+  // Override DL ok button to sign out
   document.getElementById('DOK').textContent = 'Sign Out';
   document.getElementById('DOK').onclick = function(){ DL.close(); signOut(); };
 }
 
-function showLoginScreen() { document.getElementById('LSCR').style.display = 'flex'; }
-function hideLoginScreen() { document.getElementById('LSCR').style.display = 'none'; }
+function showLoginScreen(hasFirebase) {
+  document.getElementById('LSCR').style.display = 'flex';
+  var gbtn = document.getElementById('GBTN');
+  if (gbtn) { gbtn.disabled = false; gbtn.style.opacity = '1'; gbtn.style.pointerEvents = ''; }
+}
+function hideLoginScreen() {
+  var el = document.getElementById('LSCR');
+  if (el) el.style.display = 'none';
+}
 
 // ==============================================
-// SETUP GUIDE (FIXED)
+// FIREBASE CONFIG SAVE
 // ==============================================
+function saveFBConfig() {
+  var cfg2 = {
+    apiKey:            document.getElementById('fb-aid').value.trim(),
+    authDomain:        document.getElementById('fb-aid2').value.trim(),
+    projectId:         document.getElementById('fb-pid').value.trim(),
+    storageBucket:     document.getElementById('fb-sid').value.trim(),
+    messagingSenderId: document.getElementById('fb-msi').value.trim(),
+    appId:             document.getElementById('fb-aid3').value.trim()
+  };
+  if (!cfg2.apiKey) { toast('⚠️ apiKey দিতে হবে'); return; }
+  if (!cfg2.projectId) { toast('⚠️ projectId দিতে হবে'); return; }
+  if (!cfg2.authDomain) { toast('⚠️ authDomain দিতে হবে'); return; }
+  localStorage.setItem('nhp_fb', JSON.stringify(cfg2));
+  document.getElementById('SETUP').classList.remove('on');
+  toast('✅ Firebase config সেভ হয়েছে! লোড হচ্ছে...');
+  setTimeout(function(){ window.location.reload(); }, 1200);
+}
+
+function closeSetup() {
+  document.getElementById('SETUP').classList.remove('on');
+}
+
 function showSetup() {
   var existing = getFBConfig();
   if (existing) {
     var fields = {apiKey:'fb-aid',authDomain:'fb-aid2',projectId:'fb-pid',storageBucket:'fb-sid',messagingSenderId:'fb-msi',appId:'fb-aid3'};
     Object.keys(fields).forEach(function(k){ var e=document.getElementById(fields[k]); if(e&&existing[k]) e.value=existing[k]; });
   }
-  document.getElementById('SETUP').classList.add('on');
-}
-
-function closeSetup() { document.getElementById('SETUP').classList.remove('on'); }
-
-function saveFBConfig() {
-  var cfg2 = {
-    apiKey: document.getElementById('fb-aid').value.trim(),
-    authDomain: document.getElementById('fb-aid2').value.trim(),
-    projectId: document.getElementById('fb-pid').value.trim(),
-    storageBucket: document.getElementById('fb-sid').value.trim(),
-    messagingSenderId: document.getElementById('fb-msi').value.trim(),
-    appId: document.getElementById('fb-aid3').value.trim()
-  };
-  if (!cfg2.apiKey || !cfg2.projectId) { toast('⚠️ apiKey and projectId are required'); return; }
-  localStorage.setItem('nhp_fb', JSON.stringify(cfg2));
-  closeSetup();
-  toast('Firebase config saved! Reloading...');
-  setTimeout(function(){ window.location.reload(); }, 1200);
+  var ov = document.getElementById('SETUP');
+  ov.classList.add('on');
+  ov.scrollTop = 0;
 }
 
 // ==============================================
-// CLOUD SYNC
+// CLOUD SYNC — Firestore
 // ==============================================
-function showSync(msg) { var b = document.getElementById('SBAR'); b.textContent = msg; b.classList.add('on'); }
+function showSync(msg) {
+  var b = document.getElementById('SBAR');
+  b.textContent = msg; b.classList.add('on');
+}
 function hideSync() { document.getElementById('SBAR').classList.remove('on'); }
 
 function loadFromCloud() {
   if (!fbReady || !currentUser) { runApp(); return; }
   showSync('☁️ Loading from cloud...');
-  fbDB.collection('users').doc(currentUser.uid).collection('invoices').orderBy('savedAt','desc').limit(300).get()
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices')
+    .limit(500)
+    .get()
     .then(function(snap) {
       var cloudData = [];
       snap.forEach(function(doc) { cloudData.push(doc.data()); });
-      if (cloudData.length > 0) { hist = cloudData; localStorage.setItem('nhp_h', JSON.stringify(hist)); }
-      else {
+      if (cloudData.length > 0) {
+        hist = cloudData;
+        localStorage.setItem('nhp_h', JSON.stringify(hist));
+      } else {
+        // Try migrating from localStorage
         var local = [];
         try { local = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(e){}
-        if (local.length > 0) { hist = local; uploadAllToCloud(local); }
+        if (local.length > 0) {
+          hist = local;
+          uploadAllToCloud(local);
+        }
       }
-      hideSync(); runApp();
+      hideSync();
+      runApp();
     })
     .catch(function(e) {
+      console.error('Load error:', e);
+      // Fallback to localStorage
       try { hist = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(er){ hist=[]; }
-      hideSync(); runApp(); toast('Offline mode — local data loaded');
+      hideSync();
+      runApp();
+      toast('Offline mode — local data loaded');
     });
 }
 
 function saveToCloud(inv) {
   if (!fbReady || !currentUser) return;
-  showSync('☁️ Saving to cloud...');
-  fbDB.collection('users').doc(currentUser.uid).collection('invoices').doc(inv.no || inv.invNo || String(Date.now())).set(inv)
-    .then(function() { hideSync(); }).catch(function(e) { hideSync(); });
+  showSync('☁️ Cloud-এ সেভ হচ্ছে...');
+  var invDoc = Object.assign({}, inv, { savedAt: Date.now(), uid: currentUser.uid });
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices').doc(String(inv.no || inv.invNo || Date.now()))
+    .set(invDoc)
+    .then(function() { hideSync(); })
+    .catch(function(e) { console.error('Save error:', e); hideSync(); toast('Cloud save failed — local-এ আছে'); });
 }
 
 function deleteFromCloud(invNo) {
   if (!fbReady || !currentUser) return;
-  fbDB.collection('users').doc(currentUser.uid).collection('invoices').doc(String(invNo)).delete().catch(function(e){});
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices').doc(String(invNo))
+    .delete()
+    .catch(function(e){ console.error('Delete error:', e); });
 }
 
 function uploadAllToCloud(data) {
@@ -634,16 +637,28 @@ function uploadAllToCloud(data) {
   showSync('☁️ Uploading to cloud...');
   var batch = fbDB.batch();
   data.forEach(function(inv) {
-    var ref = fbDB.collection('users').doc(currentUser.uid).collection('invoices').doc(inv.no || inv.invNo || String(Date.now()+Math.random()));
+    var ref = fbDB.collection('users').doc(currentUser.uid)
+      .collection('invoices').doc(inv.no || inv.invNo || String(Date.now()+Math.random()));
     batch.set(ref, inv);
   });
-  batch.commit().then(function(){ hideSync(); toast('✅ All data synced to cloud!'); }).catch(function(e){ hideSync(); });
+  batch.commit()
+    .then(function(){ hideSync(); toast('✅ All data synced to cloud!'); })
+    .catch(function(e){ console.error('Batch error:', e); hideSync(); });
 }
 
-function runApp() { applyCfg(); applyLogo(); setNo(); setNow(); addRow(); addRow(); renderHist(); updBadge(); }
+var _appStarted = false;
+function runApp() {
+  if (_appStarted) { renderHist(); updBadge(); return; }
+  _appStarted = true;
+  applyCfg(); applyLogo();
+  setNo(); setNow();
+  addRow(); addRow();
+  renderHist(); updBadge();
+}
+
 
 // ==============================================
-// DIALOG
+// DIALOG — completely self-contained object
 // ==============================================
 var DL = {
   cb: null,
@@ -655,28 +670,51 @@ var DL = {
     var ok = document.getElementById('DOK');
     ok.textContent = danger ? 'Delete' : 'Confirm';
     ok.className = 'dlbt ' + (danger ? 'ok-r' : 'ok-g');
-    ok.onclick = function(){ DL.confirm(); };
     document.getElementById('DLV').classList.add('on');
   },
-  close: function() { document.getElementById('DLV').classList.remove('on'); this.cb = null; },
-  confirm: function() { var fn = this.cb; this.close(); if (fn) fn(); }
+  close: function() {
+    document.getElementById('DLV').classList.remove('on');
+    this.cb = null;
+  },
+  confirm: function() {
+    var fn = this.cb;
+    this.close();
+    if (fn) fn();
+  }
 };
-document.getElementById('DLV').addEventListener('click', function(e) { if (e.target === this) DL.close(); });
+document.getElementById('DLV').addEventListener('click', function(e) {
+  if (e.target === this) DL.close();
+});
 
 // ==============================================
 // TOAST
 // ==============================================
-function toast(msg) { var t = document.getElementById('TST'); t.textContent = msg; t.classList.add('on'); setTimeout(function() { t.classList.remove('on'); }, 3000); }
+function toast(msg) {
+  var t = document.getElementById('TST');
+  t.textContent = msg; t.classList.add('on');
+  setTimeout(function() { t.classList.remove('on'); }, 3000);
+}
 
 // ==============================================
 // STATE
 // ==============================================
-var rows = [], hist = [], cfg = {}, logoB64 = null;
+var rows = [];  // product rows
+var hist = [];  // invoice history
+var cfg = {};   // settings
+var logoB64 = null;
+
 try { hist = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(e) { hist = []; }
-try { cfg = JSON.parse(localStorage.getItem('nhp_c') || '{}'); } catch(e) { cfg = {}; }
+try { cfg  = JSON.parse(localStorage.getItem('nhp_c') || '{}'); } catch(e) { cfg = {}; }
 try { logoB64 = localStorage.getItem('nhp_l') || null; } catch(e) { logoB64 = null; }
 
-var DEF = { nm: 'NISHAT HOMEO PHARMACY', a1: 'C&B Chowrasta School Road, Lohagara, Narail,', a2: 'Bangladesh.', mb: '01754969909', em: 'nishathomeoph@gmail.com', th: 'Thank you for your trust and support.' };
+var DEF = {
+  nm: 'NISHAT HOMEO PHARMACY',
+  a1: 'C&B Chowrasta School Road, Lohagara, Narail,',
+  a2: 'Bangladesh.',
+  mb: '01754969909',
+  em: 'nishathomeoph@gmail.com',
+  th: 'Thank you for your trust and support.'
+};
 function C(k) { return cfg[k] || DEF[k]; }
 function gid(id) { return document.getElementById(id); }
 function gv(id) { var e = gid(id); return e ? e.value : ''; }
@@ -688,105 +726,815 @@ function xd(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 // ==============================================
 // INIT
 // ==============================================
-function init() { applyCfg(); applyLogo(); setNo(); setNow(); addRow(); addRow(); renderHist(); updBadge(); }
-function setNo() { var n = parseInt(localStorage.getItem('nhp_no') || '0') + 1; gid('ino').value = pad(n); }
-function setNow() { var d = new Date(); gid('idt').value = pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear(); gid('itm').value = pad(d.getHours())+':'+pad(d.getMinutes()); }
+function init() {
+  // Called by runApp() after Firebase auth
+  applyCfg(); applyLogo();
+  setNo(); setNow();
+  addRow(); addRow();
+  renderHist(); updBadge();
+}
+
+function setNo() {
+  var n = parseInt(localStorage.getItem('nhp_no') || '0') + 1;
+  gid('ino').value = pad(n);
+}
+function setNow() {
+  var d = new Date();
+  gid('idt').value = pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear();
+  gid('itm').value = pad(d.getHours())+':'+pad(d.getMinutes());
+}
 
 // ==============================================
 // SETTINGS
 // ==============================================
-function applyCfg() { var map = { nm:'s-nm', a1:'s-a1', a2:'s-a2', mb:'s-mb', em:'s-em', th:'s-th' }; Object.keys(map).forEach(function(k) { var e = gid(map[k]); if(e) e.value = C(k); }); gid('HN').textContent = C('nm'); }
-function saveCfg() { cfg.nm = gv('s-nm'); cfg.a1 = gv('s-a1'); cfg.a2 = gv('s-a2'); cfg.mb = gv('s-mb'); cfg.em = gv('s-em'); cfg.th = gv('s-th'); localStorage.setItem('nhp_c', JSON.stringify(cfg)); gid('HN').textContent = C('nm'); applyLogo(); toast('Settings saved ✅'); }
-function uploadLogo(e) { var f = e.target.files[0]; if(!f) return; var r = new FileReader(); r.onload = function(ev) { logoB64 = ev.target.result; try { localStorage.setItem('nhp_l', logoB64); } catch(er) {} applyLogo(); toast('Logo updated ✅'); }; r.readAsDataURL(f); }
-function applyLogo() { var hl = gid('HL'), pi = gid('LGIM'), ic = gid('LGIC'); if (logoB64) { hl.innerHTML = '<img src="'+logoB64+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px"/>'; pi.src = logoB64; pi.style.display = 'block'; ic.style.display = 'none'; } else { hl.innerHTML = '🌿'; pi.style.display = 'none'; ic.style.display = 'block'; } }
+function applyCfg() {
+  var map = { nm:'s-nm', a1:'s-a1', a2:'s-a2', mb:'s-mb', em:'s-em', th:'s-th' };
+  Object.keys(map).forEach(function(k) { var e = gid(map[k]); if(e) e.value = C(k); });
+  gid('HN').textContent = C('nm');
+}
+function saveCfg() {
+  cfg.nm = gv('s-nm'); cfg.a1 = gv('s-a1'); cfg.a2 = gv('s-a2');
+  cfg.mb = gv('s-mb'); cfg.em = gv('s-em'); cfg.th = gv('s-th');
+  localStorage.setItem('nhp_c', JSON.stringify(cfg));
+  gid('HN').textContent = C('nm');
+  applyLogo(); toast('Settings saved ✅');
+}
+function uploadLogo(e) {
+  var f = e.target.files[0]; if(!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    logoB64 = ev.target.result;
+    try { localStorage.setItem('nhp_l', logoB64); } catch(er) {}
+    applyLogo(); toast('Logo updated ✅');
+  };
+  r.readAsDataURL(f);
+}
+function applyLogo() {
+  var hl = gid('HL'), pi = gid('LGIM'), ic = gid('LGIC');
+  if (logoB64) {
+    hl.innerHTML = '<img src="'+logoB64+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px"/>';
+    pi.src = logoB64; pi.style.display = 'block'; ic.style.display = 'none';
+  } else {
+    hl.innerHTML = '🌿'; pi.style.display = 'none'; ic.style.display = 'block';
+  }
+}
 
 // ==============================================
 // NAVIGATION
 // ==============================================
-function goPage(p, el) { document.querySelectorAll('.pg').forEach(function(x) { x.classList.remove('on'); }); document.querySelectorAll('.nb').forEach(function(x) { x.classList.remove('on'); }); gid('pg-'+p).classList.add('on'); if(el) el.classList.add('on'); if(p==='hist') renderHist(); if(p==='srch') { gid('srch').value=''; doSearch(); } window.scrollTo(0,0); }
+function goPage(p, el) {
+  document.querySelectorAll('.pg').forEach(function(x) { x.classList.remove('on'); });
+  document.querySelectorAll('.nb').forEach(function(x) { x.classList.remove('on'); });
+  gid('pg-'+p).classList.add('on');
+  if(el) el.classList.add('on');
+  if(p==='hist') renderHist();
+  if(p==='srch') { gid('srch').value=''; doSearch(); }
+  window.scrollTo(0,0);
+}
 
 // ==============================================
 // PRODUCT ROWS
 // ==============================================
 var _rid = 0;
 function newId() { return ++_rid; }
-function addRow(n, q, p) { rows.push({ id: newId(), n: n||'', q: q||'', p: p||'' }); renderRows(); }
-function delRow(id) { if (rows.length <= 1) { toast('At least one row required'); return; } DL.show('⚠️', 'Remove Product?', 'Remove this item from the list?', false, function() { rows = rows.filter(function(r) { return r.id !== id; }); renderRows(); }); }
-function renderRows() { var el = gid('PL'); el.innerHTML = ''; rows.forEach(function(row, i) { var sub = ((parseFloat(row.q)||0) * (parseFloat(row.p)||0)).toFixed(2); var div = document.createElement('div'); div.className = 'pr'; div.innerHTML = '<div class="psl">'+pad(i+1)+'</div><input placeholder="Product / Medicine name" value="'+xe(row.n)+'" oninput="rows['+i+'].n=this.value"/><input type="number" placeholder="0" min="0" step="0.01" value="'+xe(row.q)+'" style="text-align:center" oninput="rows['+i+'].q=this.value;rS('+i+')"/><input type="number" placeholder="0.00" min="0" step="0.01" value="'+xe(row.p)+'" style="text-align:right" oninput="rows['+i+'].p=this.value;rS('+i+')"/><div class="psv" id="psv'+i+'">'+sub+'</div><button class="pdel" data-rid="'+row.id+'">&#10005;</button>'; el.appendChild(div); div.querySelector('.pdel').addEventListener('click', (function(rid){ return function(){ delRow(rid); }; })(row.id)); }); calc(); }
-function rS(i) { var e = gid('psv'+i); if(e) e.textContent = ((parseFloat(rows[i].q)||0)*(parseFloat(rows[i].p)||0)).toFixed(2); calc(); }
+
+function addRow(n, q, p) {
+  rows.push({ id: newId(), n: n||'', q: q||'', p: p||'' });
+  renderRows();
+}
+
+function delRow(id) {
+  if (rows.length <= 1) { toast('At least one row required'); return; }
+  DL.show('⚠️', 'Remove Product?', 'Remove this item from the list?', false, function() {
+    rows = rows.filter(function(r) { return r.id !== id; });
+    renderRows();
+  });
+}
+
+function renderRows() {
+  var el = gid('PL'); el.innerHTML = '';
+  rows.forEach(function(row, i) {
+    var sub = ((parseFloat(row.q)||0) * (parseFloat(row.p)||0)).toFixed(2);
+    var div = document.createElement('div');
+    div.className = 'pr';
+    div.innerHTML =
+      '<div class="psl">'+pad(i+1)+'</div>'
+      +'<input placeholder="Product / Medicine name" value="'+xe(row.n)+'" oninput="rows['+i+'].n=this.value"/>'
+      +'<input type="number" placeholder="0" min="0" step="0.01" value="'+xe(row.q)+'" style="text-align:center" oninput="rows['+i+'].q=this.value;rS('+i+')"/>'
+      +'<input type="number" placeholder="0.00" min="0" step="0.01" value="'+xe(row.p)+'" style="text-align:right" oninput="rows['+i+'].p=this.value;rS('+i+')"/>'
+      +'<div class="psv" id="psv'+i+'">'+sub+'</div>'
+      +'<button class="pdel" data-rid="'+row.id+'">&#10005;</button>';
+    el.appendChild(div);
+    // attach event listener — NOT inline onclick with float IDs
+    div.querySelector('.pdel').addEventListener('click', (function(rid){ return function(){ delRow(rid); }; })(row.id));
+  });
+  calc();
+}
+
+function rS(i) {
+  var e = gid('psv'+i);
+  if(e) e.textContent = ((parseFloat(rows[i].q)||0)*(parseFloat(rows[i].p)||0)).toFixed(2);
+  calc();
+}
 
 function calc() {
   var items = rows.filter(function(r){ return r.n && r.n.trim(); }).length;
-  var qty = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0);
-  var sub = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
-  var df = parseFloat(gv('df'))||0; var disc = parseFloat(gv('disc'))||0;
-  var total = Math.max(0, sub + df - disc); var cash = parseFloat(gv('cash'))||0;
-  sv('si', items); sv('sq', Math.round(qty)); // Integer quantity
+  var qty   = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0);
+  var sub   = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
+  var df    = parseFloat(gv('df'))||0;
+  var disc  = parseFloat(gv('disc'))||0;
+  var total = Math.max(0, sub + df - disc);
+  var cash  = parseFloat(gv('cash'))||0;
+  sv('si', items); sv('sq', qty.toFixed(2));
   sv('ss','Tk '+sub.toFixed(2)); sv('sd','Tk '+df.toFixed(2));
-  sv('st','Tk '+total.toFixed(2)); sv('sp','Tk '+Math.min(cash,total).toFixed(2));
+  sv('st','Tk '+total.toFixed(2));
+  sv('sp','Tk '+Math.min(cash,total).toFixed(2));
+  sv('sc','Tk '+Math.max(0,cash-total).toFixed(2));
 }
 
 // ==============================================
 // GET INVOICE DATA
 // ==============================================
 function getData() {
-  var sub = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
-  var df = parseFloat(gv('df'))||0; var disc = parseFloat(gv('disc'))||0;
-  var total = Math.max(0, sub + df - disc); var cash = parseFloat(gv('cash'))||0;
+  var sub   = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
+  var df    = parseFloat(gv('df'))||0;
+  var disc  = parseFloat(gv('disc'))||0;
+  var total = Math.max(0, sub + df - disc);
+  var cash  = parseFloat(gv('cash'))||0;
   return {
     no: gv('ino'), date: gv('idt'), time: gv('itm'), note: gv('itn'),
-    pName: gv('cn')||'Patient', pAddr: gv('ca'), pMob: gv('cm'), pEmail: gv('ce'), pRew: gv('crw')||'0',
+    pName: gv('cn')||'Patient', pAddr: gv('ca'), pMob: gv('cm'),
+    pEmail: gv('ce'), pRew: gv('crw')||'0',
     rows: rows.filter(function(r){ return r.n && r.n.trim(); }).map(function(r){ return {n:r.n,q:r.q,p:r.p}; }),
-    df: df, sub: sub, disc: disc, total: total, cash: cash, paid: Math.min(cash,total),
+    df: df, sub: sub, disc: disc, total: total, cash: cash,
+    paid: Math.min(cash,total), change: Math.max(0,cash-total),
     qty: rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0),
-    items: rows.filter(function(r){ return r.n&&r.n.trim(); }).length, at: new Date().toISOString()
+    items: rows.filter(function(r){ return r.n&&r.n.trim(); }).length,
+    at: new Date().toISOString()
   };
 }
 
 // ==============================================
-// INVOICE TEMPLATE POPULATOR
+// QR CODE
 // ==============================================
-function populateInvoice(d) {
-  document.getElementById('inv-shop-name').textContent = C('nm');
-  var addrLine = (C('a1') + ' ' + C('a2')).replace(/,\s*$/, '').trim();
-  document.getElementById('inv-addr-full').textContent = addrLine;
-  document.getElementById('inv-mobile').textContent = C('mb');
-  document.getElementById('inv-email').textContent = C('em');
-  document.getElementById('inv-disp-no').textContent = d.no;
-  var timeStr = d.time || '00:00'; var parts = timeStr.split(':');
-  var hrs = parseInt(parts[0]); var mins = parts[1];
-  var ampm = hrs >= 12 ? 'PM' : 'AM'; hrs = hrs % 12; if(hrs === 0) hrs = 12;
-  document.getElementById('inv-disp-date').textContent = d.date + ' ' + hrs + ':' + mins + ' ' + ampm;
-  document.getElementById('inv-disp-pname').textContent = d.pName || '-';
-  document.getElementById('inv-disp-pmobile').textContent = d.pMob || '-';
-  document.getElementById('inv-disp-pemail').textContent = d.pEmail || '-';
-  document.getElementById('inv-disp-paddr').textContent = d.pAddr || '-';
-  document.getElementById('inv-disp-reward').textContent = d.pRew || '0';
-  var tbody = document.getElementById('inv-disp-prods'); tbody.innerHTML = '';
-  d.rows.forEach(function(pr, i) {
-    var qty = parseFloat(pr.q)||0; var price = parseFloat(pr.p)||0; var sub = qty*price;
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<td>'+String(i+1).padStart(2,'0')+'</td><td class="product-name-cell">'+xe(pr.n)+'</td><td>'+qty.toFixed(2)+'</td><td>'+price.toFixed(2)+'</td><td>'+sub.toFixed(2)+'</td>';
-    tbody.appendChild(tr);
-  });
-  var sumHtml = '<div class="cell">Cash</div><div class="cell">Tk '+d.cash.toFixed(2)+'</div><div class="cell">Date</div><div class="cell">'+d.date+'</div><div class="cell">Total quantity</div><div class="cell">'+Math.round(d.qty)+'</div><div class="cell">Total items</div><div class="cell">'+d.items+'</div><div class="cell">Total Paid</div><div class="cell">Tk '+d.paid.toFixed(2)+'</div><div class="cell">Subtotal</div><div class="cell">Tk '+d.sub.toFixed(2)+'</div>';
-  if(d.df > 0) sumHtml += '<div class="cell">Doctor Fee</div><div class="cell">Tk '+d.df.toFixed(2)+'</div>';
-  sumHtml += '<div class="cell">Discount</div><div class="cell" style="color:#C0392B;font-weight:600">(-) Tk '+d.disc.toFixed(2)+'</div>';
-  document.getElementById('inv-disp-summary').innerHTML = sumHtml;
-  document.getElementById('inv-disp-total').textContent = d.total.toFixed(2);
-  document.getElementById('inv-foot-name').textContent = C('nm');
-  document.getElementById('inv-foot-mobile').textContent = C('mb');
-  document.getElementById('inv-foot-email').textContent = C('em');
-  document.getElementById('inv-foot-thanks').textContent = C('th');
-  var qrEl = document.getElementById('inv-qr-code'); qrEl.innerHTML = '';
-  try { new QRCode(qrEl, { text: 'Invoice: '+d.no+'\nPatient: '+d.pName+'\nTotal: Tk '+d.total.toFixed(2), width: 60, height: 60, colorDark: "#073D2E", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); } catch(e) {}
+function makeQR(d, cb) {
+  var el = gid('qrh'); el.innerHTML = '';
+  var txt = 'Invoice: '+d.no+'\nShop: '+C('nm')+'\nPatient: '+d.pName+'\nMobile: '+d.pMob+'\nTotal: Tk '+d.total.toFixed(2)+'\nDate: '+d.date;
+  try {
+    new QRCode(el, { text:txt, width:160, height:160, colorDark:'#0f172a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M });
+    setTimeout(function() {
+      var cv = el.querySelector('canvas');
+      cb(cv ? cv.toDataURL('image/png') : null);
+    }, 400);
+  } catch(e) { cb(null); }
 }
 
 // ==============================================
-// PDF & IMAGE (Clean, no headers/links)
+// PDF — PREMIUM PROFESSIONAL INVOICE
 // ==============================================
-function genPDF(inv) { var d = inv || getData(); populateInvoice(d); toast('Preparing PDF...'); setTimeout(function() { html2canvas(document.getElementById('invoice-paper'), { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) { var jsPDF = window.jspdf.jsPDF; var pdf = new jsPDF('p', 'mm', 'a4'); var pw = pdf.internal.pageSize.getWidth(); var ph = pdf.internal.pageSize.getHeight(); var ratio = Math.min(pw/canvas.width, ph/canvas.height); pdf.addImage(canvas.toDataURL('image/png'), 'PNG', (pw-canvas.width*ratio)/2, 0, canvas.width*ratio, canvas.height*ratio); pdf.save('Invoice-'+d.no+'.pdf'); toast('PDF Downloaded!'); }); }, 500); }
-function genImg(inv) { var d = inv || getData(); populateInvoice(d); toast('Generating image...'); setTimeout(function() { html2canvas(document.getElementById('invoice-paper'), { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) { var a = document.createElement('a'); a.download = 'Invoice-'+d.no+'.png'; a.href = canvas.toDataURL('image/png'); a.click(); toast('Image saved!'); }); }, 500); }
+function genPDF(inv) {
+  var d = inv || getData();
+  toast('Preparing PDF...');
+  makeQR(d, function(qr) { _buildPDF(d, qr); });
+}
+
+function _buildPDF(d, qr) {
+  if (!window.jspdf) { toast('PDF library not ready'); return; }
+  var doc = new window.jspdf.jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+  var W = 210, H = 297, MG = 14, CW = W - MG*2;
+  var y = 0;
+
+  // helpers
+  function fc(r,g,b){ doc.setFillColor(r,g,b); }
+  function dc(r,g,b){ doc.setDrawColor(r,g,b); }
+  function tc(r,g,b){ doc.setTextColor(r,g,b); }
+  function ft(s,sz){ doc.setFont('helvetica',s); if(sz) doc.setFontSize(sz); }
+  function lw(w){ doc.setLineWidth(w); }
+  function tx(text,x,yy,opts){ doc.text(String(text),x,yy,opts||{}); }
+
+  // ── HEADER BLOCK ──────────────────────────────────
+  // Main green band
+  fc(6,78,59); doc.rect(0,0,W,58,'F');
+  // lighter accent strip at top
+  fc(4,120,87); doc.rect(0,0,W,4,'F');
+
+  // Subtle diagonal line texture on header
+  dc(5,100,75); lw(0.3);
+  for(var xi = -30; xi < W+30; xi += 10) {
+    doc.line(xi, 0, xi+40, 58);
+  }
+
+  // White logo card top-left
+  fc(255,255,255); doc.roundedRect(MG, 10, 36, 36, 4, 4, 'F');
+  if (logoB64) {
+    try { doc.addImage(logoB64,'JPEG',MG+2,12,32,32); } catch(e) {}
+  } else {
+    // medical cross in logo box
+    dc(6,78,59); lw(3);
+    doc.line(MG+18, 16, MG+18, 40);
+    doc.line(MG+8, 28, MG+28, 28);
+  }
+
+  // Shop name — bold white
+  ft('bold',16); tc(255,255,255);
+  tx(C('nm'), MG+42, 22);
+
+  // Address lines
+  ft('normal',8); tc(167,243,208);
+  tx(C('a1'), MG+42, 30);
+  tx(C('a2'), MG+42, 36.5);
+
+  // Contact
+  ft('bold',8); tc(209,250,229);
+  tx('Tel: '+C('mb')+'   Email: '+C('em'), MG+42, 43.5);
+
+  // QR code — top right, in white box
+  if (qr) {
+    fc(255,255,255); doc.roundedRect(W-MG-30, 8, 30, 30, 3, 3, 'F');
+    try { doc.addImage(qr,'PNG',W-MG-29,9,28,28); } catch(e) {}
+  }
+
+  // INVOICE label large — faint watermark style
+  ft('bold',28); tc(255,255,255);
+  doc.setTextColor(255,255,255);
+  var prevOpacity;
+  tx('INVOICE', W-MG, 50, {align:'right'});
+
+  // Invoice meta below QR
+  ft('bold',7.5); tc(167,243,208);
+  tx('No. '+d.no, W-MG, 42, {align:'right'});
+  tx(d.date+'  '+d.time, W-MG, 49, {align:'right'});
+
+  // Green-to-white gradient feel: add a lighter strip at bottom of header
+  fc(4,120,87); doc.rect(0,56,W,2,'F');
+  y = 60;
+
+  // ── PATIENT + INVOICE META ROW ─────────────────────
+  fc(245,252,248); doc.rect(0,y,W,48,'F');
+
+  // Left: BILL TO card
+  fc(255,255,255); doc.roundedRect(MG, y+5, CW*0.52-4, 38, 4, 4, 'F');
+  dc(209,250,229); lw(0.4); doc.roundedRect(MG, y+5, CW*0.52-4, 38, 4, 4, 'S');
+  // green left accent bar
+  fc(6,95,70); doc.roundedRect(MG, y+5, 4, 38, 2, 2, 'F');
+
+  ft('bold',6.5); tc(148,163,184);
+  tx('BILL TO', MG+9, y+13);
+  ft('bold',10.5); tc(15,23,42);
+  var nameStr = d.pName;
+  if (doc.getTextWidth(nameStr) > CW*0.48) nameStr = nameStr.slice(0,26)+'...';
+  tx(nameStr, MG+9, y+22);
+  ft('normal',8); tc(51,65,85);
+  var patInfo = [d.pMob, d.pAddr].filter(Boolean).join('  |  ');
+  if (patInfo) { var pi2 = doc.splitTextToSize(patInfo, CW*0.48); tx(pi2[0], MG+9, y+30); }
+  if (d.pEmail) { ft('normal',7.5); tc(100,116,139); tx(d.pEmail, MG+9, y+37.5); }
+
+  // Right: INVOICE DETAILS card
+  var rx = MG + CW*0.52 + 4;
+  var rw = CW - CW*0.52 - 4;
+  fc(255,255,255); doc.roundedRect(rx, y+5, rw, 38, 4, 4, 'F');
+  dc(209,250,229); lw(0.4); doc.roundedRect(rx, y+5, rw, 38, 4, 4, 'S');
+  fc(6,95,70); doc.roundedRect(rx+rw-4, y+5, 4, 38, 2, 2, 'F');
+
+  ft('bold',6.5); tc(148,163,184);
+  tx('INVOICE DETAILS', rx+6, y+13);
+  var metas = [
+    ['Invoice No.', '#'+d.no],
+    ['Date', d.date],
+    ['Reward Pts', d.pRew]
+  ];
+  var my = y+22;
+  metas.forEach(function(m) {
+    ft('normal',8.5); tc(100,116,139); tx(m[0], rx+6, my);
+    ft('bold',8.5); tc(15,23,42); tx(m[1], rx+rw-9, my, {align:'right'});
+    my += 8;
+  });
+
+  dc(6,95,70); lw(0.5); doc.line(0, y+47, W, y+47);
+  y += 50;
+
+  // ── PRODUCT TABLE ──────────────────────────────────
+  // Section label
+  ft('bold',8.5); tc(6,78,59);
+  tx('Rx  PRESCRIPTION / PRODUCT LIST', MG, y+5);
+  y += 9;
+
+  var prodRows = d.rows.map(function(r,i) {
+    var qty = parseFloat(r.q)||0, pr = parseFloat(r.p)||0;
+    return [pad(i+1), r.n||'-', qty.toFixed(2), 'Tk '+pr.toFixed(2), 'Tk '+(qty*pr).toFixed(2)];
+  });
+  if (!prodRows.length) prodRows = [['01','No products listed','—','—','—']];
+
+  doc.autoTable({
+    startY: y,
+    head: [['SL.','Product / Medicine','Quantity','Unit Price','Subtotal']],
+    body: prodRows,
+    margin: { left:MG, right:MG },
+    styles: {
+      font:'helvetica', fontSize:9, cellPadding:4.5,
+      textColor:[15,23,42], lineColor:[226,232,240], lineWidth:0.3,
+      fillColor:[255,255,255]
+    },
+    headStyles: {
+      fillColor:[6,78,59], textColor:[255,255,255], fontStyle:'bold',
+      fontSize:8.5, cellPadding:5, halign:'center', lineWidth:0
+    },
+    alternateRowStyles: { fillColor:[240,253,244] },
+    columnStyles: {
+      0: {cellWidth:12, halign:'center'},
+      1: {cellWidth:'auto', halign:'left'},
+      2: {cellWidth:24, halign:'center'},
+      3: {cellWidth:30, halign:'right'},
+      4: {cellWidth:30, halign:'right', fontStyle:'bold', textColor:[6,78,59]}
+    },
+    didDrawPage: function(){}
+  });
+  y = doc.lastAutoTable.finalY + 3;
+
+  // ── DOCTOR FEE ROW ─────────────────────────────────
+  if (d.df > 0) {
+    fc(235,252,243); doc.rect(MG,y,CW,10,'F');
+    dc(167,243,208); lw(0.3); doc.rect(MG,y,CW,10,'S');
+    ft('bold',8.5); tc(6,78,59);
+    tx('Doctor Consultation Fee', MG+6, y+7);
+    tx('Tk '+d.df.toFixed(2), W-MG-4, y+7, {align:'right'});
+    y += 14;
+  }
+
+  // ── PAYMENT + TOTALS ───────────────────────────────
+  y += 3;
+  var lW = 76, rW = CW-lW-4, rX = MG+lW+4;
+  var bY = y;
+
+  // LEFT payment card — amber tinted
+  fc(255,251,235); doc.roundedRect(MG, bY, lW, 44, 5, 5, 'F');
+  dc(253,230,138); lw(0.4); doc.roundedRect(MG, bY, lW, 44, 5, 5, 'S');
+  fc(217,119,6); doc.roundedRect(MG, bY, 4, 44, 2, 2, 'F');
+
+  ft('bold',6.5); tc(217,119,6);
+  tx('PAYMENT RECEIVED', MG+8, bY+9);
+  ft('normal',8.5); tc(51,65,85);
+  tx('Cash', MG+8, bY+18);
+  ft('bold',11); tc(15,23,42);
+  tx('Tk '+d.cash.toFixed(2), MG+lW-5, bY+26, {align:'right'});
+  ft('normal',7.5); tc(100,116,139);
+  tx(d.date, MG+8, bY+26);
+  dc(253,230,138); lw(0.3); doc.line(MG+6, bY+30, MG+lW-6, bY+30);
+  ft('bold',8.5); tc(6,78,59);
+  tx('Total Paid', MG+8, bY+38);
+  tx('Tk '+d.paid.toFixed(2), MG+lW-5, bY+38, {align:'right'});
+
+  // RIGHT totals card
+  var sumData = [
+    ['Total Quantity', d.qty.toFixed(2)],
+    ['Total Items', String(d.items)],
+    ['Subtotal', 'Tk '+d.sub.toFixed(2)]
+  ];
+  if (d.df > 0) sumData.push(['Doctor Fee', 'Tk '+d.df.toFixed(2)]);
+  sumData.push(['Discount (–)', 'Tk '+d.disc.toFixed(2)]);
+  var totH = sumData.length * 8 + 18;
+
+  fc(247,254,250); doc.roundedRect(rX, bY, rW, totH, 5, 5, 'F');
+  dc(167,243,208); lw(0.4); doc.roundedRect(rX, bY, rW, totH, 5, 5, 'S');
+
+  var ty = bY + 9;
+  sumData.forEach(function(row) {
+    ft('normal',8.5); tc(100,116,139); tx(row[0], rX+6, ty);
+    ft('normal',8.5); tc(15,23,42); tx(row[1], rX+rW-6, ty, {align:'right'});
+    ty += 8;
+  });
+
+  // Total pill
+  dc(6,78,59); lw(0.6); doc.line(rX+5, ty-1, rX+rW-5, ty-1); ty += 4;
+  fc(6,78,59); doc.roundedRect(rX, ty-4, rW, 14, 4, 4, 'F');
+  ft('bold',10); tc(255,255,255);
+  tx('TOTAL PAYABLE', rX+6, ty+5.5);
+  tx('Tk '+d.total.toFixed(2), rX+rW-6, ty+5.5, {align:'right'});
+
+  y = bY + Math.max(46, totH) + 8;
+
+  // ── NOTES ──────────────────────────────────────────
+  if (d.note && d.note.trim()) {
+    fc(240,253,250); doc.roundedRect(MG, y, CW, 5, 2, 2, 'F');
+    ft('bold',7); tc(6,78,59); tx('NOTES / INSTRUCTIONS', MG+4, y+3.8);
+    y += 8;
+    ft('normal',8.5); tc(51,65,85);
+    var nl = doc.splitTextToSize(d.note, CW-8);
+    tx(nl, MG+4, y);
+    y += nl.length * 5.5 + 6;
+  }
+
+  // ── FOOTER ─────────────────────────────────────────
+  y += 4;
+  // Divider
+  dc(209,250,229); lw(0.8); doc.line(MG, y, W-MG, y); y += 6;
+
+  ft('bold',9.5); tc(6,78,59);
+  tx(C('nm'), W/2, y, {align:'center'}); y += 6;
+
+  ft('normal',8); tc(100,116,139);
+  tx('For queries: \u260E '+C('mb')+'   \u2709 '+C('em'), W/2, y, {align:'center'}); y += 6;
+
+  ft('italic',8); tc(148,163,184);
+  tx(C('th'), W/2, y, {align:'center'}); y += 5;
+
+  dc(209,250,229); lw(0.8); doc.line(MG, y, W-MG, y);
+
+  // Page footer
+  ft('normal',7); tc(148,163,184);
+  tx('Invoice #'+d.no+'  |  '+d.date+'  |  Page 1', W/2, H-6, {align:'center'});
+
+  // Save
+  var fname = C('nm') + ' - ' + d.no + '.pdf';
+  doc.save(fname);
+  toast('PDF saved: ' + fname);
+}
+
+// ==============================================
+// IMAGE EXPORT — Canvas with medical BG
+// ==============================================
+function genImg(inv) {
+  var d = inv || getData();
+  toast('Generating image...');
+  makeQR(d, function(qr) { _buildImg(d, qr); });
+}
+
+function _buildImg(d, qr) {
+  // Calculate canvas height
+  var ROW_H = 38, HDR_H = 150, META_H = 120, TBL_HDR = 50;
+  var rowCount = Math.max(d.rows.length, 1);
+  var docFeeH = d.df > 0 ? 44 : 0;
+  var noteH = (d.note && d.note.trim()) ? 80 : 0;
+  var FOOTER_H = 110;
+  var TOTALS_H = 180;
+  var H = HDR_H + META_H + TBL_HDR + rowCount * ROW_H + docFeeH + TOTALS_H + noteH + FOOTER_H + 40;
+
+  var W = 900, MG = 44, CW = W - MG*2;
+  var cv = gid('CVC'); cv.width = W; cv.height = H;
+  var ctx = cv.getContext('2d');
+
+  // White bg
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,W,H);
+
+  // ── MEDICAL WATERMARK BACKGROUND ──
+  _drawMedBG(ctx, W, H);
+
+  var y = 0;
+
+  // ── HEADER ───────────────────────────────────────────
+  // Gradient header band
+  var hg = ctx.createLinearGradient(0,0,W,HDR_H);
+  hg.addColorStop(0,'#022c22'); hg.addColorStop(0.5,'#064e3b'); hg.addColorStop(1,'#065f46');
+  ctx.fillStyle = hg; ctx.fillRect(0,0,W,HDR_H);
+
+  // Top accent strip
+  ctx.fillStyle = '#047857'; ctx.fillRect(0,0,W,6);
+
+  // Subtle diagonal stripes
+  ctx.strokeStyle = 'rgba(5,100,75,0.35)'; ctx.lineWidth = 1;
+  for(var xi2 = -40; xi2 < W+40; xi2 += 14) {
+    ctx.beginPath(); ctx.moveTo(xi2,0); ctx.lineTo(xi2+70,HDR_H); ctx.stroke();
+  }
+
+  // Logo box — white rounded rect
+  _rrect(ctx, MG, 18, 90, 90, 12);
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+  if (logoB64) {
+    var limg = new Image(); limg.src = logoB64;
+    try { ctx.save(); _rrect(ctx, MG+4,22,82,82,10); ctx.clip(); ctx.drawImage(limg,MG+4,22,82,82); ctx.restore(); } catch(e) {}
+  } else {
+    ctx.strokeStyle = '#065f46'; ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.moveTo(MG+45, 32); ctx.lineTo(MG+45, 98); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(MG+12, 60); ctx.lineTo(MG+78, 60); ctx.stroke();
+  }
+
+  // Shop name
+  ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left';
+  ctx.font = 'bold 30px serif'; ctx.fillText(C('nm'), MG+104, 50);
+  ctx.font = '15px sans-serif'; ctx.fillStyle = 'rgba(167,243,208,0.9)';
+  ctx.fillText(C('a1'), MG+104, 72);
+  ctx.fillText(C('a2'), MG+104, 90);
+  ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = 'rgba(209,250,229,0.9)';
+  ctx.fillText('Tel: '+C('mb')+'   Email: '+C('em'), MG+104, 110);
+
+  // INVOICE watermark text
+  ctx.save(); ctx.globalAlpha = 0.12;
+  ctx.font = 'bold 80px serif'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'right';
+  ctx.fillText('INVOICE', W-MG, HDR_H-18);
+  ctx.restore();
+
+  // Invoice number + date
+  ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = 'rgba(167,243,208,0.95)'; ctx.textAlign = 'right';
+  ctx.fillText('No. '+d.no, W-MG-4, 50);
+  ctx.font = '13px sans-serif'; ctx.fillStyle = 'rgba(167,243,208,0.8)';
+  ctx.fillText(d.date+'  '+d.time, W-MG-4, 70);
+
+  // QR code — white box top right
+  if (qr) {
+    _rrect(ctx, W-MG-96, 12, 84, 84, 10);
+    ctx.fillStyle = '#ffffff'; ctx.fill();
+    var qi = new Image(); qi.src = qr;
+    try { ctx.drawImage(qi, W-MG-92, 16, 76, 76); } catch(e) {}
+  }
+
+  // Accent strip at base of header
+  ctx.fillStyle = '#047857'; ctx.fillRect(0, HDR_H-5, W, 5);
+  y = HDR_H;
+
+  // ── PATIENT + META ─────────────────────────────────
+  ctx.fillStyle = '#f3faf6'; ctx.fillRect(0, y, W, META_H);
+
+  // Patient card
+  var card1W = CW*0.52;
+  _rrect(ctx, MG, y+10, card1W, META_H-20, 10);
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+  ctx.strokeStyle = 'rgba(209,250,229,0.8)'; ctx.lineWidth = 1; ctx.stroke();
+  // green left bar
+  _rrect(ctx, MG, y+10, 7, META_H-20, 4);
+  ctx.fillStyle = '#065f46'; ctx.fill();
+
+  ctx.font = 'bold 12px sans-serif'; ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'left';
+  ctx.fillText('BILL TO', MG+18, y+32);
+  ctx.font = 'bold 20px sans-serif'; ctx.fillStyle = '#0f172a';
+  ctx.fillText(d.pName.slice(0,30), MG+18, y+58);
+  ctx.font = '14px sans-serif'; ctx.fillStyle = '#334155';
+  var pl2 = [d.pMob, d.pAddr].filter(Boolean).join('  |  ');
+  if(pl2) ctx.fillText(pl2.slice(0,50), MG+18, y+78);
+  if(d.pEmail) { ctx.font='12px sans-serif'; ctx.fillStyle='#94a3b8'; ctx.fillText(d.pEmail, MG+18, y+98); }
+
+  // Invoice meta card
+  var rx2 = MG + CW*0.52 + 10;
+  var rw2 = CW - CW*0.52 - 10;
+  _rrect(ctx, rx2, y+10, rw2, META_H-20, 10);
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+  ctx.strokeStyle = 'rgba(209,250,229,0.8)'; ctx.lineWidth = 1; ctx.stroke();
+  _rrect(ctx, rx2+rw2-7, y+10, 7, META_H-20, 4);
+  ctx.fillStyle = '#065f46'; ctx.fill();
+
+  ctx.font = 'bold 12px sans-serif'; ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'left';
+  ctx.fillText('INVOICE DETAILS', rx2+14, y+32);
+  var invMeta2 = [['Invoice No.','#'+d.no],['Date',d.date],['Reward Pts',d.pRew]];
+  var my2 = y+56;
+  invMeta2.forEach(function(m) {
+    ctx.font = '14px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+    ctx.fillText(m[0], rx2+14, my2);
+    ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = '#0f172a'; ctx.textAlign = 'right';
+    ctx.fillText(m[1], rx2+rw2-16, my2);
+    my2 += 22;
+  });
+
+  // separator line
+  ctx.strokeStyle = 'rgba(6,95,70,0.15)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, y+META_H-2); ctx.lineTo(W, y+META_H-2); ctx.stroke();
+  y += META_H;
+
+  // ── PRODUCT TABLE ───────────────────────────────────
+  // Section heading
+  ctx.font = 'bold 16px sans-serif'; ctx.fillStyle = '#064e3b'; ctx.textAlign = 'left';
+  ctx.fillText('Rx  PRESCRIPTION / PRODUCT LIST', MG, y+28);
+  y += 40;
+
+  // Table header
+  var COLS = [
+    {label:'SL.',    w:50,  align:'center'},
+    {label:'Product / Medicine Name', w:CW-50-90-110-90, align:'left'},
+    {label:'Qty',    w:90,  align:'center'},
+    {label:'Unit Price', w:110, align:'right'},
+    {label:'Subtotal',   w:90,  align:'right'}
+  ];
+  ctx.fillStyle = '#064e3b'; ctx.fillRect(MG, y, CW, 46);
+  ctx.font = 'bold 13px sans-serif'; ctx.fillStyle = '#ffffff';
+  var cx3 = MG;
+  COLS.forEach(function(col) {
+    var tx2 = col.align==='center' ? cx3+col.w/2 : col.align==='right' ? cx3+col.w-10 : cx3+10;
+    ctx.textAlign = col.align==='center' ? 'center' : col.align;
+    ctx.fillText(col.label, tx2, y+29);
+    cx3 += col.w;
+  });
+  y += 46;
+
+  // Table rows
+  var prodList2 = d.rows.length ? d.rows : [{n:'No products',q:'0',p:'0'}];
+  prodList2.forEach(function(r, ri) {
+    var qty2 = parseFloat(r.q)||0, pr2 = parseFloat(r.p)||0;
+    var sub2 = (qty2*pr2).toFixed(2);
+    ctx.fillStyle = ri%2===0 ? '#f0fdf4' : '#ffffff';
+    ctx.fillRect(MG, y, CW, ROW_H);
+    ctx.strokeStyle = 'rgba(209,250,229,0.5)'; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(MG,y+ROW_H); ctx.lineTo(MG+CW,y+ROW_H); ctx.stroke();
+
+    var vals = [pad(ri+1), r.n||'-', qty2.toFixed(2), 'Tk '+pr2.toFixed(2), 'Tk '+sub2];
+    var cx4 = MG;
+    vals.forEach(function(v, vi) {
+      var col = COLS[vi];
+      ctx.font = vi===4 ? 'bold 13px sans-serif' : '13px sans-serif';
+      ctx.fillStyle = vi===4 ? '#065f46' : vi===0 ? '#64748b' : '#0f172a';
+      ctx.textAlign = col.align==='center' ? 'center' : col.align;
+      var tx3 = col.align==='center' ? cx4+col.w/2 : col.align==='right' ? cx4+col.w-10 : cx4+10;
+      // truncate if too long
+      var str2 = String(v);
+      if(vi===1) { while(ctx.measureText(str2).width > col.w-20 && str2.length>0) str2=str2.slice(0,-1); if(str2!==String(v)) str2+='…'; }
+      ctx.fillText(str2, tx3, y+24);
+      cx4 += col.w;
+    });
+    y += ROW_H;
+  });
+
+  // Table bottom border
+  ctx.strokeStyle = '#064e3b'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(MG,y); ctx.lineTo(MG+CW,y); ctx.stroke();
+  y += 10;
+
+  // ── DOCTOR FEE ─────────────────────────────────────
+  if (d.df > 0) {
+    ctx.fillStyle = '#ecfdf5';
+    ctx.fillRect(MG, y, CW, 38);
+    ctx.strokeStyle = 'rgba(167,243,208,0.6)'; ctx.lineWidth = 1; ctx.strokeRect(MG, y, CW, 38);
+    ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = '#065f46'; ctx.textAlign = 'left';
+    ctx.fillText('Doctor Consultation Fee', MG+12, y+24);
+    ctx.textAlign = 'right'; ctx.fillText('Tk '+d.df.toFixed(2), MG+CW-12, y+24);
+    y += docFeeH;
+  }
+
+  // ── PAYMENT + TOTALS ───────────────────────────────
+  y += 8;
+  var LW = (CW/2)-8, RW = (CW/2)-8, RX = MG+CW/2+8;
+
+  // Payment card
+  var pg2 = ctx.createLinearGradient(MG, y, MG+LW, y);
+  pg2.addColorStop(0,'#fffbeb'); pg2.addColorStop(1,'#fef3c7');
+  _rrect(ctx, MG, y, LW, 118, 10);
+  ctx.fillStyle = pg2; ctx.fill();
+  ctx.strokeStyle = 'rgba(253,230,138,0.8)'; ctx.lineWidth = 1; ctx.stroke();
+  _rrect(ctx, MG, y, 8, 118, 5);
+  ctx.fillStyle = '#d97706'; ctx.fill();
+
+  ctx.font = 'bold 11px sans-serif'; ctx.fillStyle = '#d97706'; ctx.textAlign = 'left';
+  ctx.fillText('PAYMENT RECEIVED', MG+18, y+26);
+  ctx.font = '14px sans-serif'; ctx.fillStyle = '#334155';
+  ctx.fillText('Method: Cash', MG+18, y+48);
+  ctx.font = 'bold 22px sans-serif'; ctx.fillStyle = '#0f172a';
+  ctx.fillText('Tk '+d.cash.toFixed(2), MG+18, y+76);
+  ctx.font = '12px sans-serif'; ctx.fillStyle = '#94a3b8';
+  ctx.fillText(d.date, MG+18, y+94);
+  ctx.strokeStyle='rgba(253,230,138,0.8)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(MG+12,y+100); ctx.lineTo(MG+LW-12,y+100); ctx.stroke();
+  ctx.font='bold 14px sans-serif'; ctx.fillStyle='#065f46';
+  ctx.fillText('Total Paid', MG+18, y+114);
+  ctx.textAlign='right'; ctx.fillText('Tk '+d.paid.toFixed(2), MG+LW-12, y+114);
+
+  // Totals card
+  var sumData2 = [['Total Quantity',d.qty.toFixed(2)],['Total Items',String(d.items)],['Subtotal','Tk '+d.sub.toFixed(2)]];
+  if(d.df>0) sumData2.push(['Doctor Fee','Tk '+d.df.toFixed(2)]);
+  sumData2.push(['Discount (–)','Tk '+d.disc.toFixed(2)]);
+  var tH = sumData2.length*30+60;
+
+  _rrect(ctx, RX, y, RW, tH, 10);
+  ctx.fillStyle = '#f7fffe'; ctx.fill();
+  ctx.strokeStyle = 'rgba(167,243,208,0.8)'; ctx.lineWidth = 1; ctx.stroke();
+
+  var ty3 = y+28;
+  sumData2.forEach(function(row) {
+    ctx.font = '14px sans-serif'; ctx.fillStyle = '#64748b'; ctx.textAlign = 'left';
+    ctx.fillText(row[0], RX+14, ty3);
+    ctx.font = 'bold 14px sans-serif'; ctx.fillStyle = '#0f172a'; ctx.textAlign = 'right';
+    ctx.fillText(row[1], RX+RW-14, ty3);
+    ty3 += 30;
+  });
+
+  ctx.strokeStyle = '#065f46'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(RX+8,ty3-6); ctx.lineTo(RX+RW-8,ty3-6); ctx.stroke();
+
+  // Total pill
+  var totG = ctx.createLinearGradient(RX, ty3, RX+RW, ty3+50);
+  totG.addColorStop(0,'#064e3b'); totG.addColorStop(1,'#065f46');
+  _rrect(ctx, RX, ty3, RW, 50, 10);
+  ctx.fillStyle = totG; ctx.fill();
+  ctx.font = 'bold 15px sans-serif'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left';
+  ctx.fillText('TOTAL PAYABLE', RX+14, ty3+30);
+  ctx.textAlign = 'right'; ctx.fillText('Tk '+d.total.toFixed(2), RX+RW-14, ty3+30);
+
+  y = y + Math.max(120, tH+2) + 14;
+
+  // ── NOTES ──────────────────────────────────────────
+  if (d.note && d.note.trim()) {
+    _rrect(ctx, MG, y, CW, 70, 8);
+    ctx.fillStyle = '#f0fdf4'; ctx.fill();
+    ctx.strokeStyle = 'rgba(167,243,208,0.5)'; ctx.lineWidth = 1; ctx.stroke();
+    _rrect(ctx, MG, y, 7, 70, 4); ctx.fillStyle = '#065f46'; ctx.fill();
+    ctx.font = 'bold 13px sans-serif'; ctx.fillStyle = '#065f46'; ctx.textAlign = 'left';
+    ctx.fillText('NOTES:', MG+16, y+26);
+    ctx.font = '13px sans-serif'; ctx.fillStyle = '#334155';
+    ctx.fillText(d.note.slice(0,90)+(d.note.length>90?'…':''), MG+16, y+50);
+    y += noteH;
+  }
+
+  // ── FOOTER ─────────────────────────────────────────
+  y += 10;
+  // Divider
+  ctx.strokeStyle = 'rgba(6,95,70,0.2)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(MG,y); ctx.lineTo(MG+CW,y); ctx.stroke(); y += 16;
+
+  var fg3 = ctx.createLinearGradient(0,y,W,H);
+  fg3.addColorStop(0,'#064e3b'); fg3.addColorStop(1,'#065f46');
+  ctx.fillStyle = fg3; ctx.fillRect(0, y, W, H-y);
+
+  // stripe texture
+  ctx.strokeStyle = 'rgba(5,100,75,0.3)'; ctx.lineWidth = 1;
+  for(var xi3=-20; xi3<W+20; xi3+=14){ ctx.beginPath(); ctx.moveTo(xi3,y); ctx.lineTo(xi3+40,H); ctx.stroke(); }
+
+  ctx.font = 'bold 20px serif'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+  ctx.fillText(C('nm'), W/2, y+34);
+  ctx.font = '14px sans-serif'; ctx.fillStyle = 'rgba(167,243,208,0.9)';
+  ctx.fillText('For queries:  \u260E '+C('mb')+'   \u2709 '+C('em'), W/2, y+56);
+  ctx.font = 'italic 13px serif'; ctx.fillStyle = 'rgba(167,243,208,0.7)';
+  ctx.fillText(C('th'), W/2, y+76);
+  ctx.font = '11px sans-serif'; ctx.fillStyle = 'rgba(167,243,208,0.5)';
+  ctx.fillText('Invoice #'+d.no+'  |  '+d.date, W/2, y+96);
+
+  // Download
+  var a = document.createElement('a');
+  a.download = C('nm')+' - '+d.no+'.png';
+  a.href = cv.toDataURL('image/png', 1.0);
+  a.click();
+  toast('Image saved!');
+}
+
+// Medical watermark background
+function _drawMedBG(ctx, W, H) {
+  ctx.save(); ctx.globalAlpha = 0.035; ctx.strokeStyle = '#065f46'; ctx.fillStyle = '#065f46';
+
+  function cc(x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke(); }
+
+  // Large stethoscope circle — top left
+  ctx.lineWidth=2.5; cc(90,100,58); cc(90,100,44);
+  ctx.beginPath(); ctx.moveTo(90,158); ctx.lineTo(90,220); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(90,220); ctx.quadraticCurveTo(90,240,110,240); ctx.quadraticCurveTo(130,240,130,220); ctx.stroke();
+
+  // Medical cross — top right
+  ctx.lineWidth=3.5;
+  ctx.fillRect(W-130,40,60,18); ctx.fillRect(W-111,30,22,38);
+
+  // Pill shapes
+  function pill(x,y,rx2,ry2,angle2){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(angle2);
+    ctx.beginPath(); ctx.ellipse(0,0,rx2,ry2,0,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-rx2,0); ctx.lineTo(rx2,0); ctx.stroke();
+    ctx.restore();
+  }
+  ctx.lineWidth=2;
+  pill(W-70,H*0.35,34,16,0.6); pill(55,H*0.42,28,13,-0.4);
+  pill(W-90,H*0.58,26,12,1.1); pill(65,H*0.68,30,14,0.8);
+  pill(W/2+50,H*0.25,22,10,-0.2);
+
+  // ECG line — centre left
+  ctx.lineWidth=2;
+  var ex=W*0.06, ey=H*0.55;
+  ctx.beginPath();
+  ctx.moveTo(ex,ey); ctx.lineTo(ex+50,ey);
+  ctx.lineTo(ex+65,ey-40); ctx.lineTo(ex+78,ey+40);
+  ctx.lineTo(ex+95,ey-60); ctx.lineTo(ex+112,ey+30);
+  ctx.lineTo(ex+125,ey); ctx.lineTo(ex+190,ey);
+  ctx.stroke();
+
+  // DNA helix — right side
+  ctx.lineWidth=1.8;
+  for(var di=0;di<10;di++){
+    var dhy=H*0.22+di*28;
+    ctx.beginPath(); ctx.moveTo(W*0.87,dhy); ctx.bezierCurveTo(W*0.905,dhy+7,W*0.935,dhy+14,W*0.96,dhy+21); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W*0.96,dhy); ctx.bezierCurveTo(W*0.935,dhy+7,W*0.905,dhy+14,W*0.87,dhy+21); ctx.stroke();
+    if(di%2===0){ ctx.beginPath(); ctx.moveTo(W*0.885,dhy+10); ctx.lineTo(W*0.945,dhy+10); ctx.stroke(); }
+  }
+
+  // Caduceus
+  ctx.lineWidth=2; var csx=W/2-40, csy=H*0.72;
+  ctx.beginPath(); ctx.moveTo(csx,csy-60); ctx.lineTo(csx,csy+60); ctx.stroke();
+  for(var ci=0;ci<8;ci++){
+    var ca=ci/8*Math.PI*4;
+    ctx.beginPath(); ctx.arc(csx+Math.sin(ca)*24,csy-52+ci*14,3,0,Math.PI*2); ctx.stroke();
+  }
+
+  // Mortar + pestle
+  ctx.lineWidth=2; ctx.beginPath(); ctx.ellipse(W*0.09,H*0.82,48,26,0,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*0.09-12,H*0.82-26); ctx.lineTo(W*0.09-12,H*0.82-52); ctx.lineTo(W*0.09+26,H*0.82-52); ctx.stroke();
+
+  // Leaf / herb
+  ctx.lineWidth=1.5;
+  var lx=W*0.88,ly=H*0.78;
+  ctx.beginPath(); ctx.moveTo(lx,ly); ctx.bezierCurveTo(lx-30,ly-40,lx-60,ly-10,lx,ly+10); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(lx,ly); ctx.bezierCurveTo(lx+30,ly-40,lx+60,ly-10,lx,ly+10); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(lx,ly-40); ctx.lineTo(lx,ly+10); ctx.stroke();
+
+  ctx.restore();
+}
+
+function _rrect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
 
 // ==============================================
 // WHATSAPP
@@ -794,31 +1542,195 @@ function genImg(inv) { var d = inv || getData(); populateInvoice(d); toast('Gene
 function doWA() {
   var d = getData();
   var lines = d.rows.map(function(r,i){ return (i+1)+'. *'+r.n+'*  Qty:'+r.q+'  @Tk'+r.p+'  =Tk'+((parseFloat(r.q)||0)*(parseFloat(r.p)||0)).toFixed(2); }).join('\n');
-  var msg = '*'+C('nm')+'*\n'+C('a1')+' '+C('a2')+'\nTel: '+C('mb')+'\n━━━━━━━━━━━━━━━━\n*Invoice #'+d.no+'*  |  '+d.date+'  '+d.time+'\n━━━━━━━━━━━━━━━━\nPatient: *'+d.pName+'*\n'+(d.pMob?'Mobile: '+d.pMob+'\n':'')+(d.pAddr?'Address: '+d.pAddr+'\n':'')+'Reward Pts: '+d.pRew+'\n━━━━━━━━━━━━━━━━\n*Products:*\n'+(lines||'—')+'\n━━━━━━━━━━━━━━━━\nSubtotal: Tk '+d.sub.toFixed(2)+'\n'+(d.df>0?'Doctor Fee: Tk '+d.df.toFixed(2)+'\n':'')+'Discount: -Tk '+d.disc.toFixed(2)+'\n*TOTAL: Tk '+d.total.toFixed(2)+'*\nPaid: Tk '+d.paid.toFixed(2)+(d.note?'\n\nNote: '+d.note:'')+'\n━━━━━━━━━━━━━━━━\n_'+C('th')+'_';
+  var msg = '*'+C('nm')+'*\n'+C('a1')+'\nTel: '+C('mb')
+    +'\n━━━━━━━━━━━━━━━━\n*Invoice #'+d.no+'*  |  '+d.date+'  '+d.time
+    +'\n━━━━━━━━━━━━━━━━\nPatient: *'+d.pName+'*\n'+(d.pMob?'Mobile: '+d.pMob+'\n':'')+(d.pAddr?'Address: '+d.pAddr+'\n':'')+'Reward Pts: '+d.pRew
+    +'\n━━━━━━━━━━━━━━━━\n*Products:*\n'+(lines||'—')
+    +'\n━━━━━━━━━━━━━━━━\nSubtotal: Tk '+d.sub.toFixed(2)+'\n'+(d.df>0?'Doctor Fee: Tk '+d.df.toFixed(2)+'\n':'')+'Discount: -Tk '+d.disc.toFixed(2)+'\n*TOTAL: Tk '+d.total.toFixed(2)+'*\nPaid: Tk '+d.paid.toFixed(2)
+    +(d.note?'\n\nNote: '+d.note:'')
+    +'\n━━━━━━━━━━━━━━━━\n_'+C('th')+'_';
   window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 }
 
 // ==============================================
 // SAVE / CLEAR
 // ==============================================
-function saveInv() { var d = getData(); localStorage.setItem('nhp_no', parseInt(d.no)||1); hist.unshift(d); if(hist.length>300) hist=hist.slice(0,300); localStorage.setItem('nhp_h', JSON.stringify(hist)); saveToCloud(d); updBadge(); toast('Invoice #'+d.no+' saved ✅'); setTimeout(function(){ _reset(); }, 700); }
-function clearForm() { DL.show('🔄','Clear Form?','All unsaved data will be lost. Start a new invoice?', false, function(){ _reset(); }); }
-function _reset() { ['cn','ca','cm','ce','itn'].forEach(function(id){ var e=gid(id); if(e) e.value=''; }); gid('crw').value='0'; gid('disc').value='0'; gid('cash').value='0'; gid('df').value='0'; setNo(); setNow(); rows=[]; _rid=0; addRow(); addRow(); window.scrollTo(0,0); toast('Form cleared'); }
+function saveInv() {
+  var d = getData();
+  localStorage.setItem('nhp_no', parseInt(d.no)||1);
+  hist.unshift(d);
+  if(hist.length>300) hist=hist.slice(0,300);
+  localStorage.setItem('nhp_h', JSON.stringify(hist));
+  // Cloud sync
+  saveToCloud(d);
+  updBadge(); toast('Invoice #'+d.no+' saved ✅');
+  setTimeout(function(){ _reset(); }, 700);
+}
+
+function clearForm() {
+  DL.show('🔄','Clear Form?','All unsaved data will be lost. Start a new invoice?', false, function(){ _reset(); });
+}
+
+function _reset() {
+  ['cn','ca','cm','ce','itn'].forEach(function(id){ var e=gid(id); if(e) e.value=''; });
+  gid('crw').value='0'; gid('disc').value='0'; gid('cash').value='0'; gid('df').value='0';
+  setNo(); setNow(); rows=[]; _rid=0;
+  addRow(); addRow(); window.scrollTo(0,0); toast('Form cleared');
+}
 
 // ==============================================
 // HISTORY
 // ==============================================
-function updBadge() { var b = gid('NBG'); if(hist.length){ b.textContent=hist.length>99?'99+':hist.length; b.style.display='flex'; } else { b.style.display='none'; } }
+function updBadge() {
+  var b = gid('NBG');
+  if(hist.length){ b.textContent=hist.length>99?'99+':hist.length; b.style.display='flex'; }
+  else { b.style.display='none'; }
+}
+
 function renderHist() { _renderList(gid('HL2'), hist); }
+
 function _renderList(container, list) {
   container.innerHTML = '';
-  if (!list.length) { container.innerHTML = '<div class="est"><div class="esic">📂</div>No invoices saved yet.</div>'; return; }
+  if (!list.length) {
+    container.innerHTML = '<div class="est"><div class="esic">📂</div>No invoices saved yet.</div>';
+    return;
+  }
   list.forEach(function(inv) {
     var gi = hist.indexOf(inv);
     var src = inv.rows || inv.prods || inv.products || [];
     var tags = src.slice(0,3).map(function(r){ return '<span class="htg">'+xd(r.n)+'</span>'; }).join('');
     if(src.length>3) tags += '<span class="htg">+' +(src.length-3)+'</span>';
-    var card = document.createElement('div'); card.className = 'hcard';
-    card.innerHTML = '<div class="hct"><div><div class="hno">Invoice #'+xd(inv.no||inv.invNo||'')+'</div><div class="hdt">'+xd(inv.date||'')+'  '+xd(inv.time||'')+'</div></div><div class="htb">Tk '+Number(inv.total||0).toFixed(2)+'</div></div><div class="hcm"><div class="hp">'+xd(inv.pName||inv.cName||'Patient')+'</div><div class="hm">'+((inv.pMob||inv.cMobile)?'<span>&#128222; '+xd(inv.pMob||inv.cMobile||'')+'</span>':'')+((inv.pAddr||inv.cAddr)?'<span>&#128205; '+xd(inv.pAddr||inv.cAddr||'')+'</span>':'')+(src.length?'<span>&#128138; '+src.length+' items</span>':'')+'</div>'+(tags?'<div class="htgs">'+tags+'</div>':'')+'</div><div class="hcb"><button class="hfb hfp">&#128196; PDF</button><button class="hfb hfi">&#128444; Image</button><button class="hfb hfe">&#9999; Edit</button><button class="hfb hfd">&#128465; Delete</button></div>';
+
+    var card = document.createElement('div');
+    card.className = 'hcard';
+    card.innerHTML =
+      '<div class="hct">'
+        +'<div><div class="hno">Invoice #'+xd(inv.no||inv.invNo||'')+'</div><div class="hdt">'+xd(inv.date||'')+'  '+xd(inv.time||'')+'</div></div>'
+        +'<div class="htb">Tk '+Number(inv.total||0).toFixed(2)+'</div>'
+      +'</div>'
+      +'<div class="hcm">'
+        +'<div class="hp">'+xd(inv.pName||inv.cName||'Patient')+'</div>'
+        +'<div class="hm">'
+          +((inv.pMob||inv.cMobile)?'<span>&#128222; '+xd(inv.pMob||inv.cMobile||'')+'</span>':'')
+          +((inv.pAddr||inv.cAddr)?'<span>&#128205; '+xd(inv.pAddr||inv.cAddr||'')+'</span>':'')
+          +(src.length?'<span>&#128138; '+src.length+' items</span>':'')
+        +'</div>'
+        +(tags?'<div class="htgs">'+tags+'</div>':'')
+      +'</div>'
+      +'<div class="hcb">'
+        +'<button class="hfb hfp">&#128196; PDF</button>'
+        +'<button class="hfb hfi">&#128444; Image</button>'
+        +'<button class="hfb hfe">&#9999; Edit</button>'
+        +'<button class="hfb hfd">&#128465; Delete</button>'
+      +'</div>';
+
+    // Attach events via addEventListener — safe with closures
     (function(idx, invData) {
-      card
+      card.querySelector('.hfp').addEventListener('click', function(){ genPDF(invData); });
+      card.querySelector('.hfi').addEventListener('click', function(){ genImg(invData); });
+      card.querySelector('.hfe').addEventListener('click', function(){ _editInv(idx); });
+      card.querySelector('.hfd').addEventListener('click', function(){ _delInv(idx); });
+    })(gi, inv);
+
+    container.appendChild(card);
+  });
+}
+
+function _delInv(i) {
+  if(!hist[i]){ toast('Not found'); return; }
+  var invNo2 = hist[i].no || hist[i].invNo;
+  DL.show('🗑️', 'Delete Invoice #'+invNo2+'?', 'Patient: '+hist[i].pName+'. This cannot be undone.', true, function(){
+    hist.splice(i,1);
+    localStorage.setItem('nhp_h', JSON.stringify(hist));
+    deleteFromCloud(invNo2);
+    updBadge(); renderHist(); toast('Invoice deleted');
+  });
+}
+
+function _editInv(i) {
+  var inv = hist[i]; if(!inv){ toast('Not found'); return; }
+  gid('ino').value = inv.no || inv.invNo || '';
+  gid('idt').value = inv.date || '';
+  gid('itm').value = inv.time || '';
+  gid('itn').value = inv.note || '';
+  gid('cn').value  = inv.pName || inv.cName || '';
+  gid('ca').value  = inv.pAddr || inv.cAddr || '';
+  gid('cm').value  = inv.pMob  || inv.cMobile || '';
+  gid('ce').value  = inv.pEmail|| inv.cEmail || '';
+  gid('crw').value = inv.pRew  || inv.cReward || '0';
+  gid('disc').value= String(inv.disc || inv.discount || '0');
+  gid('cash').value= String(inv.cash || '0');
+  gid('df').value  = String(inv.df || inv.doctorFee || '0');
+  var src = inv.rows || inv.prods || inv.products || [];
+  rows = []; _rid = 0;
+  src.forEach(function(r){ addRow(r.n||'', r.q||'', r.p||''); });
+  if(!rows.length){ addRow(); addRow(); } else { renderRows(); }
+  goPage('new', gid('nbn'));
+  window.scrollTo(0,0); toast('Invoice #'+inv.no+' loaded');
+}
+
+// ==============================================
+// SEARCH
+// ==============================================
+function doSearch() {
+  var q = (gid('srch').value||'').trim().toLowerCase();
+  var res = gid('SR'), cnt = gid('scnt');
+  if(!q){
+    res.innerHTML='<div class="est"><div class="esic">🔍</div>Search by name, invoice no., mobile or address.</div>';
+    cnt.textContent=''; return;
+  }
+  var found = hist.filter(function(inv){
+    return (inv.pName||inv.cName||'').toLowerCase().includes(q)
+      ||(inv.no||inv.invNo||'').toLowerCase().includes(q)
+      ||(inv.pMob||inv.cMobile||'').toLowerCase().includes(q)
+      ||(inv.pAddr||inv.cAddr||'').toLowerCase().includes(q)
+      ||(inv.pEmail||inv.cEmail||'').toLowerCase().includes(q);
+  });
+  cnt.textContent = found.length+' result'+(found.length!==1?'s':'')+' found';
+  _renderList(res, found);
+}
+
+// ==============================================
+// START — Dynamic Firebase Loader
+// ==============================================
+function _startApp() {
+  if (typeof firebase !== 'undefined') {
+    initFirebase();
+    return;
+  }
+  // Firebase not yet available — load dynamically
+  var FB_VER = '10.7.1';
+  var scripts = [
+    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-app-compat.min.js',
+    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-auth-compat.min.js',
+    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-firestore-compat.min.js'
+  ];
+  var loaded = 0;
+  var failed = 0;
+  function onLoad() {
+    loaded++;
+    if (loaded === scripts.length) initFirebase();
+  }
+  function onError(src) {
+    failed++;
+    console.error('Failed to load:', src);
+    if (failed === scripts.length) {
+      // All failed — offline mode
+      toast('Internet নেই — offline mode চালু হচ্ছে');
+      hideLoginScreen();
+      runApp();
+    }
+  }
+  scripts.forEach(function(src) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = onLoad;
+    s.onerror = function(){ onError(src); };
+    document.head.appendChild(s);
+  });
+}
+
+window.addEventListener('load', _startApp);
+</script>
+</body>
+</html>
