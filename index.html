@@ -199,7 +199,50 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 .inv-footer .contact-line { font-size: 10px; color: #6B7280; margin-bottom: 2px; }
 .inv-footer .thank-you { font-size: 10.5px; color: var(--primary); font-weight: 600; margin-top: 6px; font-style: italic; }
 .inv-qr { position: absolute; bottom: 16px; right: 16px; opacity: 0.8; }
+
+/* ── LOGIN SCREEN ── */
+.lscr{position:fixed;inset:0;z-index:10000;background:linear-gradient(160deg,#022c22 0%,#064e3b 50%,#065f46 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+.lbox{background:#fff;border-radius:24px;width:100%;max-width:360px;overflow:hidden;box-shadow:0 28px 64px rgba(0,0,0,.3);animation:dpop .3s ease}
+.ltop{padding:36px 28px 24px;text-align:center;background:linear-gradient(160deg,#064e3b,#065f46)}
+.lico{font-size:44px;margin-bottom:12px}
+.lshop{font-family:'Libre Baskerville',serif;font-size:1.2rem;color:#fff;font-weight:700;margin-bottom:4px}
+.lsub{font-size:.78rem;color:rgba(209,250,229,.8)}
+.lbod{padding:28px 24px 24px}
+.lbod h2{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:#0f172a;margin-bottom:6px}
+.lbod p{font-size:.82rem;color:#64748b;line-height:1.5;margin-bottom:22px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:14px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;color:#0f172a;transition:all .2s;margin-bottom:10px}
+.gbtn:hover{background:#f8fafc;border-color:#94a3b8}
+.gbtn:active{transform:scale(.98)}
+.gico{width:22px;height:22px;flex-shrink:0}
+.lnote{font-size:.72rem;color:#94a3b8;text-align:center;line-height:1.5}
+/* ── USER BAR ── */
+.ubar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:9px;padding:5px 9px;cursor:pointer;border:1px solid rgba(255,255,255,.15)}
+.uavt{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.uname{font-size:.72rem;color:rgba(255,255,255,.9);font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uarr{font-size:.65rem;color:rgba(255,255,255,.6)}
+/* ── SYNC INDICATOR ── */
+.syncbar{display:none;position:fixed;top:58px;left:0;right:0;z-index:300;background:#065f46;color:rgba(209,250,229,.9);font-size:.75rem;padding:6px 14px;text-align:center;font-weight:500}
+.syncbar.on{display:block}
+/* ── SETUP GUIDE ── */
+.setup-ov{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.setup-ov.on{display:flex}
+.setup-box{background:#fff;border-radius:20px;width:100%;max-width:480px;padding:24px;margin:auto}
+.setup-box h2{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:#064e3b;margin-bottom:4px}
+.setup-box p{font-size:.82rem;color:#64748b;margin-bottom:16px;line-height:1.5}
+.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.stepn{width:26px;height:26px;border-radius:50%;background:#064e3b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.stepc{flex:1}
+.stepc strong{display:block;font-size:.85rem;color:#0f172a;margin-bottom:3px}
+.stepc span{font-size:.78rem;color:#64748b;line-height:1.5}
+.stepc code{background:#f0fdf4;color:#065f46;padding:2px 6px;border-radius:5px;font-size:.76rem;font-family:monospace;display:block;margin-top:4px;word-break:break-all}
+.cfg-inp{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.86rem;color:#0f172a;outline:none;margin-bottom:8px}
+.cfg-inp:focus{border-color:#047857;box-shadow:0 0 0 3px rgba(4,120,87,.1)}
 </style>
+
+  <!-- Firebase v9 compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -207,6 +250,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
 <div class="ahdr">
   <div class="hlogo" id="HL">🌿</div>
   <div class="htxt"><h1 id="HN">Nishat Homeo Pharmacy</h1><p>Invoice Management System</p></div>
+  <div id="UBAR" style="display:none"><div class="ubar" onclick="showUserMenu()"><img class="uavt" id="UAVT" src=""/><span class="uname" id="UNMS"></span><span class="uarr">▾</span></div></div>
 </div>
 
 <div class="main">
@@ -381,9 +425,272 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min
   </div>
 </div>
 
+<!-- LOGIN SCREEN -->
+<div class="lscr" id="LSCR">
+  <div class="lbox">
+    <div class="ltop">
+      <div class="lico">🌿</div>
+      <div class="lshop" id="LNMS">Nishat Homeo Pharmacy</div>
+      <div class="lsub">Invoice Management System</div>
+    </div>
+    <div class="lbod">
+      <h2>Welcome Back!</h2>
+      <p>Sign in with your Google account to access your invoices from any device — securely stored in the cloud.</p>
+      <button class="gbtn" id="GBTN" onclick="signInGoogle()">
+        <svg class="gico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+      <p class="lnote">Your data is securely synced with Google Firebase.<br/>Works on all your devices.</p>
+      <div style="margin-top:14px;border-top:1px solid #f1f5f9;padding-top:14px;text-align:center">
+        <button onclick="showSetup()" style="background:none;border:none;color:#94a3b8;font-size:.75rem;cursor:pointer;font-family:DM Sans,sans-serif;text-decoration:underline">⚙️ Configure Firebase (First-time setup)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SYNC STATUS BAR -->
+<div class="syncbar" id="SBAR">⏳ Syncing with cloud...</div>
+
+<!-- FIREBASE SETUP GUIDE -->
+<div class="setup-ov" id="SETUP">
+  <div class="setup-box">
+    <h2>🔧 Firebase Setup Guide</h2>
+    <p>One-time setup (5 minutes). Create a free Firebase project to enable cloud sync.</p>
+    <div class="step"><div class="stepn">1</div><div class="stepc"><strong>Create Firebase Project</strong><span>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:#065f46">console.firebase.google.com</a> → Add project → Name it "Nishat Homeo"</span></div></div>
+    <div class="step"><div class="stepn">2</div><div class="stepc"><strong>Enable Google Sign-In</strong><span>Authentication → Sign-in method → Google → Enable → Save</span></div></div>
+    <div class="step"><div class="stepn">3</div><div class="stepc"><strong>Create Firestore Database</strong><span>Firestore Database → Create database → Start in production mode → Choose region (asia-south1) → Done</span></div></div>
+    <div class="step"><div class="stepn">4</div><div class="stepc"><strong>Add Firestore Security Rules</strong><span>Firestore → Rules → Replace with:</span><code>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth.uid == userId;
+    }
+  }
+}</code></div></div>
+    <div class="step"><div class="stepn">5</div><div class="stepc"><strong>Get Firebase Config</strong><span>Project Settings → Your apps → Add app (Web) → Register → Copy the config values below</span></div></div>
+    <div class="step"><div class="stepn">6</div><div class="stepc"><strong>Add Authorized Domain</strong><span>Authentication → Settings → Authorized domains → Add your GitHub Pages URL (e.g. yourname.github.io)</span></div></div>
+    
+    <p style="margin-top:4px;margin-bottom:12px;font-weight:600;color:#0f172a;font-size:.85rem">Paste your Firebase config values:</p>
+    <input class="cfg-inp" id="fb-aid" placeholder="apiKey (AIzaSy...)"/>
+    <input class="cfg-inp" id="fb-aid2" placeholder="authDomain (your-project.firebaseapp.com)"/>
+    <input class="cfg-inp" id="fb-pid" placeholder="projectId (your-project-id)"/>
+    <input class="cfg-inp" id="fb-sid" placeholder="storageBucket (your-project.appspot.com)"/>
+    <input class="cfg-inp" id="fb-msi" placeholder="messagingSenderId (123456789)"/>
+    <input class="cfg-inp" id="fb-aid3" placeholder="appId (1:123:web:abc...)"/>
+    <button class="btn btn-g" style="margin-top:4px" onclick="saveFBConfig()">✅ Save Firebase Config</button>
+    <button class="btn btn-ol" style="margin-top:8px" onclick="document.getElementById('SETUP').classList.remove('on')">Close</button>
+    <p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">Config is saved locally in your browser. You only need to do this once per device. The app works offline with local storage even without Firebase.</p>
+  </div>
+</div>
+
 <div class="tst" id="TST"></div>
 
 <script>
+
+// ==============================================
+// FIREBASE CONFIG & AUTH
+// ==============================================
+var fbReady = false;
+var fbAuth = null;
+var fbDB = null;
+var currentUser = null;
+
+function getFBConfig() {
+  try { return JSON.parse(localStorage.getItem('nhp_fb') || 'null'); } catch(e) { return null; }
+}
+
+function initFirebase() {
+  var fbcfg = getFBConfig();
+  if (!fbcfg || !fbcfg.apiKey) {
+    showLoginScreen(false);
+    return;
+  }
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(fbcfg);
+    }
+    fbAuth = firebase.auth();
+    fbDB   = firebase.firestore();
+    fbReady = true;
+
+    fbAuth.onAuthStateChanged(function(user) {
+      if (user) {
+        currentUser = user;
+        onSignedIn(user);
+      } else {
+        currentUser = null;
+        showLoginScreen(true);
+      }
+    });
+  } catch(e) {
+    console.error('Firebase init error:', e);
+    toast('Firebase error. Using local mode.');
+    hideLoginScreen();
+    runApp();
+  }
+}
+
+function signInGoogle() {
+  if (!fbReady) { toast('⚠️ Please configure Firebase first'); showSetup(); return; }
+  var provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  fbAuth.signInWithPopup(provider).catch(function(e) {
+    console.error(e);
+    if (e.code === 'auth/popup-blocked') {
+      fbAuth.signInWithRedirect(provider);
+    } else {
+      toast('Sign-in failed: ' + e.message);
+    }
+  });
+}
+
+function signOut() {
+  if (fbAuth) {
+    fbAuth.signOut().then(function() {
+      currentUser = null;
+      hist = [];
+      showLoginScreen(true);
+      toast('Signed out');
+    });
+  }
+}
+
+function onSignedIn(user) {
+  hideLoginScreen();
+  document.getElementById('UBAR').style.display = 'block';
+  var av = document.getElementById('UAVT');
+  var nm = document.getElementById('UNMS');
+  if (user.photoURL) av.src = user.photoURL;
+  nm.textContent = user.displayName ? user.displayName.split(' ')[0] : user.email;
+  loadFromCloud();
+}
+
+function showUserMenu() {
+  var u = currentUser;
+  if (!u) return;
+  DL.show('👤', u.displayName || u.email, u.email + '\n\nSigned in with Google.\nAll invoices are synced to cloud.', false, function(){});
+  document.getElementById('DOK').textContent = 'Sign Out';
+  document.getElementById('DOK').onclick = function(){ DL.close(); signOut(); };
+}
+
+function showLoginScreen(hasFirebase) {
+  document.getElementById('LSCR').style.display = 'flex';
+}
+function hideLoginScreen() {
+  document.getElementById('LSCR').style.display = 'none';
+}
+
+// ==============================================
+// FIREBASE CONFIG SAVE
+// ==============================================
+function saveFBConfig() {
+  var cfg2 = {
+    apiKey:            document.getElementById('fb-aid').value.trim(),
+    authDomain:        document.getElementById('fb-aid2').value.trim(),
+    projectId:         document.getElementById('fb-pid').value.trim(),
+    storageBucket:     document.getElementById('fb-sid').value.trim(),
+    messagingSenderId: document.getElementById('fb-msi').value.trim(),
+    appId:             document.getElementById('fb-aid3').value.trim()
+  };
+  if (!cfg2.apiKey || !cfg2.projectId) { toast('⚠️ apiKey and projectId are required'); return; }
+  localStorage.setItem('nhp_fb', JSON.stringify(cfg2));
+  document.getElementById('SETUP').classList.remove('on');
+  toast('Firebase config saved! Reloading...');
+  setTimeout(function(){ window.location.reload(); }, 1200);
+}
+
+function showSetup() {
+  var existing = getFBConfig();
+  if (existing) {
+    var fields = {apiKey:'fb-aid',authDomain:'fb-aid2',projectId:'fb-pid',storageBucket:'fb-sid',messagingSenderId:'fb-msi',appId:'fb-aid3'};
+    Object.keys(fields).forEach(function(k){ var e=document.getElementById(fields[k]); if(e&&existing[k]) e.value=existing[k]; });
+  }
+  document.getElementById('SETUP').classList.add('on');
+}
+
+// ==============================================
+// CLOUD SYNC — Firestore
+// ==============================================
+function showSync(msg) {
+  var b = document.getElementById('SBAR');
+  b.textContent = msg; b.classList.add('on');
+}
+function hideSync() { document.getElementById('SBAR').classList.remove('on'); }
+
+function loadFromCloud() {
+  if (!fbReady || !currentUser) { runApp(); return; }
+  showSync('☁️ Loading from cloud...');
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices')
+    .orderBy('savedAt','desc')
+    .limit(300)
+    .get()
+    .then(function(snap) {
+      var cloudData = [];
+      snap.forEach(function(doc) { cloudData.push(doc.data()); });
+      if (cloudData.length > 0) {
+        hist = cloudData;
+        localStorage.setItem('nhp_h', JSON.stringify(hist));
+      } else {
+        var local = [];
+        try { local = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(e){}
+        if (local.length > 0) {
+          hist = local;
+          uploadAllToCloud(local);
+        }
+      }
+      hideSync();
+      runApp();
+    })
+    .catch(function(e) {
+      console.error('Load error:', e);
+      try { hist = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(er){ hist=[]; }
+      hideSync();
+      runApp();
+      toast('Offline mode — local data loaded');
+    });
+}
+
+function saveToCloud(inv) {
+  if (!fbReady || !currentUser) return;
+  showSync('☁️ Saving to cloud...');
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices').doc(inv.no || inv.invNo || String(Date.now()))
+    .set(inv)
+    .then(function() { hideSync(); })
+    .catch(function(e) { console.error('Save error:', e); hideSync(); });
+}
+
+function deleteFromCloud(invNo) {
+  if (!fbReady || !currentUser) return;
+  fbDB.collection('users').doc(currentUser.uid)
+    .collection('invoices').doc(String(invNo))
+    .delete()
+    .catch(function(e){ console.error('Delete error:', e); });
+}
+
+function uploadAllToCloud(data) {
+  if (!fbReady || !currentUser || !data.length) return;
+  showSync('☁️ Uploading to cloud...');
+  var batch = fbDB.batch();
+  data.forEach(function(inv) {
+    var ref = fbDB.collection('users').doc(currentUser.uid)
+      .collection('invoices').doc(inv.no || inv.invNo || String(Date.now()+Math.random()));
+    batch.set(ref, inv);
+  });
+  batch.commit()
+    .then(function(){ hideSync(); toast('✅ All data synced to cloud!'); })
+    .catch(function(e){ console.error('Batch error:', e); hideSync(); });
+}
+
+function runApp() {
+  applyCfg(); applyLogo();
+  setNo(); setNow();
+  addRow(); addRow();
+  renderHist(); updBadge();
+}
+
+
 // ==============================================
 // DIALOG
 // ==============================================
@@ -397,12 +704,23 @@ var DL = {
     var ok = document.getElementById('DOK');
     ok.textContent = danger ? 'Delete' : 'Confirm';
     ok.className = 'dlbt ' + (danger ? 'ok-r' : 'ok-g');
+    // Reset default onclick
+    ok.onclick = function(){ DL.confirm(); };
     document.getElementById('DLV').classList.add('on');
   },
-  close: function() { document.getElementById('DLV').classList.remove('on'); this.cb = null; },
-  confirm: function() { var fn = this.cb; this.close(); if (fn) fn(); }
+  close: function() {
+    document.getElementById('DLV').classList.remove('on');
+    this.cb = null;
+  },
+  confirm: function() {
+    var fn = this.cb;
+    this.close();
+    if (fn) fn();
+  }
 };
-document.getElementById('DLV').addEventListener('click', function(e) { if (e.target === this) DL.close(); });
+document.getElementById('DLV').addEventListener('click', function(e) {
+  if (e.target === this) DL.close();
+});
 
 // ==============================================
 // TOAST
@@ -429,7 +747,13 @@ function xd(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 // ==============================================
 // INIT
 // ==============================================
-function init() { applyCfg(); applyLogo(); setNo(); setNow(); addRow(); addRow(); renderHist(); updBadge(); }
+function init() {
+  applyCfg(); applyLogo();
+  setNo(); setNow();
+  addRow(); addRow();
+  renderHist(); updBadge();
+}
+
 function setNo() { var n = parseInt(localStorage.getItem('nhp_no') || '0') + 1; gid('ino').value = pad(n); }
 function setNow() { var d = new Date(); gid('idt').value = pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear(); gid('itm').value = pad(d.getHours())+':'+pad(d.getMinutes()); }
 
@@ -456,22 +780,19 @@ function delRow(id) { if (rows.length <= 1) { toast('At least one row required')
 function renderRows() { var el = gid('PL'); el.innerHTML = ''; rows.forEach(function(row, i) { var sub = ((parseFloat(row.q)||0) * (parseFloat(row.p)||0)).toFixed(2); var div = document.createElement('div'); div.className = 'pr'; div.innerHTML = '<div class="psl">'+pad(i+1)+'</div><input placeholder="Product / Medicine name" value="'+xe(row.n)+'" oninput="rows['+i+'].n=this.value"/><input type="number" placeholder="0" min="0" step="0.01" value="'+xe(row.q)+'" style="text-align:center" oninput="rows['+i+'].q=this.value;rS('+i+')"/><input type="number" placeholder="0.00" min="0" step="0.01" value="'+xe(row.p)+'" style="text-align:right" oninput="rows['+i+'].p=this.value;rS('+i+')"/><div class="psv" id="psv'+i+'">'+sub+'</div><button class="pdel" data-rid="'+row.id+'">&#10005;</button>'; el.appendChild(div); div.querySelector('.pdel').addEventListener('click', (function(rid){ return function(){ delRow(rid); }; })(row.id)); }); calc(); }
 function rS(i) { var e = gid('psv'+i); if(e) e.textContent = ((parseFloat(rows[i].q)||0)*(parseFloat(rows[i].p)||0)).toFixed(2); calc(); }
 
-// Updated calc() function: Quantity as integer, Change/Return removed
 function calc() { 
   var items = rows.filter(function(r){ return r.n && r.n.trim(); }).length; 
-  var qty = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0); 
-  var sub = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0); 
-  var df = parseFloat(gv('df'))||0; 
-  var disc = parseFloat(gv('disc'))||0; 
+  var qty   = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0); 
+  var sub   = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0); 
+  var df    = parseFloat(gv('df'))||0; 
+  var disc  = parseFloat(gv('disc'))||0; 
   var total = Math.max(0, sub + df - disc); 
-  var cash = parseFloat(gv('cash'))||0; 
+  var cash  = parseFloat(gv('cash'))||0; 
   sv('si', items); 
-  sv('sq', Math.round(qty)); // Quantity as integer
-  sv('ss','Tk '+sub.toFixed(2)); 
-  sv('sd','Tk '+df.toFixed(2)); 
+  sv('sq', Math.round(qty)); // Integer Quantity
+  sv('ss','Tk '+sub.toFixed(2)); sv('sd','Tk '+df.toFixed(2)); 
   sv('st','Tk '+total.toFixed(2)); 
   sv('sp','Tk '+Math.min(cash,total).toFixed(2)); 
-  // Change/Return calculation removed
 }
 
 // ==============================================
@@ -527,7 +848,7 @@ function populateInvoice(d) {
     tbody.appendChild(tr);
   });
 
-  // Updated: Total quantity as an integer
+  // Total quantity as an integer
   var sumHtml = '<div class="cell">Cash</div><div class="cell">Tk '+d.cash.toFixed(2)+'</div><div class="cell">Date</div><div class="cell">'+d.date+'</div><div class="cell">Total quantity</div><div class="cell">'+Math.round(d.qty)+'</div><div class="cell">Total items</div><div class="cell">'+d.items+'</div><div class="cell">Total Paid</div><div class="cell">Tk '+d.paid.toFixed(2)+'</div><div class="cell">Subtotal</div><div class="cell">Tk '+d.sub.toFixed(2)+'</div>';
   if(d.df > 0) sumHtml += '<div class="cell">Doctor Fee</div><div class="cell">Tk '+d.df.toFixed(2)+'</div>';
   sumHtml += '<div class="cell">Discount</div><div class="cell" style="color:#C0392B;font-weight:600">(-) Tk '+d.disc.toFixed(2)+'</div>';
@@ -611,7 +932,17 @@ function doWA() {
 // ==============================================
 // SAVE / CLEAR
 // ==============================================
-function saveInv() { var d = getData(); localStorage.setItem('nhp_no', parseInt(d.no)||1); hist.unshift(d); if(hist.length>300) hist=hist.slice(0,300); localStorage.setItem('nhp_h', JSON.stringify(hist)); updBadge(); toast('Invoice #'+d.no+' saved ✅'); setTimeout(function(){ _reset(); }, 700); }
+function saveInv() { 
+  var d = getData(); 
+  localStorage.setItem('nhp_no', parseInt(d.no)||1); 
+  hist.unshift(d); 
+  if(hist.length>300) hist=hist.slice(0,300); 
+  localStorage.setItem('nhp_h', JSON.stringify(hist)); 
+  saveToCloud(d); // Added Cloud Sync
+  updBadge(); toast('Invoice #'+d.no+' saved ✅'); 
+  setTimeout(function(){ _reset(); }, 700); 
+}
+
 function clearForm() { DL.show('🔄','Clear Form?','All unsaved data will be lost. Start a new invoice?', false, function(){ _reset(); }); }
 function _reset() { ['cn','ca','cm','ce','itn'].forEach(function(id){ var e=gid(id); if(e) e.value=''; }); gid('crw').value='0'; gid('disc').value='0'; gid('cash').value='0'; gid('df').value='0'; setNo(); setNow(); rows=[]; _rid=0; addRow(); addRow(); window.scrollTo(0,0); toast('Form cleared'); }
 
@@ -645,7 +976,7 @@ function _renderList(container, list) {
   });
 }
 
-function _delInv(i) { if(!hist[i]){ toast('Not found'); return; } DL.show('🗑️', 'Delete Invoice #'+hist[i].no+'?', 'Patient: '+hist[i].pName+'. This cannot be undone.', true, function(){ hist.splice(i,1); localStorage.setItem('nhp_h', JSON.stringify(hist)); updBadge(); renderHist(); toast('Invoice deleted'); }); }
+function _delInv(i) { if(!hist[i]){ toast('Not found'); return; } var invNo2 = hist[i].no || hist[i].invNo; DL.show('🗑️', 'Delete Invoice #'+invNo2+'?', 'Patient: '+hist[i].pName+'. This cannot be undone.', true, function(){ hist.splice(i,1); localStorage.setItem('nhp_h', JSON.stringify(hist)); deleteFromCloud(invNo2); updBadge(); renderHist(); toast('Invoice deleted'); }); }
 function _editInv(i) { var inv = hist[i]; if(!inv){ toast('Not found'); return; } gid('ino').value = inv.no || inv.invNo || ''; gid('idt').value = inv.date || ''; gid('itm').value = inv.time || ''; gid('itn').value = inv.note || ''; gid('cn').value = inv.pName || inv.cName || ''; gid('ca').value = inv.pAddr || inv.cAddr || ''; gid('cm').value = inv.pMob || inv.cMobile || ''; gid('ce').value = inv.pEmail || inv.cEmail || ''; gid('crw').value = inv.pRew || inv.cReward || '0'; gid('disc').value= String(inv.disc || inv.discount || '0'); gid('cash').value= String(inv.cash || '0'); gid('df').value = String(inv.df || inv.doctorFee || '0'); var src = inv.rows || inv.prods || inv.products || []; rows = []; _rid = 0; src.forEach(function(r){ addRow(r.n||'', r.q||'', r.p||''); }); if(!rows.length){ addRow(); addRow(); } else { renderRows(); } goPage('new', gid('nbn')); window.scrollTo(0,0); toast('Invoice #'+inv.no+' loaded'); }
 
 // ==============================================
@@ -654,9 +985,9 @@ function _editInv(i) { var inv = hist[i]; if(!inv){ toast('Not found'); return; 
 function doSearch() { var q = (gid('srch').value||'').trim().toLowerCase(); var res = gid('SR'), cnt = gid('scnt'); if(!q){ res.innerHTML='<div class="est"><div class="esic">🔍</div>Search by name, invoice no., mobile or address.</div>'; cnt.textContent=''; return; } var found = hist.filter(function(inv){ return (inv.pName||inv.cName||'').toLowerCase().includes(q) ||(inv.no||inv.invNo||'').toLowerCase().includes(q) ||(inv.pMob||inv.cMobile||'').toLowerCase().includes(q) ||(inv.pAddr||inv.cAddr||'').toLowerCase().includes(q) ||(inv.pEmail||inv.cEmail||'').toLowerCase().includes(q); }); cnt.textContent = found.length+' result'+(found.length!==1?'s':'')+' found'; _renderList(res, found); }
 
 // ==============================================
-// START
+// START (CHECK FIREBASE AUTH FIRST)
 // ==============================================
-init();
+initFirebase();
 </script>
 </body>
 </html>
