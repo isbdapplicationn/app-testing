@@ -11,1009 +11,150 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --g1:#064e3b;--g2:#065f46;--g3:#047857;--g4:#d1fae5;--g5:#ecfdf5;
-  --navy:#0f172a;--slate:#334155;--gray:#64748b;--lgray:#94a3b8;
-  --border:#e2e8f0;--bg:#f0fdf4;--white:#fff;
-  --red:#dc2626;--amber:#d97706;--amberlt:#fffbeb;
-  --sh:0 1px 8px rgba(6,95,70,.1);--sh2:0 4px 24px rgba(6,95,70,.15);
-  --primary:#0B6E4F;--primary-dark:#073D2E;--primary-light:#E8F5EE;
-  --accent:#C8963E;--accent-light:#FDF3E0;
-}
-html,body{height:100%;overflow-x:hidden}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh}
-
+:root{--g1:#064e3b;--g2:#065f46;--g3:#047857;--g4:#d1fae5;--g5:#ecfdf5;--navy:#0f172a;--gray:#64748b;--lgray:#94a3b8;--border:#e2e8f0;--bg:#f0fdf4;--white:#fff;--red:#dc2626;--amber:#d97706;--amberlt:#fffbeb;--sh:0 1px 8px rgba(6,95,70,.1);--sh2:0 4px 24px rgba(6,95,70,.15);--primary:#0B6E4F;--primary-dark:#073D2E;--primary-light:#E8F5EE;--accent:#C8963E;--accent-light:#FDF3E0}
+html,body{height:100%;overflow-x:hidden}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh}
 .ahdr{background:linear-gradient(135deg,#022c22,#064e3b 50%,#065f46);padding:12px 14px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(2,44,34,.4)}
-.hlogo{width:42px;height:42px;border-radius:10px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid rgba(255,255,255,.2)}
-.hlogo img{width:100%;height:100%;object-fit:cover;border-radius:9px}
-.htxt{flex:1;min-width:0}
-.htxt h1{font-family:'Libre Baskerville',serif;font-size:1rem;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.htxt p{font-size:.63rem;color:rgba(255,255,255,.5);margin-top:1px}
-
+.hlogo{width:42px;height:42px;border-radius:10px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid rgba(255,255,255,.2)}.hlogo img{width:100%;height:100%;object-fit:cover;border-radius:9px}
+.htxt{flex:1;min-width:0}.htxt h1{font-family:'Libre Baskerville',serif;font-size:1rem;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.htxt p{font-size:.63rem;color:rgba(255,255,255,.5);margin-top:1px}
 .bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#fff;border-top:1px solid var(--border);display:flex;box-shadow:0 -4px 16px rgba(6,95,70,.08);padding-bottom:env(safe-area-inset-bottom,0)}
-.nb{flex:1;padding:9px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;color:var(--lgray);font-family:'DM Sans',sans-serif;font-size:.59rem;font-weight:500;transition:color .2s;position:relative}
-.nb.on{color:var(--g2)}.nb.on svg{transform:scale(1.1)}
-.nb svg{width:20px;height:20px;transition:transform .2s;stroke:currentColor;fill:none;stroke-width:1.8}
-.nbadge{position:absolute;top:4px;right:calc(50% - 18px);background:var(--amber);color:#fff;font-size:.54rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center}
-.ndot{width:4px;height:4px;background:var(--g2);border-radius:50%;opacity:0;transition:opacity .2s}
-.nb.on .ndot{opacity:1}
-
-.main{padding:12px 11px 82px}
-.pg{display:none}.pg.on{display:block}
-
-.card{background:#fff;border-radius:14px;box-shadow:var(--sh);margin-bottom:11px;overflow:hidden;border:1px solid rgba(6,95,70,.06)}
-.chd{padding:10px 13px 9px;border-bottom:1px solid var(--g5);display:flex;align-items:center;gap:8px}
-.cic{width:28px;height:28px;border-radius:7px;background:var(--g5);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.ctl{font-weight:700;font-size:.83rem;color:var(--g1);font-family:'Libre Baskerville',serif}
-.cbd{padding:12px 13px}
-
-.fg{margin-bottom:10px}
-.fg label{display:block;font-size:.68rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.91rem;color:var(--navy);background:#fcfcfd;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(4,120,87,.1);background:#fff}
-.fg textarea{resize:vertical;min-height:62px;line-height:1.6}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ro{background:#f0fdf4!important;color:var(--g1);font-weight:700}
-
-.pscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.ptbl{min-width:560px;width:100%}
-.pth{display:grid;grid-template-columns:36px minmax(180px,1fr) 80px 90px 80px 34px;gap:5px;padding:8px 13px;background:var(--g4);font-size:.67rem;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.4px}
-.pr{display:grid;grid-template-columns:36px minmax(180px,1fr) 80px 90px 80px 34px;gap:5px;padding:6px 13px;align-items:center;border-bottom:1px solid var(--g5)}
-.pr:last-child{border:none}
-.psl{width:24px;height:24px;border-radius:50%;background:var(--g4);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:700;flex-shrink:0}
-.pr input{width:100%;padding:7px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--navy);background:#fcfcfd;outline:none;transition:border-color .2s}
-.pr input:focus{border-color:var(--g3);background:#fff}
-.psv{padding:7px 8px;border-radius:7px;background:var(--g5);color:var(--g2);font-weight:700;font-size:.81rem;text-align:right;white-space:nowrap}
-.pdel{width:28px;height:28px;border-radius:7px;background:#fff0f0;border:1px solid #fecaca;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
-.pdel:hover{background:#fee2e2}
-.padd{width:100%;padding:10px;border:1.5px dashed var(--g3);border-radius:9px;background:var(--g5);color:var(--g2);font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;transition:background .2s}
-.padd:hover{background:var(--g4)}
-.pfoot{padding:9px 13px 12px}
-
-.frow{display:flex;align-items:center;gap:10px;padding:12px 13px}
-.flbl{font-size:.88rem;font-weight:600;color:var(--navy);white-space:nowrap}
-.ftk{font-size:.82rem;color:var(--gray)}
-.finp{flex:1;max-width:150px;padding:9px 11px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.93rem;font-weight:600;color:var(--navy);background:#fcfcfd;outline:none;text-align:right;-webkit-appearance:none}
-.finp:focus{border-color:var(--g3);background:#fff}
-
-.srow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g5);font-size:.86rem}
-.srow:last-child{border:none}
-.slb{color:var(--gray);font-weight:500}
-.svl{font-weight:600;color:var(--navy)}
-.srow.grand{border-top:2px solid var(--g3);padding-top:9px;margin-top:3px;border-bottom:none}
-.srow.grand .slb{font-weight:700;font-size:.92rem;color:var(--g1)}
-.srow.grand .svl{font-size:1.06rem;color:var(--g1)}
-.dinp{width:76px;padding:5px 7px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;text-align:right;outline:none;background:#fcfcfd;-webkit-appearance:none}
-.dinp:focus{border-color:var(--g3)}
-.cashbox{background:var(--amberlt);border-radius:10px;padding:11px 13px;margin-top:9px}
-.crow{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:.86rem}
-.crow:last-child{margin:0}
-.clb{color:var(--amber);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.3px}
-.cvl{font-weight:700;color:#92400e}
-.cinp{width:105px;padding:7px 9px;border:1.5px solid #fcd34d;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;text-align:right;outline:none;background:#fff;-webkit-appearance:none}
-.cinp:focus{border-color:var(--amber)}
-
-.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.91rem;font-weight:600;cursor:pointer;border:none;transition:transform .15s,opacity .2s;letter-spacing:.2px}
-.btn:active{transform:scale(.97)}
-.btn-g{background:linear-gradient(135deg,#065f46,#047857);color:#fff;box-shadow:0 4px 14px rgba(6,95,70,.28)}
-.btn-wa{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 3px 12px rgba(22,163,74,.25)}
-.btn-ol{background:#fff;color:var(--g2);border:2px solid var(--g3)}
-.btn-rd{background:#fff;color:var(--red);border:2px solid #fecaca}
-.btn-img{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.25)}
-.r2{display:flex;gap:8px;margin-bottom:8px}.r2 .btn{flex:1}
-
-.hcard{background:#fff;border-radius:14px;box-shadow:var(--sh2);margin-bottom:11px;overflow:hidden;border:1px solid rgba(6,95,70,.07);transition:transform .15s}
-.hcard:hover{transform:translateY(-1px)}
-.hct{background:linear-gradient(135deg,#064e3b,#065f46);padding:11px 14px;display:flex;justify-content:space-between;align-items:flex-start}
-.hno{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;color:#fff}
-.hdt{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px}
-.htb{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;padding:4px 10px;border-radius:18px;font-size:.84rem;font-weight:700;white-space:nowrap}
-.hcm{padding:11px 14px}
-.hp{font-weight:700;font-size:.9rem;color:var(--navy);margin-bottom:4px}
-.hm{font-size:.73rem;color:var(--gray);display:flex;flex-wrap:wrap;gap:9px;margin-bottom:8px}
-.htgs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
-.htg{background:var(--g5);color:var(--g2);font-size:.67rem;font-weight:600;padding:3px 8px;border-radius:18px;border:1px solid var(--g4)}
-.hcb{padding:8px 14px;border-top:1px solid var(--g5);display:flex;gap:6px}
-.hfb{flex:1;padding:9px 4px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:4px;transition:background .2s}
-.hfp{background:var(--g5);color:var(--g2)}.hfp:hover{background:var(--g4)}
-.hfi{background:#f5f3ff;color:#6d28d9}.hfi:hover{background:#ede9fe}
-.hfe{background:#eff6ff;color:#1d4ed8}.hfe:hover{background:#dbeafe}
-.hfd{background:#fff5f5;color:var(--red)}.hfd:hover{background:#fee2e2}
-
-.sbox{display:flex;gap:9px;background:#fff;border-radius:12px;padding:11px 13px;box-shadow:var(--sh);border:1px solid rgba(6,95,70,.07);margin-bottom:11px;align-items:center}
-.sbox input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.91rem;color:var(--navy);background:none;min-width:0}
-.scnt{font-size:.72rem;color:var(--gray);margin-bottom:8px;padding:0 2px}
-
-.lgpv{width:68px;height:68px;border-radius:13px;background:var(--g5);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;font-size:27px;cursor:pointer;overflow:hidden;margin-bottom:12px;position:relative}
-.lgpv img{width:100%;height:100%;object-fit:cover}
-.lght{position:absolute;bottom:0;left:0;right:0;background:rgba(6,95,70,.7);color:#fff;font-size:.57rem;text-align:center;padding:3px}
-#lgu{display:none}
-
-.dlov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
-.dlov.on{display:flex}
-.dlbx{background:#fff;border-radius:22px;width:100%;max-width:320px;overflow:hidden;box-shadow:0 28px 64px rgba(0,0,0,.28);animation:dpop .26s cubic-bezier(.34,1.56,.64,1)}
-@keyframes dpop{from{transform:scale(.82) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.dlbd{padding:28px 22px 16px;text-align:center}
-.dlic{font-size:38px;margin-bottom:10px;display:block}
-.dltt{font-family:'Libre Baskerville',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:7px}
-.dlms{font-size:.81rem;color:var(--gray);line-height:1.5}
-.dlft{display:flex;border-top:1px solid #f1f5f9}
-.dlbt{flex:1;padding:14px;border:none;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .2s;background:#fff}
-.dlbt.cancel{color:var(--gray);border-right:1px solid #f1f5f9;border-radius:0 0 0 22px}.dlbt.cancel:hover{background:#f8fafc}
-.dlbt.ok-g{color:var(--g2);border-radius:0 0 22px 0}.dlbt.ok-g:hover{background:var(--g5)}
-.dlbt.ok-r{color:var(--red);border-radius:0 0 22px 0}.dlbt.ok-r:hover{background:#fff5f5}
-
-.tst{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 20px;border-radius:50px;font-size:.8rem;z-index:99999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.22);max-width:90vw;text-align:center}
-.tst.on{opacity:1}
-.est{text-align:center;padding:46px 20px;color:var(--gray)}
-.esic{font-size:2.8rem;margin-bottom:10px;opacity:.4}
-
-/* INVOICE PAPER DESIGN */
-#invoice-render-area{position:absolute;left:-9999px;top:0;width:420px;background:#fff;z-index:-1}
-.invoice-paper{width:100%;background:#fff;font-family:'DM Sans',sans-serif;color:#1A1A1A;position:relative;padding-bottom:10px}
-.invoice-paper::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--primary-dark),var(--primary),var(--accent))}
-.inv-header{padding:24px 20px 16px;text-align:center;border-bottom:2px solid var(--primary-dark)}
-.inv-logo{max-height:44px;margin-bottom:6px;display:none}
-.inv-pharmacy-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--primary-dark);letter-spacing:1px;margin-bottom:4px}
-.inv-pharmacy-addr{font-size:10.5px;color:#6B7280;line-height:1.5}
-.inv-pharmacy-contact{font-size:10px;color:#6B7280;margin-top:3px}
-.inv-meta{display:flex;justify-content:space-between;padding:10px 20px;background:var(--primary-light);border-bottom:1px solid rgba(11,110,79,0.15);font-size:11px}
-.inv-meta span{font-weight:600;color:var(--primary-dark)}
-.inv-meta .val{font-weight:500;color:#1A1A1A}
-.inv-patient{padding:10px 20px;border-bottom:1.5px solid #E5E1DB;display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;font-size:11px}
-.inv-patient .pat-label{font-weight:600;color:#6B7280}
-.inv-patient .pat-val{color:#1A1A1A;font-weight:500}
-.inv-patient .full-width{grid-column:1/-1}
-.inv-patient .reward-badge{display:inline-flex;align-items:center;gap:4px;background:var(--accent-light);color:var(--accent);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;width:fit-content;margin-top:2px}
-.inv-table{width:100%;border-collapse:collapse;font-size:11px}
-.inv-table thead th{background:var(--primary-dark);color:#fff;font-weight:600;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
-.inv-table thead th:last-child,.inv-table thead th:nth-child(3),.inv-table thead th:nth-child(4){text-align:right}
-.inv-table tbody td{padding:7px 10px;border-bottom:1px solid #f0ede8;vertical-align:top}
-.inv-table tbody td:last-child,.inv-table tbody td:nth-child(3),.inv-table tbody td:nth-child(4){text-align:right;font-variant-numeric:tabular-nums}
-.inv-table tbody tr:nth-child(even){background:#FAFAF7}
-.inv-table .product-name-cell{font-weight:500;color:#1A1A1A}
-.inv-summary-section{padding:0 20px}
-.inv-summary-grid{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid #E5E1DB;border-radius:6px;overflow:hidden;font-size:11px;margin-top:10px}
-.inv-summary-grid .cell{padding:6px 10px;border-bottom:1px solid #f0ede8}
-.inv-summary-grid .cell:nth-child(odd){background:#FAFAF7;font-weight:600;color:#6B7280}
-.inv-summary-grid .cell:nth-child(even){text-align:right;font-weight:500;color:#1A1A1A;font-variant-numeric:tabular-nums}
-.inv-total-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-size:14px;font-weight:700;margin-top:10px}
-.inv-total-bar .amount{font-size:20px;font-family:'Playfair Display',serif}
-.inv-notes{display:none;padding:8px 20px;border-top:1px dashed #E5E1DB;font-size:10.5px;color:#6B7280}
-.inv-footer{padding:14px 20px;text-align:center;border-top:1.5px solid #E5E1DB;background:#FAFAF7;margin-top:10px}
-.inv-footer .pharmacy-repeat{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--primary-dark);margin-bottom:4px}
-.inv-footer .contact-line{font-size:10px;color:#6B7280;margin-bottom:2px}
-.inv-footer .thank-you{font-size:10.5px;color:var(--primary);font-weight:600;margin-top:6px;font-style:italic}
-.inv-qr{position:absolute;bottom:16px;right:16px;opacity:.8}
-
-/* LOGIN SCREEN */
-.lscr{position:fixed;inset:0;z-index:10000;background:linear-gradient(160deg,#022c22 0%,#064e3b 50%,#065f46 100%);display:flex;align-items:center;justify-content:center;padding:24px}
-.lbox{background:#fff;border-radius:24px;width:100%;max-width:360px;overflow:hidden;box-shadow:0 28px 64px rgba(0,0,0,.3);animation:dpop .3s ease}
-.ltop{padding:36px 28px 24px;text-align:center;background:linear-gradient(160deg,#064e3b,#065f46)}
-.lico{font-size:44px;margin-bottom:12px}
-.lshop{font-family:'Libre Baskerville',serif;font-size:1.2rem;color:#fff;font-weight:700;margin-bottom:4px}
-.lsub{font-size:.78rem;color:rgba(209,250,229,.8)}
-.lbod{padding:28px 24px 24px}
-.lbod h2{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:#0f172a;margin-bottom:6px}
-.lbod p{font-size:.82rem;color:#64748b;line-height:1.5;margin-bottom:22px}
-.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:14px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;color:#0f172a;transition:all .2s;margin-bottom:10px}
-.gbtn:hover{background:#f8fafc;border-color:#94a3b8}
-.gbtn:active{transform:scale(.98)}
-.gico{width:22px;height:22px;flex-shrink:0}
-.lnote{font-size:.72rem;color:#94a3b8;text-align:center;line-height:1.5}
-
-.ubar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:9px;padding:5px 9px;cursor:pointer;border:1px solid rgba(255,255,255,.15)}
-.uavt{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
-.uname{font-size:.72rem;color:rgba(255,255,255,.9);font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.uarr{font-size:.65rem;color:rgba(255,255,255,.6)}
-
-.syncbar{display:none;position:fixed;top:58px;left:0;right:0;z-index:300;background:#065f46;color:rgba(209,250,229,.9);font-size:.75rem;padding:6px 14px;text-align:center;font-weight:500}
-.syncbar.on{display:block}
-
-.setup-ov{display:none;position:fixed;inset:0;z-index:10500;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
-.setup-ov.on{display:flex}
-.setup-box{background:#fff;border-radius:20px;width:100%;max-width:480px;padding:24px;margin:auto}
-.setup-box h2{font-family:'Libre Baskerville',serif;font-size:1.1rem;color:#064e3b;margin-bottom:4px}
-.setup-box p{font-size:.82rem;color:#64748b;margin-bottom:16px;line-height:1.5}
-.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
-.stepn{width:26px;height:26px;border-radius:50%;background:#064e3b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.stepc{flex:1}
-.stepc strong{display:block;font-size:.85rem;color:#0f172a;margin-bottom:3px}
-.stepc span{font-size:.78rem;color:#64748b;line-height:1.5}
-.stepc code{background:#f0fdf4;color:#065f46;padding:2px 6px;border-radius:5px;font-size:.76rem;font-family:monospace;display:block;margin-top:4px;word-break:break-all}
-.cfg-inp{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.86rem;color:#0f172a;outline:none;margin-bottom:8px}
-.cfg-inp:focus{border-color:#047857;box-shadow:0 0 0 3px rgba(4,120,87,.1)}
+.nb{flex:1;padding:9px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;color:var(--lgray);font-family:'DM Sans',sans-serif;font-size:.59rem;font-weight:500;transition:color .2s;position:relative}.nb.on{color:var(--g2)}.nb.on svg{transform:scale(1.1)}.nb svg{width:20px;height:20px;transition:transform .2s;stroke:currentColor;fill:none;stroke-width:1.8}
+.nbadge{position:absolute;top:4px;right:calc(50% - 18px);background:var(--amber);color:#fff;font-size:.54rem;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 3px;display:none;align-items:center;justify-content:center}.ndot{width:4px;height:4px;background:var(--g2);border-radius:50%;opacity:0;transition:opacity .2s}.nb.on .ndot{opacity:1}
+.main{padding:12px 11px 82px}.pg{display:none}.pg.on{display:block}
+.card{background:#fff;border-radius:14px;box-shadow:var(--sh);margin-bottom:11px;overflow:hidden;border:1px solid rgba(6,95,70,.06)}.chd{padding:10px 13px 9px;border-bottom:1px solid var(--g5);display:flex;align-items:center;gap:8px}.cic{width:28px;height:28px;border-radius:7px;background:var(--g5);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}.ctl{font-weight:700;font-size:.83rem;color:var(--g1);font-family:'Libre Baskerville',serif}.cbd{padding:12px 13px}
+.fg{margin-bottom:10px}.fg label{display:block;font-size:.68rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.91rem;color:var(--navy);background:#fcfcfd;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(4,120,87,.1);background:#fff}.fg textarea{resize:vertical;min-height:62px;line-height:1.6}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ro{background:#f0fdf4!important;color:var(--g1);font-weight:700}
+.pscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.ptbl{min-width:560px;width:100%}.pth{display:grid;grid-template-columns:36px minmax(180px,1fr) 80px 90px 80px 34px;gap:5px;padding:8px 13px;background:var(--g4);font-size:.67rem;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.4px}
+.pr{display:grid;grid-template-columns:36px minmax(180px,1fr) 80px 90px 80px 34px;gap:5px;padding:6px 13px;align-items:center;border-bottom:1px solid var(--g5)}.pr:last-child{border:none}.psl{width:24px;height:24px;border-radius:50%;background:var(--g4);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:700;flex-shrink:0}
+.pr input{width:100%;padding:7px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--navy);background:#fcfcfd;outline:none;transition:border-color .2s}.pr input:focus{border-color:var(--g3);background:#fff}.psv{padding:7px 8px;border-radius:7px;background:var(--g5);color:var(--g2);font-weight:700;font-size:.81rem;text-align:right;white-space:nowrap}
+.pdel{width:28px;height:28px;border-radius:7px;background:#fff0f0;border:1px solid #fecaca;color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}.pdel:hover{background:#fee2e2}
+.padd{width:100%;padding:10px;border:1.5px dashed var(--g3);border-radius:9px;background:var(--g5);color:var(--g2);font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;transition:background .2s}.padd:hover{background:var(--g4)}.pfoot{padding:9px 13px 12px}
+.frow{display:flex;align-items:center;gap:10px;padding:12px 13px}.flbl{font-size:.88rem;font-weight:600;color:var(--navy);white-space:nowrap}.ftk{font-size:.82rem;color:var(--gray)}.finp{flex:1;max-width:150px;padding:9px 11px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.93rem;font-weight:600;color:var(--navy);background:#fcfcfd;outline:none;text-align:right;-webkit-appearance:none}.finp:focus{border-color:var(--g3);background:#fff}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g5);font-size:.86rem}.srow:last-child{border:none}.slb{color:var(--gray);font-weight:500}.svl{font-weight:600;color:var(--navy)}.srow.grand{border-top:2px solid var(--g3);padding-top:9px;margin-top:3px;border-bottom:none}.srow.grand .slb{font-weight:700;font-size:.92rem;color:var(--g1)}.srow.grand .svl{font-size:1.06rem;color:var(--g1)}
+.dinp{width:76px;padding:5px 7px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.84rem;text-align:right;outline:none;background:#fcfcfd;-webkit-appearance:none}.dinp:focus{border-color:var(--g3)}
+.cashbox{background:var(--amberlt);border-radius:10px;padding:11px 13px;margin-top:9px}.crow{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:.86rem}.crow:last-child{margin:0}.clb{color:var(--amber);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.3px}.cvl{font-weight:700;color:#92400e}.cinp{width:105px;padding:7px 9px;border:1.5px solid #fcd34d;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;text-align:right;outline:none;background:#fff;-webkit-appearance:none}.cinp:focus{border-color:var(--amber)}
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.91rem;font-weight:600;cursor:pointer;border:none;transition:transform .15s,opacity .2s;letter-spacing:.2px}.btn:active{transform:scale(.97)}.btn-g{background:linear-gradient(135deg,#065f46,#047857);color:#fff;box-shadow:0 4px 14px rgba(6,95,70,.28)}.btn-wa{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 3px 12px rgba(22,163,74,.25)}.btn-ol{background:#fff;color:var(--g2);border:2px solid var(--g3)}.btn-rd{background:#fff;color:var(--red);border:2px solid #fecaca}.btn-img{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.25)}.r2{display:flex;gap:8px;margin-bottom:8px}.r2 .btn{flex:1}
+.hcard{background:#fff;border-radius:14px;box-shadow:var(--sh2);margin-bottom:11px;overflow:hidden;border:1px solid rgba(6,95,70,.07);transition:transform .15s}.hcard:hover{transform:translateY(-1px)}.hct{background:linear-gradient(135deg,#064e3b,#065f46);padding:11px 14px;display:flex;justify-content:space-between;align-items:flex-start}.hno{font-family:'Libre Baskerville',serif;font-size:.95rem;font-weight:700;color:#fff}.hdt{font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px}.htb{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;padding:4px 10px;border-radius:18px;font-size:.84rem;font-weight:700;white-space:nowrap}
+.hcm{padding:11px 14px}.hp{font-weight:700;font-size:.9rem;color:var(--navy);margin-bottom:4px}.hm{font-size:.73rem;color:var(--gray);display:flex;flex-wrap:wrap;gap:9px;margin-bottom:8px}.htgs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.htg{background:var(--g5);color:var(--g2);font-size:.67rem;font-weight:600;padding:3px 8px;border-radius:18px;border:1px solid var(--g4)}.hcb{padding:8px 14px;border-top:1px solid var(--g5);display:flex;gap:6px}.hfb{flex:1;padding:9px 4px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.73rem;font-weight:600;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:4px;transition:background .2s}.hfp{background:var(--g5);color:var(--g2)}.hfi{background:#f5f3ff;color:#6d28d9}.hfe{background:#eff6ff;color:#1d4ed8}.hfd{background:#fff5f5;color:var(--red)}
+.sbox{display:flex;gap:9px;background:#fff;border-radius:12px;padding:11px 13px;box-shadow:var(--sh);border:1px solid rgba(6,95,70,.07);margin-bottom:11px;align-items:center}.sbox input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.91rem;color:var(--navy);background:none;min-width:0}.scnt{font-size:.72rem;color:var(--gray);margin-bottom:8px;padding:0 2px}
+.lgpv{width:68px;height:68px;border-radius:13px;background:var(--g5);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;font-size:27px;cursor:pointer;overflow:hidden;margin-bottom:12px;position:relative}.lgpv img{width:100%;height:100%;object-fit:cover}.lght{position:absolute;bottom:0;left:0;right:0;background:rgba(6,95,70,.7);color:#fff;font-size:.57rem;text-align:center;padding:3px}#lgu{display:none}
+.dlov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}.dlov.on{display:flex}.dlbx{background:#fff;border-radius:22px;width:100%;max-width:320px;overflow:hidden;box-shadow:0 28px 64px rgba(0,0,0,.28);animation:dpop .26s cubic-bezier(.34,1.56,.64,1)}@keyframes dpop{from{transform:scale(.82) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}.dlbd{padding:28px 22px 16px;text-align:center}.dlic{font-size:38px;margin-bottom:10px;display:block}.dltt{font-family:'Libre Baskerville',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:7px}.dlms{font-size:.81rem;color:var(--gray);line-height:1.5}.dlft{display:flex;border-top:1px solid #f1f5f9}.dlbt{flex:1;padding:14px;border:none;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:background .2s;background:#fff}.dlbt.cancel{color:var(--gray);border-right:1px solid #f1f5f9;border-radius:0 0 0 22px}.dlbt.ok-g{color:var(--g2);border-radius:0 0 22px 0}.dlbt.ok-r{color:var(--red);border-radius:0 0 22px 0}
+.tst{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 20px;border-radius:50px;font-size:.8rem;z-index:99999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.22);max-width:90vw;text-align:center}.tst.on{opacity:1}.est{text-align:center;padding:46px 20px;color:var(--gray)}.esic{font-size:2.8rem;margin-bottom:10px;opacity:.4}
+#ira{position:absolute;left:-9999px;top:0;width:420px;background:#fff;z-index:-1}.invoice-paper{width:100%;background:#fff;font-family:'DM Sans',sans-serif;color:#1A1A1A;position:relative;padding-bottom:10px}.invoice-paper::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--primary-dark),var(--primary),var(--accent))}.inv-header{padding:24px 20px 16px;text-align:center;border-bottom:2px solid var(--primary-dark)}.inv-logo{max-height:44px;margin-bottom:6px;display:none}.inv-pharmacy-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--primary-dark);letter-spacing:1px;margin-bottom:4px}.inv-pharmacy-addr{font-size:10.5px;color:#6B7280;line-height:1.5}.inv-pharmacy-contact{font-size:10px;color:#6B7280;margin-top:3px}
+.inv-meta{display:flex;justify-content:space-between;padding:10px 20px;background:var(--primary-light);border-bottom:1px solid rgba(11,110,79,.15);font-size:11px}.inv-meta span{font-weight:600;color:var(--primary-dark)}.inv-meta .val{font-weight:500;color:#1A1A1A}
+.inv-patient{padding:10px 20px;border-bottom:1.5px solid #E5E1DB;display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;font-size:11px}.inv-patient .pat-label{font-weight:600;color:#6B7280}.inv-patient .pat-val{color:#1A1A1A;font-weight:500}.inv-patient .reward-badge{display:inline-flex;align-items:center;gap:4px;background:var(--accent-light);color:var(--accent);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;width:fit-content;margin-top:2px}
+.inv-table{width:100%;border-collapse:collapse;font-size:11px}.inv-table thead th{background:var(--primary-dark);color:#fff;font-weight:600;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px}.inv-table thead th:last-child,.inv-table thead th:nth-child(3),.inv-table thead th:nth-child(4){text-align:right}.inv-table tbody td{padding:7px 10px;border-bottom:1px solid #f0ede8;vertical-align:top}.inv-table tbody td:last-child,.inv-table tbody td:nth-child(3),.inv-table tbody td:nth-child(4){text-align:right;font-variant-numeric:tabular-nums}.inv-table tbody tr:nth-child(even){background:#FAFAF7}.inv-table .pn{font-weight:500;color:#1A1A1A}
+.inv-summary-section{padding:0 20px}.inv-summary-grid{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid #E5E1DB;border-radius:6px;overflow:hidden;font-size:11px;margin-top:10px}.inv-summary-grid .cell{padding:6px 10px;border-bottom:1px solid #f0ede8}.inv-summary-grid .cell:nth-child(odd){background:#FAFAF7;font-weight:600;color:#6B7280}.inv-summary-grid .cell:nth-child(even){text-align:right;font-weight:500;color:#1A1A1A;font-variant-numeric:tabular-nums}
+.inv-total-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-size:14px;font-weight:700;margin-top:10px}.inv-total-bar .amount{font-size:20px;font-family:'Playfair Display',serif}.inv-notes{display:none;padding:8px 20px;border-top:1px dashed #E5E1DB;font-size:10.5px;color:#6B7280}.inv-footer{padding:14px 20px;text-align:center;border-top:1.5px solid #E5E1DB;background:#FAFAF7;margin-top:10px}.inv-footer .pr2{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--primary-dark);margin-bottom:4px}.inv-footer .cl{font-size:10px;color:#6B7280;margin-bottom:2px}.inv-footer .ty{font-size:10.5px;color:var(--primary);font-weight:600;margin-top:6px;font-style:italic}.inv-qr{position:absolute;bottom:16px;right:16px;opacity:.8}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<div class="ahdr">
-  <div class="hlogo" id="HL">🌿</div>
-  <div class="htxt"><h1 id="HN">Nishat Homeo Pharmacy</h1><p>Invoice Management System</p></div>
-  <div id="UBAR" style="display:none"><div class="ubar" onclick="showUserMenu()"><img class="uavt" id="UAVT" src=""/><span class="uname" id="UNMS"></span><span class="uarr">▾</span></div></div>
-</div>
-
+<div class="ahdr"><div class="hlogo" id="HL">🌿</div><div class="htxt"><h1 id="HN">Nishat Homeo Pharmacy</h1><p>Invoice Management System</p></div></div>
 <div class="main">
-
-<!-- PAGE: NEW INVOICE -->
 <div class="pg on" id="pg-new">
-  <div class="card">
-    <div class="chd"><div class="cic">🧑‍⚕️</div><div class="ctl">Patient Information</div></div>
-    <div class="cbd">
-      <div class="fg"><label>Patient Name</label><input id="cn" placeholder="Patient Name"/></div>
-      <div class="fg"><label>Address</label><input id="ca" placeholder="Patient Address"/></div>
-      <div class="fg"><label>Mobile Number</label><input id="cm" type="tel" placeholder="+8801234567890"/></div>
-      <div class="fg"><label>E-mail Address</label><input id="ce" type="email" placeholder="E-mail Address"/></div>
-      <div class="fg"><label>Reward Point</label><input id="crw" type="number" placeholder="0" value="0" min="0"/></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="chd"><div class="cic">📋</div><div class="ctl">Invoice Details</div></div>
-    <div class="cbd">
-      <div class="g2">
-        <div class="fg"><label>Invoice No.</label><input id="ino" class="ro" readonly/></div>
-        <div class="fg"><label>Date</label><input id="idt" class="ro" readonly/></div>
-      </div>
-      <div class="fg"><label>Time</label><input id="itm" type="time"/></div>
-      <div class="fg"><label>Notes</label><textarea id="itn" placeholder="Special instructions..."></textarea></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="chd"><div class="cic">💊</div><div class="ctl">Products / Medicines</div></div>
-    <div class="pscroll"><div class="ptbl">
-      <div class="pth"><span>SL</span><span>Product / Medicine Name</span><span style="text-align:center">Qty</span><span style="text-align:right">Unit Price</span><span style="text-align:right">Subtotal</span><span></span></div>
-      <div id="PL"></div>
-    </div></div>
-    <div class="pfoot"><button class="padd" onclick="addRow()">＋ Add Product / Medicine</button></div>
-  </div>
-  <div class="card">
-    <div class="chd"><div class="cic">🩺</div><div class="ctl">Doctor Fee</div></div>
-    <div class="frow"><span class="flbl">Doctor Visit Fee</span><span class="ftk">Tk</span><input class="finp" id="df" type="number" min="0" step="0.01" value="0" placeholder="0.00" oninput="calc()"/></div>
-  </div>
-  <div class="card">
-    <div class="chd"><div class="cic">🧾</div><div class="ctl">Invoice Summary</div></div>
-    <div class="cbd">
-      <div class="srow"><span class="slb">Total Items</span><span class="svl" id="si">0</span></div>
-      <div class="srow"><span class="slb">Total Quantity</span><span class="svl" id="sq">0</span></div>
-      <div class="srow"><span class="slb">Products Subtotal</span><span class="svl" id="ss">Tk 0.00</span></div>
-      <div class="srow"><span class="slb">Doctor Fee</span><span class="svl" id="sd">Tk 0.00</span></div>
-      <div class="srow"><span class="slb">Discount (–)</span><span style="display:flex;align-items:center;gap:5px;font-size:.84rem">Tk<input class="dinp" id="disc" type="number" value="0" min="0" step="0.01" oninput="calc()"/></span></div>
-      <div class="srow grand"><span class="slb">TOTAL PAYABLE</span><span class="svl" id="st">Tk 0.00</span></div>
-      <div class="cashbox">
-        <div class="crow"><span class="clb">Cash / Payment Received</span><input class="cinp" id="cash" type="number" value="0" min="0" step="0.01" oninput="calc()"/></div>
-        <div class="crow"><span class="clb">Total Paid</span><span class="cvl" id="sp">Tk 0.00</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="card"><div class="cbd">
-    <button class="btn btn-g" style="margin-bottom:8px" onclick="genPDF(null)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-      Download PDF Invoice
-    </button>
-    <button class="btn btn-img" style="margin-bottom:8px" onclick="genImg(null)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      Save as Image (PNG)
-    </button>
-    <div class="r2">
-      <button class="btn btn-wa" onclick="doWA()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp
-      </button>
-      <button class="btn btn-ol" onclick="saveInv()">💾 Save</button>
-    </div>
-    <button class="btn btn-rd" onclick="clearForm()">↺ Clear &amp; New Invoice</button>
-  </div></div>
+<div class="card"><div class="chd"><div class="cic">🧑‍⚕️</div><div class="ctl">Patient Information</div></div><div class="cbd">
+<div class="fg"><label>Patient Name</label><input id="cn" placeholder="Patient Name"/></div>
+<div class="fg"><label>Address</label><input id="ca" placeholder="Patient Address"/></div>
+<div class="fg"><label>Mobile Number</label><input id="cm" type="tel" placeholder="+8801234567890"/></div>
+<div class="fg"><label>E-mail Address</label><input id="ce" type="email" placeholder="E-mail Address"/></div>
+<div class="fg"><label>Reward Point</label><input id="crw" type="number" placeholder="0" value="0" min="0"/></div>
+</div></div>
+<div class="card"><div class="chd"><div class="cic">📋</div><div class="ctl">Invoice Details</div></div><div class="cbd">
+<div class="g2"><div class="fg"><label>Invoice No.</label><input id="ino" class="ro" readonly/></div><div class="fg"><label>Date</label><input id="idt" class="ro" readonly/></div></div>
+<div class="fg"><label>Time</label><input id="itm" type="time"/></div>
+<div class="fg"><label>Notes</label><textarea id="itn" placeholder="Special instructions..."></textarea></div>
+</div></div>
+<div class="card"><div class="chd"><div class="cic">💊</div><div class="ctl">Products / Medicines</div></div>
+<div class="pscroll"><div class="ptbl"><div class="pth"><span>SL</span><span>Product / Medicine Name</span><span style="text-align:center">Qty</span><span style="text-align:right">Unit Price</span><span style="text-align:right">Subtotal</span><span></span></div><div id="PL"></div></div></div>
+<div class="pfoot"><button class="padd" onclick="addRow()">＋ Add Product / Medicine</button></div></div>
+<div class="card"><div class="chd"><div class="cic">🩺</div><div class="ctl">Doctor Fee</div></div><div class="frow"><span class="flbl">Doctor Visit Fee</span><span class="ftk">Tk</span><input class="finp" id="df" type="number" min="0" step="0.01" value="0" placeholder="0.00" oninput="calc()"/></div></div>
+<div class="card"><div class="chd"><div class="cic">🧾</div><div class="ctl">Invoice Summary</div></div><div class="cbd">
+<div class="srow"><span class="slb">Total Items</span><span class="svl" id="si">0</span></div>
+<div class="srow"><span class="slb">Total Quantity</span><span class="svl" id="sq">0</span></div>
+<div class="srow"><span class="slb">Products Subtotal</span><span class="svl" id="ss">Tk 0.00</span></div>
+<div class="srow"><span class="slb">Doctor Fee</span><span class="svl" id="sd">Tk 0.00</span></div>
+<div class="srow"><span class="slb">Discount (–)</span><span style="display:flex;align-items:center;gap:5px;font-size:.84rem">Tk<input class="dinp" id="disc" type="number" value="0" min="0" step="0.01" oninput="calc()"/></span></div>
+<div class="srow grand"><span class="slb">TOTAL PAYABLE</span><span class="svl" id="st">Tk 0.00</span></div>
+<div class="cashbox"><div class="crow"><span class="clb">Cash / Payment Received</span><input class="cinp" id="cash" type="number" value="0" min="0" step="0.01" oninput="calc()"/></div><div class="crow"><span class="clb">Total Paid</span><span class="cvl" id="sp">Tk 0.00</span></div></div>
+</div></div>
+<div class="card"><div class="cbd">
+<button class="btn btn-g" style="margin-bottom:8px" onclick="genPDF(null)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Download PDF Invoice</button>
+<button class="btn btn-img" style="margin-bottom:8px" onclick="genImg(null)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Save as Image (PNG)</button>
+<div class="r2"><button class="btn btn-wa" onclick="doWA()"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</button><button class="btn btn-ol" onclick="saveInv()">💾 Save</button></div>
+<button class="btn btn-rd" onclick="clearForm()">↺ Clear &amp; New Invoice</button>
+</div></div>
 </div>
-
-<!-- PAGE: HISTORY -->
 <div class="pg" id="pg-hist"><div id="HL2"></div></div>
-
-<!-- PAGE: SEARCH -->
-<div class="pg" id="pg-srch">
-  <div class="sbox"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="srch" placeholder="Search name, invoice no., mobile, address..." oninput="doSearch()"/></div>
-  <div class="scnt" id="scnt"></div>
-  <div id="SR"></div>
+<div class="pg" id="pg-srch"><div class="sbox"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="srch" placeholder="Search name, invoice no., mobile, address..." oninput="doSearch()"/></div><div class="scnt" id="scnt"></div><div id="SR"></div></div>
+<div class="pg" id="pg-cfg"><div class="card"><div class="chd"><div class="cic">⚙️</div><div class="ctl">Pharmacy Settings</div></div><div class="cbd">
+<label style="font-size:.68rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:block">Shop Logo</label>
+<div class="lgpv" id="LGP" onclick="document.getElementById('lgu').click()"><span id="LGIC">🌿</span><img id="LGIM" style="display:none"/><div class="lght">Tap to change</div></div>
+<input type="file" id="lgu" accept="image/*" onchange="uploadLogo(event)"/>
+<div class="fg"><label>Pharmacy Name</label><input id="s-nm" value="NISHAT HOMEO PHARMACY"/></div>
+<div class="fg"><label>Address Line 1</label><input id="s-a1" value="C&amp;B Chowrasta School Road, Lohagara, Narail,"/></div>
+<div class="fg"><label>Address Line 2</label><input id="s-a2" value="Bangladesh."/></div>
+<div class="g2"><div class="fg"><label>Mobile</label><input id="s-mb" value="01754969909"/></div><div class="fg"><label>Email</label><input id="s-em" value="nishathomeoph@gmail.com"/></div></div>
+<div class="fg"><label>Thank You Message</label><textarea id="s-th">Thank you for your trust and support.</textarea></div>
+<button class="btn btn-g" onclick="saveCfg()">✅ Save Settings</button>
+</div></div></div>
 </div>
-
-<!-- PAGE: SETTINGS -->
-<div class="pg" id="pg-cfg">
-  <div class="card"><div class="chd"><div class="cic">⚙️</div><div class="ctl">Pharmacy Settings</div></div>
-    <div class="cbd">
-      <label style="font-size:.68rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:block">Shop Logo</label>
-      <div class="lgpv" id="LGP" onclick="document.getElementById('lgu').click()">
-        <span id="LGIC">🌿</span><img id="LGIM" style="display:none"/><div class="lght">Tap to change</div>
-      </div>
-      <input type="file" id="lgu" accept="image/*" onchange="uploadLogo(event)"/>
-      <div class="fg"><label>Pharmacy Name</label><input id="s-nm" value="NISHAT HOMEO PHARMACY"/></div>
-      <div class="fg"><label>Address Line 1</label><input id="s-a1" value="C&amp;B Chowrasta School Road, Lohagara, Narail,"/></div>
-      <div class="fg"><label>Address Line 2</label><input id="s-a2" value="Bangladesh."/></div>
-      <div class="g2">
-        <div class="fg"><label>Mobile</label><input id="s-mb" value="01754969909"/></div>
-        <div class="fg"><label>Email</label><input id="s-em" value="nishathomeoph@gmail.com"/></div>
-      </div>
-      <div class="fg"><label>Thank You Message</label><textarea id="s-th">Thank you for your trust and support.</textarea></div>
-      <button class="btn btn-g" onclick="saveCfg()">✅ Save Settings</button>
-    </div>
-  </div>
-</div>
-
-</div><!-- /main -->
-
-<!-- HIDDEN INVOICE RENDER AREA -->
-<div id="invoice-render-area">
-  <div class="invoice-paper" id="invoice-paper">
-    <div class="inv-header">
-      <img class="inv-logo" id="inv-logo" alt="Logo"/>
-      <div class="inv-pharmacy-name" id="inv-shop-name">NISHAT HOMEO PHARMACY</div>
-      <div class="inv-pharmacy-addr" id="inv-addr-full">C&B Chowrasta School Road, Lohagara, Narail, Bangladesh.</div>
-      <div class="inv-pharmacy-contact">Mobile: <span id="inv-mobile">01754969909</span>, E-mail: <span id="inv-email">nishathomeoph@gmail.com</span></div>
-    </div>
-    <div class="inv-meta">
-      <div>Invoice No. <span id="inv-disp-no">0001</span></div>
-      <div class="val" id="inv-disp-date">01-01-2024 12:00 PM</div>
-    </div>
-    <div class="inv-patient">
-      <span class="pat-label">Patient Name</span><span class="pat-val" id="inv-disp-pname">-</span>
-      <span class="pat-label">Mobile No.</span><span class="pat-val" id="inv-disp-pmobile">-</span>
-      <span class="pat-label">E-mail</span><span class="pat-val" id="inv-disp-pemail">-</span>
-      <span class="pat-label">Address</span><span class="pat-val" id="inv-disp-paddr">-</span>
-      <div class="reward-badge"><i class="fas fa-star"></i> Reward Point: <span id="inv-disp-reward">0</span></div>
-    </div>
-    <table class="inv-table">
-      <thead><tr><th>SL.</th><th>Products</th><th>Quantity</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
-      <tbody id="inv-disp-prods"></tbody>
-    </table>
-    <div class="inv-summary-section"><div class="inv-summary-grid" id="inv-disp-summary"></div></div>
-    <div class="inv-total-bar"><span>Total</span><span class="amount">Tk <span id="inv-disp-total">0.00</span></span></div>
-    <div class="inv-notes" id="inv-notes-section"><span style="font-weight:600;">Notes:</span> <span id="inv-disp-notes"></span></div>
-    <div class="inv-footer">
-      <div class="pharmacy-repeat" id="inv-foot-name">NISHAT HOMEO PHARMACY</div>
-      <div class="contact-line">For any queries, please contact us:</div>
-      <div class="contact-line"><i class="fas fa-phone" style="font-size:9px"></i> <span id="inv-foot-mobile">01754969909</span> &nbsp; <i class="fas fa-envelope" style="font-size:9px"></i> <span id="inv-foot-email">nishathomeoph@gmail.com</span></div>
-      <div class="thank-you" id="inv-foot-thanks">Thank you for your trust and support.</div>
-    </div>
-    <div class="inv-qr" id="inv-qr-code"></div>
-  </div>
-</div>
-
-<!-- BOTTOM NAV -->
+<div id="ira"><div class="invoice-paper" id="invoice-paper">
+<div class="inv-header"><img class="inv-logo" id="inv-logo" alt="Logo"/><div class="inv-pharmacy-name" id="inv-shop-name"></div><div class="inv-pharmacy-addr" id="inv-addr-full"></div><div class="inv-pharmacy-contact">Mobile: <span id="inv-mobile"></span>, E-mail: <span id="inv-email"></span></div></div>
+<div class="inv-meta"><div>Invoice No. <span id="inv-disp-no"></span></div><div class="val" id="inv-disp-date"></div></div>
+<div class="inv-patient"><span class="pat-label">Patient Name</span><span class="pat-val" id="inv-disp-pname">-</span><span class="pat-label">Mobile No.</span><span class="pat-val" id="inv-disp-pmobile">-</span><span class="pat-label">E-mail</span><span class="pat-val" id="inv-disp-pemail">-</span><span class="pat-label">Address</span><span class="pat-val" id="inv-disp-paddr">-</span><div class="reward-badge"><i class="fas fa-star"></i> Reward Point: <span id="inv-disp-reward">0</span></div></div>
+<table class="inv-table"><thead><tr><th>SL.</th><th>Products</th><th>Quantity</th><th>Unit Price</th><th>Subtotal</th></tr></thead><tbody id="inv-disp-prods"></tbody></table>
+<div class="inv-summary-section"><div class="inv-summary-grid" id="inv-disp-summary"></div></div>
+<div class="inv-total-bar"><span>Total</span><span class="amount">Tk <span id="inv-disp-total">0.00</span></span></div>
+<div class="inv-notes" id="inv-ns"><span style="font-weight:600">Notes:</span> <span id="inv-disp-notes"></span></div>
+<div class="inv-footer"><div class="pr2" id="inv-foot-name"></div><div class="cl">For any queries, please contact us:</div><div class="cl"><i class="fas fa-phone" style="font-size:9px"></i> <span id="inv-foot-mobile"></span> &nbsp; <i class="fas fa-envelope" style="font-size:9px"></i> <span id="inv-foot-email"></span></div><div class="ty" id="inv-foot-thanks"></div></div>
+<div class="inv-qr" id="inv-qr-code"></div>
+</div></div>
 <nav class="bnav">
-  <button class="nb on" id="nbn" onclick="goPage('new',this)">
-    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-    New<div class="ndot"></div>
-  </button>
-  <button class="nb" id="nbh" onclick="goPage('hist',this)">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    History<span class="nbadge" id="NBG">0</span><div class="ndot"></div>
-  </button>
-  <button class="nb" id="nbs" onclick="goPage('srch',this)">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    Patients<div class="ndot"></div>
-  </button>
-  <button class="nb" id="nbc" onclick="goPage('cfg',this)">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    Settings<div class="ndot"></div>
-  </button>
+<button class="nb on" id="nbn" onclick="goPage('new',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>New<div class="ndot"></div></button>
+<button class="nb" id="nbh" onclick="goPage('hist',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>History<span class="nbadge" id="NBG">0</span><div class="ndot"></div></button>
+<button class="nb" id="nbs" onclick="goPage('srch',this)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Patients<div class="ndot"></div></button>
+<button class="nb" id="nbc" onclick="goPage('cfg',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings<div class="ndot"></div></button>
 </nav>
-
-<!-- DIALOG -->
-<div class="dlov" id="DLV">
-  <div class="dlbx">
-    <div class="dlbd"><span class="dlic" id="DIC">⚠️</span><div class="dltt" id="DTT">Are you sure?</div><div class="dlms" id="DMS">This cannot be undone.</div></div>
-    <div class="dlft">
-      <button class="dlbt cancel" id="DCN" onclick="DL.close()">Cancel</button>
-      <button class="dlbt ok-g" id="DOK" onclick="DL.confirm()">Confirm</button>
-    </div>
-  </div>
-</div>
-
-<!-- LOGIN SCREEN -->
-<div class="lscr" id="LSCR">
-  <div class="lbox">
-    <div class="ltop">
-      <div class="lico">🌿</div>
-      <div class="lshop" id="LNMS">Nishat Homeo Pharmacy</div>
-      <div class="lsub">Invoice Management System</div>
-    </div>
-    <div class="lbod">
-      <h2>স্বাগতম! 👋</h2>
-      <p>আপনার Gmail দিয়ে sign in করুন — যেকোনো device থেকে সব invoice দেখুন।</p>
-      <button class="gbtn" id="GBTN" onclick="signInGoogle()">
-        <svg class="gico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Continue with Google
-      </button>
-      <p class="lnote">আপনার সকল তথ্য Google Firebase-এ নিরাপদে সংরক্ষিত থাকবে।<br/>যেকোনো ডিভাইস থেকে access করুন।</p>
-    </div>
-  </div>
-</div>
-
-<!-- SYNC STATUS BAR -->
-<div class="syncbar" id="SBAR">⏳ Syncing with cloud...</div>
-
-<!-- FIREBASE SETUP GUIDE -->
-<div class="setup-ov" id="SETUP">
-  <div class="setup-box">
-    <h2>🔧 Firebase Setup Guide</h2>
-    <p>One-time setup (5 minutes). Create a free Firebase project to enable cloud sync.</p>
-    <div class="step"><div class="stepn">1</div><div class="stepc"><strong>Create Firebase Project</strong><span>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:#065f46">console.firebase.google.com</a> → Add project → Name it "Nishat Homeo"</span></div></div>
-    <div class="step"><div class="stepn">2</div><div class="stepc"><strong>Enable Google Sign-In</strong><span>Authentication → Sign-in method → Google → Enable → Save</span></div></div>
-    <div class="step"><div class="stepn">3</div><div class="stepc"><strong>Create Firestore Database</strong><span>Firestore Database → Create database → Start in production mode → Choose region → Done</span></div></div>
-    <div class="step"><div class="stepn">4</div><div class="stepc"><strong>Add Firestore Security Rules</strong><span>Firestore → Rules → Replace with:</span><code>rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth.uid == userId;
-    }
-  }
-}</code></div></div>
-    <div class="step"><div class="stepn">5</div><div class="stepc"><strong>Get Firebase Config</strong><span>Project Settings → Your apps → Add app (Web) → Register → Copy config values below</span></div></div>
-    <div class="step"><div class="stepn">6</div><div class="stepc"><strong>Add Authorized Domain</strong><span>Authentication → Settings → Authorized domains → Add your domain</span></div></div>
-    <p style="margin-top:4px;margin-bottom:12px;font-weight:600;color:#0f172a;font-size:.85rem">Paste your Firebase config values:</p>
-    <input class="cfg-inp" id="fb-aid" placeholder="apiKey (AIzaSy...)"/>
-    <input class="cfg-inp" id="fb-aid2" placeholder="authDomain (your-project.firebaseapp.com)"/>
-    <input class="cfg-inp" id="fb-pid" placeholder="projectId (your-project-id)"/>
-    <input class="cfg-inp" id="fb-sid" placeholder="storageBucket (your-project.appspot.com)"/>
-    <input class="cfg-inp" id="fb-msi" placeholder="messagingSenderId (123456789)"/>
-    <input class="cfg-inp" id="fb-aid3" placeholder="appId (1:123:web:abc...)"/>
-    <button class="btn btn-g" style="margin-top:4px" onclick="saveFBConfig()">✅ Save Firebase Config</button>
-    <button class="btn btn-ol" style="margin-top:8px" onclick="closeSetup()">✖ বন্ধ করুন</button>
-    <p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">Config saved locally. App works offline with local storage even without Firebase.</p>
-  </div>
-</div>
-
+<div class="dlov" id="DLV"><div class="dlbx"><div class="dlbd"><span class="dlic" id="DIC">⚠️</span><div class="dltt" id="DTT"></div><div class="dlms" id="DMS"></div></div><div class="dlft"><button class="dlbt cancel" onclick="DL.close()">Cancel</button><button class="dlbt ok-g" id="DOK" onclick="DL.confirm()">Confirm</button></div></div></div>
 <div class="tst" id="TST"></div>
-
 <script>
-// ==============================================
-// FIREBASE CONFIG & AUTH
-// ==============================================
-var fbReady = false;
-var fbAuth = null;
-var fbDB = null;
-var currentUser = null;
-
-var FIREBASE_CONFIG = {
-  apiKey:            "AIzaSyAOKPuSR9ItuQgsTGCOflXWPc_ZQJ8I8Fs",
-  authDomain:        "nishat-homeo-pharmacy.firebaseapp.com",
-  projectId:         "nishat-homeo-pharmacy",
-  storageBucket:     "nishat-homeo-pharmacy.firebasestorage.app",
-  messagingSenderId: "767625400872",
-  appId:             "1:767625400872:web:4a811f0f08f9abaceb5b1d",
-  measurementId:     "G-8H6GRCVRH2"
-};
-
-function initFirebase() {
-  try {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(FIREBASE_CONFIG);
-    }
-    fbAuth = firebase.auth();
-    fbDB   = firebase.firestore();
-    fbReady = true;
-    fbAuth.onAuthStateChanged(function(user) {
-      if (user) {
-        currentUser = user;
-        onSignedIn(user);
-      } else {
-        currentUser = null;
-        showLoginScreen(true);
-      }
-    });
-  } catch(e) {
-    console.error('Firebase init error:', e);
-    toast('Firebase error: ' + e.message);
-    hideLoginScreen();
-    runApp();
-  }
-}
-
-function _gbtnReset() {
-  var btn = document.getElementById('GBTN');
-  if (!btn) return;
-  btn.disabled = false;
-  btn.style.opacity = '1';
-  btn.innerHTML = '<svg class="gico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google';
-}
-
-function signInGoogle() {
-  if (!fbReady) { toast('⚠️ অ্যাপ লোড হচ্ছে, একটু অপেক্ষা করুন...'); return; }
-  var btn = document.getElementById('GBTN');
-  if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; btn.textContent = '⏳ সাইন ইন হচ্ছে...'; }
-  var provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: 'select_account' });
-  fbAuth.signInWithPopup(provider)
-    .catch(function(e) {
-      console.error('SignIn error:', e.code, e.message);
-      _gbtnReset();
-      if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-        toast('Popup blocked — redirect চেষ্টা হচ্ছে...');
-        setTimeout(function(){ fbAuth.signInWithRedirect(provider); }, 500);
-      } else if (e.code === 'auth/unauthorized-domain') {
-        toast('⚠️ Domain authorized নয় — Firebase console-এ add করুন');
-      } else if (e.code === 'auth/network-request-failed') {
-        toast('⚠️ Internet সংযোগ নেই');
-      } else {
-        toast('Sign-in ব্যর্থ: ' + (e.code || e.message));
-      }
-    });
-}
-
-function signOut() {
-  if (fbAuth) {
-    fbAuth.signOut().then(function() {
-      currentUser = null;
-      hist = [];
-      showLoginScreen(true);
-      toast('Signed out');
-    });
-  }
-}
-
-function onSignedIn(user) {
-  hideLoginScreen();
-  document.getElementById('UBAR').style.display = 'block';
-  var av = document.getElementById('UAVT');
-  var nm = document.getElementById('UNMS');
-  if (user.photoURL) av.src = user.photoURL;
-  nm.textContent = user.displayName ? user.displayName.split(' ')[0] : user.email;
-  loadFromCloud();
-}
-
-function showUserMenu() {
-  var u = currentUser;
-  if (!u) return;
-  DL.show('👤', u.displayName || u.email, u.email + '\n\nSigned in with Google.\nAll invoices are synced to cloud.', false, function(){});
-  document.getElementById('DOK').textContent = 'Sign Out';
-  document.getElementById('DOK').onclick = function(){ DL.close(); signOut(); };
-}
-
-function showLoginScreen(hasFirebase) {
-  document.getElementById('LSCR').style.display = 'flex';
-  var gbtn = document.getElementById('GBTN');
-  if (gbtn) { gbtn.disabled = false; gbtn.style.opacity = '1'; gbtn.style.pointerEvents = ''; }
-}
-function hideLoginScreen() {
-  var el = document.getElementById('LSCR');
-  if (el) el.style.display = 'none';
-}
-
-// ==============================================
-// FIREBASE CONFIG SAVE (SETUP GUIDE)
-// ==============================================
-function saveFBConfig() {
-  var cfg2 = {
-    apiKey:            document.getElementById('fb-aid').value.trim(),
-    authDomain:        document.getElementById('fb-aid2').value.trim(),
-    projectId:         document.getElementById('fb-pid').value.trim(),
-    storageBucket:     document.getElementById('fb-sid').value.trim(),
-    messagingSenderId: document.getElementById('fb-msi').value.trim(),
-    appId:             document.getElementById('fb-aid3').value.trim()
-  };
-  if (!cfg2.apiKey) { toast('⚠️ apiKey দিতে হবে'); return; }
-  if (!cfg2.projectId) { toast('⚠️ projectId দিতে হবে'); return; }
-  localStorage.setItem('nhp_fb', JSON.stringify(cfg2));
-  document.getElementById('SETUP').classList.remove('on');
-  toast('✅ Firebase config সেভ হয়েছে! লোড হচ্ছে...');
-  setTimeout(function(){ window.location.reload(); }, 1200);
-}
-
-function closeSetup() {
-  document.getElementById('SETUP').classList.remove('on');
-}
-
-function showSetup() {
-  var ov = document.getElementById('SETUP');
-  ov.classList.add('on');
-  ov.scrollTop = 0;
-}
-
-// ==============================================
-// CLOUD SYNC
-// ==============================================
-function showSync(msg) { var b = document.getElementById('SBAR'); b.textContent = msg; b.classList.add('on'); }
-function hideSync() { document.getElementById('SBAR').classList.remove('on'); }
-
-function loadFromCloud() {
-  if (!fbReady || !currentUser) { runApp(); return; }
-  showSync('☁️ Loading from cloud...');
-  fbDB.collection('users').doc(currentUser.uid)
-    .collection('invoices').limit(500).get()
-    .then(function(snap) {
-      var cloudData = [];
-      snap.forEach(function(doc) { cloudData.push(doc.data()); });
-      if (cloudData.length > 0) {
-        hist = cloudData;
-        localStorage.setItem('nhp_h', JSON.stringify(hist));
-      } else {
-        try { var local = JSON.parse(localStorage.getItem('nhp_h') || '[]'); if (local.length > 0) { hist = local; uploadAllToCloud(local); } } catch(e){}
-      }
-      hideSync();
-      runApp();
-    })
-    .catch(function(e) {
-      console.error('Load error:', e);
-      try { hist = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(er){ hist=[]; }
-      hideSync();
-      runApp();
-      toast('Offline mode — local data loaded');
-    });
-}
-
-function saveToCloud(inv) {
-  if (!fbReady || !currentUser) return;
-  showSync('☁️ Cloud-এ সেভ হচ্ছে...');
-  var invDoc = Object.assign({}, inv, { savedAt: Date.now(), uid: currentUser.uid });
-  fbDB.collection('users').doc(currentUser.uid)
-    .collection('invoices').doc(String(inv.no || Date.now()))
-    .set(invDoc)
-    .then(function() { hideSync(); })
-    .catch(function(e) { console.error('Save error:', e); hideSync(); toast('Cloud save failed — local-এ আছে'); });
-}
-
-function deleteFromCloud(invNo) {
-  if (!fbReady || !currentUser) return;
-  fbDB.collection('users').doc(currentUser.uid)
-    .collection('invoices').doc(String(invNo))
-    .delete()
-    .catch(function(e){ console.error('Delete error:', e); });
-}
-
-function uploadAllToCloud(data) {
-  if (!fbReady || !currentUser || !data.length) return;
-  showSync('☁️ Uploading to cloud...');
-  var batch = fbDB.batch();
-  data.forEach(function(inv) {
-    var ref = fbDB.collection('users').doc(currentUser.uid)
-      .collection('invoices').doc(inv.no || String(Date.now()+Math.random()));
-    batch.set(ref, inv);
-  });
-  batch.commit()
-    .then(function(){ hideSync(); toast('✅ All data synced to cloud!'); })
-    .catch(function(e){ console.error('Batch error:', e); hideSync(); });
-}
-
-var _appStarted = false;
-function runApp() {
-  if (_appStarted) { renderHist(); updBadge(); return; }
-  _appStarted = true;
-  applyCfg(); applyLogo();
-  setNo(); setNow();
-  addRow(); addRow();
-  renderHist(); updBadge();
-}
-
-// ==============================================
-// DIALOG
-// ==============================================
-var DL = {
-  cb: null,
-  show: function(icon, title, msg, danger, callback) {
-    this.cb = callback;
-    document.getElementById('DIC').textContent = icon;
-    document.getElementById('DTT').textContent = title;
-    document.getElementById('DMS').textContent = msg;
-    var ok = document.getElementById('DOK');
-    ok.textContent = danger ? 'Delete' : 'Confirm';
-    ok.className = 'dlbt ' + (danger ? 'ok-r' : 'ok-g');
-    ok.onclick = function(){ DL.confirm(); };
-    document.getElementById('DLV').classList.add('on');
-  },
-  close: function() { document.getElementById('DLV').classList.remove('on'); this.cb = null; },
-  confirm: function() { var fn = this.cb; this.close(); if (fn) fn(); }
-};
-document.getElementById('DLV').addEventListener('click', function(e) { if (e.target === this) DL.close(); });
-
-// ==============================================
-// TOAST
-// ==============================================
-function toast(msg) { var t = document.getElementById('TST'); t.textContent = msg; t.classList.add('on'); setTimeout(function() { t.classList.remove('on'); }, 3000); }
-
-// ==============================================
-// STATE
-// ==============================================
-var rows = [];
-var hist = [];
-var cfg = {};
-var logoB64 = null;
-
-try { hist = JSON.parse(localStorage.getItem('nhp_h') || '[]'); } catch(e) { hist = []; }
-try { cfg  = JSON.parse(localStorage.getItem('nhp_c') || '{}'); } catch(e) { cfg = {}; }
-try { logoB64 = localStorage.getItem('nhp_l') || null; } catch(e) { logoB64 = null; }
-
-var DEF = { nm: 'NISHAT HOMEO PHARMACY', a1: 'C&B Chowrasta School Road, Lohagara, Narail,', a2: 'Bangladesh.', mb: '01754969909', em: 'nishathomeoph@gmail.com', th: 'Thank you for your trust and support.' };
-function C(k) { return cfg[k] || DEF[k]; }
-function gid(id) { return document.getElementById(id); }
-function gv(id) { var e = gid(id); return e ? e.value : ''; }
-function sv(id, v) { var e = gid(id); if(e) e.textContent = v; }
-function pad(n) { return String(n).padStart(2, '0'); }
-function xe(v) { return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function xd(v) { return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// ==============================================
-// INIT
-// ==============================================
-function init() { applyCfg(); applyLogo(); setNo(); setNow(); addRow(); addRow(); renderHist(); updBadge(); }
-function setNo() { var n = parseInt(localStorage.getItem('nhp_no') || '0') + 1; gid('ino').value = pad(n); }
-function setNow() { var d = new Date(); gid('idt').value = pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear(); gid('itm').value = pad(d.getHours())+':'+pad(d.getMinutes()); }
-
-// ==============================================
-// SETTINGS
-// ==============================================
-function applyCfg() { var map = { nm:'s-nm', a1:'s-a1', a2:'s-a2', mb:'s-mb', em:'s-em', th:'s-th' }; Object.keys(map).forEach(function(k) { var e = gid(map[k]); if(e) e.value = C(k); }); gid('HN').textContent = C('nm'); }
-function saveCfg() { cfg.nm = gv('s-nm'); cfg.a1 = gv('s-a1'); cfg.a2 = gv('s-a2'); cfg.mb = gv('s-mb'); cfg.em = gv('s-em'); cfg.th = gv('s-th'); localStorage.setItem('nhp_c', JSON.stringify(cfg)); gid('HN').textContent = C('nm'); applyLogo(); toast('Settings saved ✅'); }
-function uploadLogo(e) { var f = e.target.files[0]; if(!f) return; var r = new FileReader(); r.onload = function(ev) { logoB64 = ev.target.result; try { localStorage.setItem('nhp_l', logoB64); } catch(er) {} applyLogo(); toast('Logo updated ✅'); }; r.readAsDataURL(f); }
-function applyLogo() { var hl = gid('HL'), pi = gid('LGIM'), ic = gid('LGIC'); if (logoB64) { hl.innerHTML = '<img src="'+logoB64+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px"/>'; pi.src = logoB64; pi.style.display = 'block'; ic.style.display = 'none'; } else { hl.innerHTML = '🌿'; pi.style.display = 'none'; ic.style.display = 'block'; } }
-
-// ==============================================
-// NAVIGATION
-// ==============================================
-function goPage(p, el) { document.querySelectorAll('.pg').forEach(function(x) { x.classList.remove('on'); }); document.querySelectorAll('.nb').forEach(function(x) { x.classList.remove('on'); }); gid('pg-'+p).classList.add('on'); if(el) el.classList.add('on'); if(p==='hist') renderHist(); if(p==='srch') { gid('srch').value=''; doSearch(); } window.scrollTo(0,0); }
-
-// ==============================================
-// PRODUCT ROWS
-// ==============================================
-var _rid = 0;
-function newId() { return ++_rid; }
-function addRow(n, q, p) { rows.push({ id: newId(), n: n||'', q: q||'', p: p||'' }); renderRows(); }
-function delRow(id) { if (rows.length <= 1) { toast('At least one row required'); return; } DL.show('⚠️', 'Remove Product?', 'Remove this item from the list?', false, function() { rows = rows.filter(function(r) { return r.id !== id; }); renderRows(); }); }
-function renderRows() { var el = gid('PL'); el.innerHTML = ''; rows.forEach(function(row, i) { var sub = ((parseFloat(row.q)||0) * (parseFloat(row.p)||0)).toFixed(2); var div = document.createElement('div'); div.className = 'pr'; div.innerHTML = '<div class="psl">'+pad(i+1)+'</div><input placeholder="Product / Medicine name" value="'+xe(row.n)+'" oninput="rows['+i+'].n=this.value"/><input type="number" placeholder="0" min="0" step="0.01" value="'+xe(row.q)+'" style="text-align:center" oninput="rows['+i+'].q=this.value;rS('+i+')"/><input type="number" placeholder="0.00" min="0" step="0.01" value="'+xe(row.p)+'" style="text-align:right" oninput="rows['+i+'].p=this.value;rS('+i+')"/><div class="psv" id="psv'+i+'">'+sub+'</div><button class="pdel" data-rid="'+row.id+'">&#10005;</button>'; el.appendChild(div); div.querySelector('.pdel').addEventListener('click', (function(rid){ return function(){ delRow(rid); }; })(row.id)); }); calc(); }
-function rS(i) { var e = gid('psv'+i); if(e) e.textContent = ((parseFloat(rows[i].q)||0)*(parseFloat(rows[i].p)||0)).toFixed(2); calc(); }
-
-// ==============================================
-// CALC — Integer Quantity, No Change/Return
-// ==============================================
-function calc() {
-  var items = rows.filter(function(r){ return r.n && r.n.trim(); }).length;
-  var qty = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0);
-  var sub = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
-  var df = parseFloat(gv('df'))||0;
-  var disc = parseFloat(gv('disc'))||0;
-  var total = Math.max(0, sub + df - disc);
-  var cash = parseFloat(gv('cash'))||0;
-  sv('si', items);
-  sv('sq', Math.round(qty)); // Integer — no .00
-  sv('ss','Tk '+sub.toFixed(2));
-  sv('sd','Tk '+df.toFixed(2));
-  sv('st','Tk '+total.toFixed(2));
-  sv('sp','Tk '+Math.min(cash,total).toFixed(2));
-}
-
-// ==============================================
-// GET INVOICE DATA
-// ==============================================
-function getData() {
-  var sub = rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0); }, 0);
-  var df = parseFloat(gv('df'))||0;
-  var disc = parseFloat(gv('disc'))||0;
-  var total = Math.max(0, sub + df - disc);
-  var cash = parseFloat(gv('cash'))||0;
-  return {
-    no: gv('ino'), date: gv('idt'), time: gv('itm'), note: gv('itn'),
-    pName: gv('cn')||'Patient', pAddr: gv('ca'), pMob: gv('cm'),
-    pEmail: gv('ce'), pRew: gv('crw')||'0',
-    rows: rows.filter(function(r){ return r.n && r.n.trim(); }).map(function(r){ return {n:r.n,q:r.q,p:r.p}; }),
-    df: df, sub: sub, disc: disc, total: total, cash: cash, paid: Math.min(cash,total),
-    qty: rows.reduce(function(s,r){ return s+(parseFloat(r.q)||0); }, 0),
-    items: rows.filter(function(r){ return r.n&&r.n.trim(); }).length, at: new Date().toISOString()
-  };
-}
-
-// ==============================================
-// INVOICE TEMPLATE POPULATOR
-// ==============================================
-function populateInvoice(d) {
-  document.getElementById('inv-shop-name').textContent = C('nm');
-  var addrLine = (C('a1') + ' ' + C('a2')).replace(/,\s*$/, '').trim();
-  document.getElementById('inv-addr-full').textContent = addrLine;
-  document.getElementById('inv-mobile').textContent = C('mb');
-  document.getElementById('inv-email').textContent = C('em');
-  document.getElementById('inv-disp-no').textContent = d.no;
-
-  var timeStr = d.time || '00:00';
-  var parts = timeStr.split(':');
-  var hrs = parseInt(parts[0]) || 0;
-  var mins = parts[1] || '00';
-  var ampm = hrs >= 12 ? 'PM' : 'AM';
-  hrs = hrs % 12; if(hrs === 0) hrs = 12;
-  document.getElementById('inv-disp-date').textContent = d.date + ' ' + hrs + ':' + mins + ' ' + ampm;
-
-  document.getElementById('inv-disp-pname').textContent = d.pName || '-';
-  document.getElementById('inv-disp-pmobile').textContent = d.pMob || '-';
-  document.getElementById('inv-disp-pemail').textContent = d.pEmail || '-';
-  document.getElementById('inv-disp-paddr').textContent = d.pAddr || '-';
-  document.getElementById('inv-disp-reward').textContent = d.pRew || '0';
-
-  // Logo
-  var logoEl = document.getElementById('inv-logo');
-  if (logoB64) { logoEl.src = logoB64; logoEl.style.display = 'block'; }
-  else { logoEl.style.display = 'none'; }
-
-  // Products
-  var tbody = document.getElementById('inv-disp-prods'); tbody.innerHTML = '';
-  d.rows.forEach(function(pr, i) {
-    var qty = parseFloat(pr.q)||0; var price = parseFloat(pr.p)||0; var sub = qty*price;
-    var tr = document.createElement('tr');
-    tr.innerHTML = '<td>'+String(i+1).padStart(2,'0')+'</td><td class="product-name-cell">'+xe(pr.n)+'</td><td>'+qty.toFixed(2)+'</td><td>'+price.toFixed(2)+'</td><td>'+sub.toFixed(2)+'</td>';
-    tbody.appendChild(tr);
-  });
-
-  // Summary grid — Total quantity as integer, no Change/Return
-  var sumHtml = '<div class="cell">Cash</div><div class="cell">Tk '+d.cash.toFixed(2)+'</div>'
-    + '<div class="cell">Date</div><div class="cell">'+d.date+'</div>'
-    + '<div class="cell">Total Quantity</div><div class="cell">'+Math.round(d.qty)+'</div>'
-    + '<div class="cell">Total Items</div><div class="cell">'+d.items+'</div>'
-    + '<div class="cell">Total Paid</div><div class="cell">Tk '+d.paid.toFixed(2)+'</div>'
-    + '<div class="cell">Subtotal</div><div class="cell">Tk '+d.sub.toFixed(2)+'</div>';
-  if(d.df > 0) sumHtml += '<div class="cell">Doctor Fee</div><div class="cell">Tk '+d.df.toFixed(2)+'</div>';
-  sumHtml += '<div class="cell">Discount</div><div class="cell" style="color:#C0392B;font-weight:600">(-) Tk '+d.disc.toFixed(2)+'</div>';
-  document.getElementById('inv-disp-summary').innerHTML = sumHtml;
-  document.getElementById('inv-disp-total').textContent = d.total.toFixed(2);
-
-  // Notes
-  var notesSection = document.getElementById('inv-notes-section');
-  if (d.note && d.note.trim()) {
-    notesSection.style.display = 'block';
-    document.getElementById('inv-disp-notes').textContent = d.note;
-  } else {
-    notesSection.style.display = 'none';
-  }
-
-  // Footer
-  document.getElementById('inv-foot-name').textContent = C('nm');
-  document.getElementById('inv-foot-mobile').textContent = C('mb');
-  document.getElementById('inv-foot-email').textContent = C('em');
-  document.getElementById('inv-foot-thanks').textContent = C('th');
-
-  // QR Code
-  var qrEl = document.getElementById('inv-qr-code'); qrEl.innerHTML = '';
-  try {
-    new QRCode(qrEl, { text: 'Invoice: '+d.no+'\nPatient: '+d.pName+'\nTotal: Tk '+d.total.toFixed(2), width: 60, height: 60, colorDark: "#073D2E", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-  } catch(e) {}
-}
-
-// ==============================================
-// PDF — Full-width border edge-to-edge
-// ==============================================
-function genPDF(inv) {
-  var d = inv || getData();
-  populateInvoice(d);
-  toast('Preparing PDF...');
-  setTimeout(function() {
-    var element = document.getElementById('invoice-paper');
-    html2canvas(element, { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) {
-      var jsPDF = window.jspdf.jsPDF;
-      var pdf = new jsPDF('p', 'mm', 'a4');
-      var pdfWidth = pdf.internal.pageSize.getWidth();
-      var pdfHeight = pdf.internal.pageSize.getHeight();
-      var imgWidth = canvas.width;
-      var imgHeight = canvas.height;
-      // Force full width so border goes edge-to-edge
-      var width = pdfWidth;
-      var height = (imgHeight / imgWidth) * width;
-      if (height > pdfHeight) {
-        height = pdfHeight;
-        width = (imgWidth / imgHeight) * height;
-      }
-      var x = (pdfWidth - width) / 2;
-      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', x, 0, width, height);
-      pdf.save('Invoice-' + d.no + '.pdf');
-      toast('PDF Downloaded!');
-    });
-  }, 600);
-}
-
-// ==============================================
-// IMAGE GENERATION
-// ==============================================
-function genImg(inv) {
-  var d = inv || getData();
-  populateInvoice(d);
-  toast('Generating image...');
-  setTimeout(function() {
-    var element = document.getElementById('invoice-paper');
-    html2canvas(element, { scale: 3, useCORS: true, backgroundColor: "#ffffff" }).then(function(canvas) {
-      var link = document.createElement('a');
-      link.download = 'Invoice-' + d.no + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      toast('Image saved!');
-    });
-  }, 600);
-}
-
-// ==============================================
-// WHATSAPP
-// ==============================================
-function doWA() {
-  var d = getData();
-  var lines = d.rows.map(function(r,i){ return (i+1)+'. *'+r.n+'*  Qty:'+r.q+'  @Tk'+r.p+'  =Tk'+((parseFloat(r.q)||0)*(parseFloat(r.p)||0)).toFixed(2); }).join('\n');
-  var msg = '*'+C('nm')+'*\n'+C('a1')+' '+C('a2')+'\nTel: '+C('mb')
-    +'\n━━━━━━━━━━━━━━━━\n*Invoice #'+d.no+'*  |  '+d.date+'  '+d.time
-    +'\n━━━━━━━━━━━━━━━━\nPatient: *'+d.pName+'*\n'+(d.pMob?'Mobile: '+d.pMob+'\n':'')+(d.pAddr?'Address: '+d.pAddr+'\n':'')+'Reward Pts: '+d.pRew
-    +'\n━━━━━━━━━━━━━━━━\n*Products:*\n'+(lines||'—')
-    +'\n━━━━━━━━━━━━━━━━\nSubtotal: Tk '+d.sub.toFixed(2)+'\n'+(d.df>0?'Doctor Fee: Tk '+d.df.toFixed(2)+'\n':'')+'Discount: -Tk '+d.disc.toFixed(2)+'\n*TOTAL: Tk '+d.total.toFixed(2)+'*\nPaid: Tk '+d.paid.toFixed(2)
-    +(d.note?'\n\nNote: '+d.note:'')
-    +'\n━━━━━━━━━━━━━━━━\n_'+C('th')+'_';
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
-}
-
-// ==============================================
-// SAVE / CLEAR
-// ==============================================
-function saveInv() {
-  var d = getData();
-  localStorage.setItem('nhp_no', parseInt(d.no)||1);
-  hist.unshift(d);
-  if(hist.length>300) hist=hist.slice(0,300);
-  localStorage.setItem('nhp_h', JSON.stringify(hist));
-  saveToCloud(d);
-  updBadge(); toast('Invoice #'+d.no+' saved ✅');
-  setTimeout(function(){ _reset(); }, 700);
-}
-function clearForm() { DL.show('🔄','Clear Form?','All unsaved data will be lost. Start a new invoice?', false, function(){ _reset(); }); }
-function _reset() { ['cn','ca','cm','ce','itn'].forEach(function(id){ var e=gid(id); if(e) e.value=''; }); gid('crw').value='0'; gid('disc').value='0'; gid('cash').value='0'; gid('df').value='0'; setNo(); setNow(); rows=[]; _rid=0; addRow(); addRow(); window.scrollTo(0,0); toast('Form cleared'); }
-
-// ==============================================
-// HISTORY
-// ==============================================
-function updBadge() { var b = gid('NBG'); if(hist.length){ b.textContent=hist.length>99?'99+':hist.length; b.style.display='flex'; } else { b.style.display='none'; } }
-function renderHist() { _renderList(gid('HL2'), hist); }
-
-function _renderList(container, list) {
-  container.innerHTML = '';
-  if (!list.length) { container.innerHTML = '<div class="est"><div class="esic">📂</div>No invoices saved yet.</div>'; return; }
-  list.forEach(function(inv) {
-    var gi = hist.indexOf(inv);
-    var src = inv.rows || inv.prods || inv.products || [];
-    var tags = src.slice(0,3).map(function(r){ return '<span class="htg">'+xd(r.n)+'</span>'; }).join('');
-    if(src.length>3) tags += '<span class="htg">+' +(src.length-3)+'</span>';
-    var card = document.createElement('div');
-    card.className = 'hcard';
-    card.innerHTML =
-      '<div class="hct"><div><div class="hno">Invoice #'+xd(inv.no||inv.invNo||'')+'</div><div class="hdt">'+xd(inv.date||'')+'  '+xd(inv.time||'')+'</div></div><div class="htb">Tk '+Number(inv.total||0).toFixed(2)+'</div></div>'
-      +'<div class="hcm"><div class="hp">'+xd(inv.pName||inv.cName||'Patient')+'</div><div class="hm">'+((inv.pMob||inv.cMobile)?'<span>&#128222; '+xd(inv.pMob||inv.cMobile||'')+'</span>':'')+((inv.pAddr||inv.cAddr)?'<span>&#128205; '+xd(inv.pAddr||inv.cAddr||'')+'</span>':'')+(src.length?'<span>&#128138; '+src.length+' items</span>':'')+'</div>'+(tags?'<div class="htgs">'+tags+'</div>':'')+'</div>'
-      +'<div class="hcb"><button class="hfb hfp">&#128196; PDF</button><button class="hfb hfi">&#128444; Image</button><button class="hfb hfe">&#9999; Edit</button><button class="hfb hfd">&#128465; Delete</button></div>';
-    (function(idx, invData) {
-      card.querySelector('.hfp').addEventListener('click', function(){ genPDF(invData); });
-      card.querySelector('.hfi').addEventListener('click', function(){ genImg(invData); });
-      card.querySelector('.hfe').addEventListener('click', function(){ _editInv(idx); });
-      card.querySelector('.hfd').addEventListener('click', function(){ _delInv(idx); });
-    })(gi, inv);
-    container.appendChild(card);
-  });
-}
-
-function _delInv(i) { if(!hist[i]){ toast('Not found'); return; } DL.show('🗑️', 'Delete Invoice #'+hist[i].no+'?', 'Patient: '+hist[i].pName+'. This cannot be undone.', true, function(){ hist.splice(i,1); localStorage.setItem('nhp_h', JSON.stringify(hist)); deleteFromCloud(hist[i]?hist[i].no:''); updBadge(); renderHist(); toast('Invoice deleted'); }); }
-function _editInv(i) { var inv = hist[i]; if(!inv){ toast('Not found'); return; } gid('ino').value = inv.no || inv.invNo || ''; gid('idt').value = inv.date || ''; gid('itm').value = inv.time || ''; gid('itn').value = inv.note || ''; gid('cn').value = inv.pName || inv.cName || ''; gid('ca').value = inv.pAddr || inv.cAddr || ''; gid('cm').value = inv.pMob || inv.cMobile || ''; gid('ce').value = inv.pEmail || inv.cEmail || ''; gid('crw').value = inv.pRew || inv.cReward || '0'; gid('disc').value= String(inv.disc || inv.discount || '0'); gid('cash').value= String(inv.cash || '0'); gid('df').value = String(inv.df || inv.doctorFee || '0'); var src = inv.rows || inv.prods || inv.products || []; rows = []; _rid = 0; src.forEach(function(r){ addRow(r.n||'', r.q||'', r.p||''); }); if(!rows.length){ addRow(); addRow(); } else { renderRows(); } goPage('new', gid('nbn')); window.scrollTo(0,0); toast('Invoice #'+inv.no+' loaded'); }
-
-// ==============================================
-// SEARCH
-// ==============================================
-function doSearch() { var q = (gid('srch').value||'').trim().toLowerCase(); var res = gid('SR'), cnt = gid('scnt'); if(!q){ res.innerHTML='<div class="est"><div class="esic">🔍</div>Search by name, invoice no., mobile or address.</div>'; cnt.textContent=''; return; } var found = hist.filter(function(inv){ return (inv.pName||inv.cName||'').toLowerCase().includes(q) ||(inv.no||inv.invNo||'').toLowerCase().includes(q) ||(inv.pMob||inv.cMobile||'').toLowerCase().includes(q) ||(inv.pAddr||inv.cAddr||'').toLowerCase().includes(q) ||(inv.pEmail||inv.cEmail||'').toLowerCase().includes(q); }); cnt.textContent = found.length+' result'+(found.length!==1?'s':'')+' found'; _renderList(res, found); }
-
-// ==============================================
-// START — Dynamic Firebase Loader
-// ==============================================
-function _startApp() {
-  if (typeof firebase !== 'undefined') {
-    initFirebase();
-    return;
-  }
-  var FB_VER = '10.7.1';
-  var scripts = [
-    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-app-compat.min.js',
-    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-auth-compat.min.js',
-    'https://cdn.jsdelivr.net/npm/firebase@'+FB_VER+'/firebase-firestore-compat.min.js'
-  ];
-  var loaded = 0;
-  var failed = 0;
-  function onLoad() { loaded++; if (loaded === scripts.length) initFirebase(); }
-  function onError(src) { failed++; console.error('Failed to load:', src); if (failed === scripts.length) { toast('Internet নেই — offline mode চালু হচ্ছে'); hideLoginScreen(); runApp(); } }
-  scripts.forEach(function(src) { var s = document.createElement('script'); s.src = src; s.onload = onLoad; s.onerror = function(){ onError(src); }; document.head.appendChild(s); });
-}
-
-window.addEventListener('load', _startApp);
+var DL={cb:null,show:function(i,t,m,d,c){this.cb=c;document.getElementById('DIC').textContent=i;document.getElementById('DTT').textContent=t;document.getElementById('DMS').textContent=m;var ok=document.getElementById('DOK');ok.textContent=d?'Delete':'Confirm';ok.className='dlbt '+(d?'ok-r':'ok-g');document.getElementById('DLV').classList.add('on')},close:function(){document.getElementById('DLV').classList.remove('on');this.cb=null},confirm:function(){var fn=this.cb;this.close();if(fn)fn()}};
+document.getElementById('DLV').addEventListener('click',function(e){if(e.target===this)DL.close()});
+function toast(m){var t=document.getElementById('TST');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},3e3)}
+var rows=[],hist=[],cfg={},logoB64=null;
+try{hist=JSON.parse(localStorage.getItem('nhp_h')||'[]')}catch(e){hist=[]}
+try{cfg=JSON.parse(localStorage.getItem('nhp_c')||'{}')}catch(e){cfg={}}
+try{logoB64=localStorage.getItem('nhp_l')||null}catch(e){logoB64=null}
+var DEF={nm:'NISHAT HOMEO PHARMACY',a1:'C&B Chowrasta School Road, Lohagara, Narail,',a2:'Bangladesh.',mb:'01754969909',em:'nishathomeoph@gmail.com',th:'Thank you for your trust and support.'};
+function C(k){return cfg[k]||DEF[k]}function gid(id){return document.getElementById(id)}function gv(id){var e=gid(id);return e?e.value:''}function sv(id,v){var e=gid(id);if(e)e.textContent=v}function pad(n){return String(n).padStart(2,'0')}function xe(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}function xd(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function init(){applyCfg();applyLogo();setNo();setNow();addRow();addRow();renderHist();updBadge()}
+function setNo(){var n=parseInt(localStorage.getItem('nhp_no')||'0')+1;gid('ino').value=pad(n)}
+function setNow(){var d=new Date();gid('idt').value=pad(d.getDate())+'-'+pad(d.getMonth()+1)+'-'+d.getFullYear();gid('itm').value=pad(d.getHours())+':'+pad(d.getMinutes())}
+function applyCfg(){var map={nm:'s-nm',a1:'s-a1',a2:'s-a2',mb:'s-mb',em:'s-em',th:'s-th'};Object.keys(map).forEach(function(k){var e=gid(map[k]);if(e)e.value=C(k)});gid('HN').textContent=C('nm')}
+function saveCfg(){cfg.nm=gv('s-nm');cfg.a1=gv('s-a1');cfg.a2=gv('s-a2');cfg.mb=gv('s-mb');cfg.em=gv('s-em');cfg.th=gv('s-th');localStorage.setItem('nhp_c',JSON.stringify(cfg));gid('HN').textContent=C('nm');applyLogo();toast('Settings saved ✅')}
+function uploadLogo(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){logoB64=ev.target.result;try{localStorage.setItem('nhp_l',logoB64)}catch(er){}applyLogo();toast('Logo updated ✅')};r.readAsDataURL(f)}
+function applyLogo(){var hl=gid('HL'),pi=gid('LGIM'),ic=gid('LGIC');if(logoB64){hl.innerHTML='<img src="'+logoB64+'" style="width:100%;height:100%;object-fit:cover;border-radius:9px"/>';pi.src=logoB64;pi.style.display='block';ic.style.display='none'}else{hl.innerHTML='🌿';pi.style.display='none';ic.style.display='block'}}
+function goPage(p,el){document.querySelectorAll('.pg').forEach(function(x){x.classList.remove('on')});document.querySelectorAll('.nb').forEach(function(x){x.classList.remove('on')});gid('pg-'+p).classList.add('on');if(el)el.classList.add('on');if(p==='hist')renderHist();if(p==='srch'){gid('srch').value='';doSearch()}window.scrollTo(0,0)}
+var _rid=0;function newId(){return++_rid}
+function addRow(n,q,p){rows.push({id:newId(),n:n||'',q:q||'',p:p||''});renderRows()}
+function delRow(id){if(rows.length<=1){toast('At least one row required');return}DL.show('⚠️','Remove Product?','Remove this item?',false,function(){rows=rows.filter(function(r){return r.id!==id});renderRows()})}
+function renderRows(){var el=gid('PL');el.innerHTML='';rows.forEach(function(row,i){var sub=((parseFloat(row.q)||0)*(parseFloat(row.p)||0)).toFixed(2);var div=document.createElement('div');div.className='pr';div.innerHTML='<div class="psl">'+pad(i+1)+'</div><input placeholder="Product / Medicine name" value="'+xe(row.n)+'" oninput="rows['+i+'].n=this.value"/><input type="number" placeholder="0" min="0" step="0.01" value="'+xe(row.q)+'" style="text-align:center" oninput="rows['+i+'].q=this.value;rS('+i+')"/><input type="number" placeholder="0.00" min="0" step="0.01" value="'+xe(row.p)+'" style="text-align:right" oninput="rows['+i+'].p=this.value;rS('+i+')"/><div class="psv" id="psv'+i+'">'+sub+'</div><button class="pdel" data-rid="'+row.id+'">&#10005;</button>';el.appendChild(div);div.querySelector('.pdel').addEventListener('click',(function(rid){return function(){delRow(rid)}})(row.id))});calc()}
+function rS(i){var e=gid('psv'+i);if(e)e.textContent=((parseFloat(rows[i].q)||0)*(parseFloat(rows[i].p)||0)).toFixed(2);calc()}
+function calc(){var items=rows.filter(function(r){return r.n&&r.n.trim()}).length;var qty=rows.reduce(function(s,r){return s+(parseFloat(r.q)||0)},0);var sub=rows.reduce(function(s,r){return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0)},0);var df=parseFloat(gv('df'))||0,disc=parseFloat(gv('disc'))||0;var total=Math.max(0,sub+df-disc),cash=parseFloat(gv('cash'))||0;sv('si',items);sv('sq',Math.round(qty));sv('ss','Tk '+sub.toFixed(2));sv('sd','Tk '+df.toFixed(2));sv('st','Tk '+total.toFixed(2));sv('sp','Tk '+Math.min(cash,total).toFixed(2))}
+function getData(){var sub=rows.reduce(function(s,r){return s+(parseFloat(r.q)||0)*(parseFloat(r.p)||0)},0);var df=parseFloat(gv('df'))||0,disc=parseFloat(gv('disc'))||0;var total=Math.max(0,sub+df-disc),cash=parseFloat(gv('cash'))||0;return{no:gv('ino'),date:gv('idt'),time:gv('itm'),note:gv('itn'),pName:gv('cn')||'Patient',pAddr:gv('ca'),pMob:gv('cm'),pEmail:gv('ce'),pRew:gv('crw')||'0',rows:rows.filter(function(r){return r.n&&r.n.trim()}).map(function(r){return{n:r.n,q:r.q,p:r.p}}),df:df,sub:sub,disc:disc,total:total,cash:cash,paid:Math.min(cash,total),qty:rows.reduce(function(s,r){return s+(parseFloat(r.q)||0)},0),items:rows.filter(function(r){return r.n&&r.n.trim()}).length,at:new Date().toISOString()}}
+function popInv(d){document.getElementById('inv-shop-name').textContent=C('nm');document.getElementById('inv-addr-full').textContent=(C('a1')+' '+C('a2')).replace(/,\s*$/,'').trim();document.getElementById('inv-mobile').textContent=C('mb');document.getElementById('inv-email').textContent=C('em');document.getElementById('inv-disp-no').textContent=d.no;var ts=d.time||'00:00',parts=ts.split(':'),hrs=parseInt(parts[0])||0,mins=parts[1]||'00',amp=hrs>=12?'PM':'AM';hrs=hrs%12;if(hrs===0)hrs=12;document.getElementById('inv-disp-date').textContent=d.date+' '+hrs+':'+mins+' '+amp;document.getElementById('inv-disp-pname').textContent=d.pName||'-';document.getElementById('inv-disp-pmobile').textContent=d.pMob||'-';document.getElementById('inv-disp-pemail').textContent=d.pEmail||'-';document.getElementById('inv-disp-paddr').textContent=d.pAddr||'-';document.getElementById('inv-disp-reward').textContent=d.pRew||'0';var logoEl=document.getElementById('inv-logo');if(logoB64){logoEl.src=logoB64;logoEl.style.display='block'}else{logoEl.style.display='none'}var tbody=document.getElementById('inv-disp-prods');tbody.innerHTML='';d.rows.forEach(function(pr,i){var qty=parseFloat(pr.q)||0,price=parseFloat(pr.p)||0,sub=qty*price;var tr=document.createElement('tr');tr.innerHTML='<td>'+String(i+1).padStart(2,'0')+'</td><td class="pn">'+xe(pr.n)+'</td><td>'+qty.toFixed(2)+'</td><td>'+price.toFixed(2)+'</td><td>'+sub.toFixed(2)+'</td>';tbody.appendChild(tr)});var sumH='<div class="cell">Cash</div><div class="cell">Tk '+d.cash.toFixed(2)+'</div><div class="cell">Date</div><div class="cell">'+d.date+'</div><div class="cell">Total Quantity</div><div class="cell">'+Math.round(d.qty)+'</div><div class="cell">Total Items</div><div class="cell">'+d.items+'</div><div class="cell">Total Paid</div><div class="cell">Tk '+d.paid.toFixed(2)+'</div><div class="cell">Subtotal</div><div class="cell">Tk '+d.sub.toFixed(2)+'</div>';if(d.df>0)sumH+='<div class="cell">Doctor Fee</div><div class="cell">Tk '+d.df.toFixed(2)+'</div>';sumH+='<div class="cell">Discount</div><div class="cell" style="color:#C0392B;font-weight:600">(-) Tk '+d.disc.toFixed(2)+'</div>';document.getElementById('inv-disp-summary').innerHTML=sumH;document.getElementById('inv-disp-total').textContent=d.total.toFixed(2);var ns=document.getElementById('inv-ns');if(d.note&&d.note.trim()){ns.style.display='block';document.getElementById('inv-disp-notes').textContent=d.note}else{ns.style.display='none'}document.getElementById('inv-foot-name').textContent=C('nm');document.getElementById('inv-foot-mobile').textContent=C('mb');document.getElementById('inv-foot-email').textContent=C('em');document.getElementById('inv-foot-thanks').textContent=C('th');var qrEl=document.getElementById('inv-qr-code');qrEl.innerHTML='';try{new QRCode(qrEl,{text:'Inv:'+d.no+' Pt:'+d.pName+' Tk:'+d.total.toFixed(2),width:60,height:60,colorDark:"#073D2E",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
+function genPDF(inv){var d=inv||getData();popInv(d);toast('Preparing PDF...');setTimeout(function(){html2canvas(document.getElementById('invoice-paper'),{scale:3,useCORS:true,backgroundColor:"#ffffff"}).then(function(canvas){var jsPDF=window.jspdf.jsPDF;var pdf=new jsPDF('p','mm','a4');var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();var w=pw,h=(canvas.height/canvas.width)*w;if(h>ph){h=ph;w=(canvas.width/canvas.height)*h}pdf.addImage(canvas.toDataURL('image/png'),'PNG',(pw-w)/2,0,w,h);pdf.save('Invoice-'+d.no+'.pdf');toast('PDF Downloaded!')})},600)}
+function genImg(inv){var d=inv||getData();popInv(d);toast('Generating image...');setTimeout(function(){html2canvas(document.getElementById('invoice-paper'),{scale:3,useCORS:true,backgroundColor:"#ffffff"}).then(function(canvas){var a=document.createElement('a');a.download='Invoice-'+d.no+'.png';a.href=canvas.toDataURL('image/png');a.click();toast('Image saved!')})},600)}
+function doWA(){var d=getData();var lines=d.rows.map(function(r,i){return(i+1)+'. *'+r.n+'* Qty:'+r.q+' @Tk'+r.p+' =Tk'+((parseFloat(r.q)||0)*(parseFloat(r.p)||0)).toFixed(2)}).join('\n');var msg='*'+C('nm')+'*\n'+C('a1')+' '+C('a2')+'\nTel: '+C('mb')+'\n━━━━━━━━━━━━━━━━\n*Invoice #'+d.no+'* | '+d.date+' '+d.time+'\n━━━━━━━━━━━━━━━━\nPatient: *'+d.pName+'*\n'+(d.pMob?'Mobile: '+d.pMob+'\n':'')+(d.pAddr?'Address: '+d.pAddr+'\n':'')+'Reward Pts: '+d.pRew+'\n━━━━━━━━━━━━━━━━\n*Products:*\n'+(lines||'—')+'\n━━━━━━━━━━━━━━━━\nSubtotal: Tk '+d.sub.toFixed(2)+'\n'+(d.df>0?'Doctor Fee: Tk '+d.df.toFixed(2)+'\n':'')+'Discount: -Tk '+d.disc.toFixed(2)+'\n*TOTAL: Tk '+d.total.toFixed(2)+'*\nPaid: Tk '+d.paid.toFixed(2)+(d.note?'\n\nNote: '+d.note:'')+'\n━━━━━━━━━━━━━━━━\n_'+C('th')+'_';window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
+function saveInv(){var d=getData();localStorage.setItem('nhp_no',parseInt(d.no)||1);hist.unshift(d);if(hist.length>300)hist=hist.slice(0,300);localStorage.setItem('nhp_h',JSON.stringify(hist));updBadge();toast('Invoice #'+d.no+' saved ✅');setTimeout(function(){_reset()},700)}
+function clearForm(){DL.show('🔄','Clear Form?','All unsaved data will be lost.',false,function(){_reset()})}
+function _reset(){['cn','ca','cm','ce','itn'].forEach(function(id){var e=gid(id);if(e)e.value=''});gid('crw').value='0';gid('disc').value='0';gid('cash').value='0';gid('df').value='0';setNo();setNow();rows=[];_rid=0;addRow();addRow();window.scrollTo(0,0);toast('Form cleared')}
+function updBadge(){var b=gid('NBG');if(hist.length){b.textContent=hist.length>99?'99+':hist.length;b.style.display='flex'}else{b.style.display='none'}}
+function renderHist(){_rl(gid('HL2'),hist)}
+function _rl(container,list){container.innerHTML='';if(!list.length){container.innerHTML='<div class="est"><div class="esic">📂</div>No invoices saved yet.</div>';return}list.forEach(function(inv){var gi=hist.indexOf(inv);var src=inv.rows||inv.prods||inv.products||[];var tags=src.slice(0,3).map(function(r){return'<span class="htg">'+xd(r.n)+'</span>'}).join('');if(src.length>3)tags+='<span class="htg">+'+(src.length-3)+'</span>';var card=document.createElement('div');card.className='hcard';card.innerHTML='<div class="hct"><div><div class="hno">Invoice #'+xd(inv.no||inv.invNo||'')+'</div><div class="hdt">'+xd(inv.date||'')+' '+xd(inv.time||'')+'</div></div><div class="htb">Tk '+Number(inv.total||0).toFixed(2)+'</div></div><div class="hcm"><div class="hp">'+xd(inv.pName||inv.cName||'Patient')+'</div><div class="hm">'+((inv.pMob||inv.cMobile)?'<span>&#128222; '+xd(inv.pMob||inv.cMobile||'')+'</span>':'')+((inv.pAddr||inv.cAddr)?'<span>&#128205; '+xd(inv.pAddr||inv.cAddr||'')+'</span>':'')+(src.length?'<span>&#128138; '+src.length+' items</span>':'')+'</div>'+(tags?'<div class="htgs">'+tags+'</div>':'')+'</div><div class="hcb"><button class="hfb hfp">&#128196; PDF</button><button class="hfb hfi">&#128444; Image</button><button class="hfb hfe">&#9999; Edit</button><button class="hfb hfd">&#128465; Delete</button></div>';(function(idx,invData){card.querySelector('.hfp').addEventListener('click',function(){genPDF(invData)});card.querySelector('.hfi').addEventListener('click',function(){genImg(invData)});card.querySelector('.hfe').addEventListener('click',function(){_editInv(idx)});card.querySelector('.hfd').addEventListener('click',function(){_delInv(idx)})})(gi,inv);container.appendChild(card)})}
+function _delInv(i){if(!hist[i]){toast('Not found');return}DL.show('🗑️','Delete Invoice #'+hist[i].no+'?','Patient: '+hist[i].pName+'. This cannot be undone.',true,function(){hist.splice(i,1);localStorage.setItem('nhp_h',JSON.stringify(hist));updBadge();renderHist();toast('Invoice deleted')})}
+function _editInv(i){var inv=hist[i];if(!inv){toast('Not found');return}gid('ino').value=inv.no||inv.invNo||'';gid('idt').value=inv.date||'';gid('itm').value=inv.time||'';gid('itn').value=inv.note||'';gid('cn').value=inv.pName||inv.cName||'';gid('ca').value=inv.pAddr||inv.cAddr||'';gid('cm').value=inv.pMob||inv.cMobile||'';gid('ce').value=inv.pEmail||inv.cEmail||'';gid('crw').value=inv.pRew||inv.cReward||'0';gid('disc').value=String(inv.disc||inv.discount||'0');gid('cash').value=String(inv.cash||'0');gid('df').value=String(inv.df||inv.doctorFee||'0');var src=inv.rows||inv.prods||inv.products||[];rows=[];_rid=0;src.forEach(function(r){addRow(r.n||'',r.q||'',r.p||'')});if(!rows.length){addRow();addRow()}else{renderRows()}goPage('new',gid('nbn'));window.scrollTo(0,0);toast('Invoice #'+inv.no+' loaded')}
+function doSearch(){var q=(gid('srch').value||'').trim().toLowerCase();var res=gid('SR'),cnt=gid('scnt');if(!q){res.innerHTML='<div class="est"><div class="esic">🔍</div>Search by name, invoice no., mobile or address.</div>';cnt.textContent='';return}var found=hist.filter(function(inv){return(inv.pName||inv.cName||'').toLowerCase().includes(q)||(inv.no||inv.invNo||'').toLowerCase().includes(q)||(inv.pMob||inv.cMobile||'').toLowerCase().includes(q)||(inv.pAddr||inv.cAddr||'').toLowerCase().includes(q)||(inv.pEmail||inv.cEmail||'').toLowerCase().includes(q)});cnt.textContent=found.length+' result'+(found.length!==1?'s':'')+' found';_rl(res,found)}
+init();
 </script>
 </body>
 </html>
